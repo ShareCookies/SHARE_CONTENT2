@@ -1,0 +1,2 @@
+# HCG_SHARE_CONTENT
+个人分享内容
