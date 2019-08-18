@@ -1,0 +1,78 @@
+设计原则之：
+	针对接口编程，而不是针对实现编程。
+	
+	当使用new 是，就是在实例化一个具体类，这就不符合该设计原则了。
+	但不new具体类哪来的实例了。
+	
+	所以一般是要在变量有多个不同的具体实例时，用到工厂模式。
+	例:
+		Duck duck;
+		if("picnic"){
+			duck = new MDuck();
+		}else if("hunting"){
+			duck = new DDuck();
+		}
+		当这样的代码一旦有变化或扩展，就必须打开代码进行检查修改。
+		导致麻烦，维护困难等。
+		所以应将实例化具体类的代码从应用中抽离，使其不会干扰到应用的其他部分。
+		
+	工厂：
+		把创建对象的代码放在一个对象中，这个对象只管如何创建出指定（披萨）对象，任何对象想要获取指定（披萨）对象找它就对了。
+		这个新对象可称为工厂。
+	
+	简单工厂：
+		介绍：	
+			即工厂的概念。
+		例：p116
+			//把创建指定对象的代码封装进一个类后，如果实例化过程有改变只需修改这个类就行。
+			public class SimplePizzaFactory{
+				public Pizza createPizza(String type){//所有用户通过工厂的该方法来获取实例化对象。
+					Duck pizza=null;
+					if(type.equal("picnic")){
+						duck = new MDuck();
+					}else if(type.equal("hunting")){
+						duck = new DDuck();
+					}
+					return pizza;
+				}
+			}
+
+		静态工厂方法：
+			介绍：
+				即把工厂方法定义为静态的。
+			缺陷：
+				不能通过继承来改变工厂创建方法的行为。
+			子类可以继承父类的静态方法。但是不能覆盖。因为静态方法是在编译时确定了，不能多态，也就是不能运行时绑定！！！
+		注：
+			简单工厂其实不算一个设计模式，反而比较像一种编程习惯。
+	工厂方法：
+		例:		
+			public abstract class PizzaStore {
+				public Pizza orderPizza(String type){
+					Pizza pizza;
+					pizza=createPizza(type);//与简单工厂对比：createPizza()方法从工厂对象中移回PizzaStore
+					
+					//披萨后续的流程将不会被改变
+					pizza.prepare();
+					pizza.bake();
+					pizza.cut();
+					pizza.box();
+					return pizza;
+				}
+				abstract Pizza createPizza(String type);//让每个子类继承，让子类格子决定如何制造披萨。
+			} 
+
+			public class NYPizzaStore extends PizzaStore{
+				//如何创建具体类（披萨），将由子类来决定。例这些具体类都是纽约
+				public createPizza (String type){
+					Duck pizza=null;
+					if(type.equal("picnic")){
+						duck = new MDuck();
+					}else if(type.equal("hunting")){
+						duck = new DDuck();
+					}
+					return duck
+				}
+			}
+		
+	工厂 - 销售方 - 产品
