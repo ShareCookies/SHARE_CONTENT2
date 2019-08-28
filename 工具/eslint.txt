@@ -1,0 +1,21 @@
+官网：
+	https://cn.eslint.org/
+开发工具使用eslint：
+	idea使用Eslint格式化js：
+		如果你的项目中做了eslint的配置，js文件时鼠标右击，会多一个Fix Eslint Problems的选项；
+		该选项可以根据eslint规则自动修复js文件中出现的常见错误。
+		该选项本质上就是执行了eslint --fix filename.js。
+	idea安装eslint：
+		https://juejin.im/post/5c668291e51d457832120627
+		idea启用Eslint
+			Languages & Frameworks -> JavaScript -> Code Quality Tools -> ESLint
+		注：
+			idea每开启一个前端项目，均要重新开启eslint的支持。
+	注：
+		webstom的eslint中的fix eslint problems 如何对.vue文件生效：
+			https://blog.csdn.net/zmm13298329239/article/details/86149854
+		WebStorm与IntelliJ IDEA的关系：
+			https://www.jianshu.com/p/4431b63e8d50
+eslint介绍：
+	https://www.imooc.com/article/32222
+	ESLint是一个 JavaScript 语法规则和代码风格的检查工具。

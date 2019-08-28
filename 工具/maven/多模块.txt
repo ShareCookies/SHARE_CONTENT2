@@ -1,0 +1,57 @@
+maven程序包不存在：
+https://blog.csdn.net/wabyking/article/details/79700030
+https://blog.csdn.net/liupeifeng3514/article/details/80236077
+https://www.jianshu.com/p/5ce832ede830
+https://blog.csdn.net/zhouyingge1104/article/details/82287046
+	解决方案：?
+		1.依赖放在父模块的依赖中。	因为maven依赖放在子模块中会出现这种情况
+
+
+
+		Spring-boot构建多模块依赖工程时，maven打包异常：程序包xxx不存在?
+		https://www.cnblogs.com/ITPower/p/10015471.html
+		springBoot在maven中分模块一定要用指定插件打包吗：？
+			spring-boot-maven-plugin：https://docs.spring.io/spring-boot/docs/current/maven-plugin/repackage-mojo.html
+springBoot多模块创建：
+	https://blog.csdn.net/baidu_41885330/article/details/81875395
+	https://www.cnblogs.com/owenma/p/8029518.html
+springBoot多模块打包：
+	https://blog.csdn.net/bicheng4769/article/details/83656981
+maven打包三种方法：
+	https://blog.csdn.net/daiyutage/article/details/53739452#commentBox
+	maven多模块打包：
+		https://blog.csdn.net/bicheng4769/article/details/83656981
+jar包：
+	可执行jar包：
+		https://blog.csdn.net/programmer0804/article/details/78509846
+		https://www.cnblogs.com/yjmyzz/p/executable-jar.html
+		可直接运行的jar包（jar包中有main入口方法）
+		例：
+			使用命令运行科执行的jar包
+			java -jar test.jar 
+	普通jar包：
+		jar里有一些封装好的类（不包含main入口方法）
+scope：
+	https://www.cnblogs.com/hzzll/p/6738955.html
+	https://blog.csdn.net/huangweijian93/article/details/79461657
+	在POM 4中，<dependency>中还引入了<scope>，它主要管理依赖的部署。
+	目前<scope>可以使用5个值： 
+		compile，缺省值，适用于所有阶段，会随着项目一起发布。 
+		provided，类似compile，期望JDK、容器或使用者会提供这个依赖。如servlet.jar。 
+		runtime，只在运行时使用，如JDBC驱动，适用运行和测试阶段。 
+		test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。 
+		system，类似provided，需要显式提供包含依赖的jar，Maven不会在Repository中查找它。
+		compile：
+			compile是默认的范围；如果没有提供一个范围，那该依赖的范围就是编译范围。
+			编译范围依赖在所有的classpath 中可用，同时它们也会被打包。
+packaging：
+	https://blog.csdn.net/aazpf/article/details/79650139
+	？https://www.cnblogs.com/lzxianren/p/4904980.html
+	项目的打包类型：pom、jar、war
+	packaging默认是jar类型
+	
+	父级项目的packaging用pom，
+	子类项目的packaging值只能是war或者jar
+		需要部署的项目，则需要打包成war类型，
+		如果只是内部调用或者是作服务使用，则推荐打包成jar类型。？
+	

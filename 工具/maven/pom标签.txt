@@ -1,0 +1,39 @@
+maven依赖查询：
+	https://mvnrepository.com/
+maven-pom标签：
+
+	maven中scope= import：
+		https://blog.csdn.net/leoxyk/article/details/79622507
+		
+<dependencies>:
+	dependencies与dependencyManagement的区别：
+		https://blog.csdn.net/liutengteng130/article/details/46991829
+	  	dependencies:
+			即使在子项目中不写该依赖项，那么子项目仍然会从父项目中继承该依赖项（全部继承）。
+
+        dependencyManagement:
+			只是声明依赖，并不实现引入，因此子项目需要显示的声明需要用的依赖。
+			1.如果不在子项目中声明依赖，是不会从父项目中继承下来的；
+			2.只有在子项目中写了该依赖项，并且没有指定具体版本，才会从父项目中继承该项，并且version和scope都读取自父pom;
+			3.另外如果子项目中指定了版本号，那么会使用子项目中指定的jar版本。
+<dependency>：
+	scope属性：
+		？
+	注：
+		1.dependency没有注明version时，maven项目依赖会报错误
+		2.依赖时什么时候可以不指定版本号：
+			1.当依赖在父工程指定过版本号的情况下可以不显式指定
+			即父工程使用dependencyManagement
+maven插件：
+	maven-source-plugin：
+		https://blog.csdn.net/u014515854/article/details/79696894
+		https://blog.csdn.net/J080624/article/details/78353634
+	maven-release-plugin：！
+		https://blog.csdn.net/shenchaohao12321/article/details/79302791#commentBox
+异常：
+	Failed to execute goal org.apache.maven.plugins:maven-install-plugin:2.4:install (default-cli) on project core: 
+	The packaging for this project did not assign a file to the build artifact -> [Help 1]
+	解决方案：
+		http://tieba.baidu.com/p/4810060893
+		点击Plugins里的install:install
+		打包点击Lifecycle里的install

@@ -1,0 +1,8 @@
+https://blog.csdn.net/fxbin123/article/details/80428216
+
+异常：
+	postman Could not get any response：
+		https://blog.csdn.net/zoulonglong/article/details/80596634
+		1.按建议来
+		2.headers 栏的参数格式异常，有空格或换行等均会导致该异常。
+		

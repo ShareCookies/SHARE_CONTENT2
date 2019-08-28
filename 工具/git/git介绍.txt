@@ -1,0 +1,67 @@
+https://gitee.com/progit/
+https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/00137396287703354d8c6c01c904c7d9ff056ae23da865a000
+Git：
+	Git是分布式版本控制系统。
+	SVN等集中式版本控制系统：
+		先说集中式版本控制系统，版本库是集中存放在中央服务器的，
+		而干活的时候，用的都是自己的电脑，所以要先从中央服务器取得最新的版本，然后开始干活，
+		干完活了，再把自己的活推送给中央服务器。
+	
+	分布式版本控制系统:
+		分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库。
+		这样，你工作的时候，就不需要联网了，因为版本库就在你自己的电脑上。
+		既然每个人电脑上都有一个完整的版本库，那多个人如何协作呢？
+		比方说你在自己电脑上改了文件A，你的同事也在他的电脑上改了文件A，
+		这时，你们俩之间只需把各自的修改推送给对方，就可以互相看到对方的修改了。
+		
+		分布式版本控制系统通常也有一台充当“中央服务器”的电脑，
+		但这个服务器的作用仅仅是用来方便“交换”大家的修改，
+		没有它大家也一样干活，只是交换修改不方便而已。
+		
+		注：
+			1.所有的版本控制系统，其实只能跟踪文本文件的改动，比如TXT文件，网页，所有的程序代码等等，Git也不例外。
+			版本控制系统可以告诉你每次的改动，比如在第5行加了一个单词“Linux”，在第8行删了一个单词“Windows”。
+			而图片、视频这些二进制文件，虽然也能由版本控制系统管理，但没法跟踪文件的变化。
+			只能把二进制文件每次改动串起来，也就是只知道图片从100KB改成了120KB，但到底改了啥，版本控制系统不知道。
+			Microsoft的Word格式是二进制格式，版本控制系统没法跟踪。
+			2.不要使用Windows自带的记事本编辑任何文本文件，因为是UTF-8-BOM编码保存的文件。
+git，github，gitgos区别:
+	https://blog.csdn.net/zxgmlcj/article/details/85063935
+	首先Git是做版本控制的工具，而GitHub、GitLib、Gogs都是基于Git的服务。
+	git:
+		是一个本可以在你电脑不联网的情况下，只在本地使用的一个版本管理工具，
+		其作用就是可以让你更好的管理你的程序。
+		git 是一个命令，是一种工具 
+
+	github:
+		关于github，这是一个网站，GitHub主要用于托管开源的项目，提供网页的方式浏览托管的项目。
+		
+		在GitHub上免费托管的Git仓库，任何人都可以看到喔（但只有你自己才能改）。
+		如果你不想让别人看到Git库，有两个办法，一个是交点保护费，让GitHub把公开的仓库变成私有的，这样别人就看不见了（不可读更不可写）。
+		另一个办法是自己动手，搭一个Git服务器，因为是你自己的Git服务器，所以别人也是看不见的。这个方法我们后面会讲到的，相当简单，公司内部开发必备。
+	Gogs：
+		使用go语言开发，由于语言特性，Gogs能够跨平台部署，且对资源要求低。
+		Gogs等是一个基于git实现的代码仓库软件，你可以用gitlab自己搭建一个类似于github一样的系统，
+		一般用于在企业、学校等内部网络搭建git私服。
+ 
+Gogs简介
+	Gogs 是一款极易搭建的自助 Git 服务。 
+	就是一个管理git的服务器，用它来保证git24小时都能运行，并且提供用户功能，用来限制谁能向服务器所在的git提交代码。
+	Windows安装Gogs:
+		https://www.cnblogs.com/dacongge/p/7851650.html
+		https://blog.csdn.net/qq_26819733/article/details/77860125
+		https://blog.csdn.net/blogsun/article/details/54895589
+		环境：
+			1、要事先安装好git
+			2、要事先安装对应的数据库，如mysql
+		http://baijiahao.baidu.com/s?id=1582078449743656559&wfr=spider&for=pc
+		安装nssm：
+			https://www.cnblogs.com/lichu-lc/p/10263799.html
+			介绍：
+				nssm 是为了gogit能够注册为 Windows服务，以windows服务已经运行 
+			步骤：
+				下载nssm，解压到指定文件夹
+				把nssm.exe注册为path环境变量，例：D:\he_space\VersionControl\nssm-2.24\win64
+					https://www.cnblogs.com/lichu-lc/p/10263799.html
+				cmd：nssm install gogs
+				设置内容并安装：https://gogs.io/docs/installation/run_as_windows_service
