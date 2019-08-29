@@ -1,0 +1,20 @@
+边遍历边修改list值：
+		ListIterator<ChatContentView> chatContents=chatContentViews.listIterator();
+		while (chatContents.hasNext()) {
+			ChatContentView chatContentView = (ChatContentView) chatContents.next();
+			if (chatContentView.getSenderId().equals(entityId)) {
+				chatContentView.setIsSender(true);
+				chatContents.set(chatContentView);
+			}else {
+				chatContentView.setIsSender(false);
+				chatContents.set(chatContentView);
+			}
+		}
+边遍历边删除list：
+	Iterator<ChatContentView> cIterator=chatContentViews.iterator();
+		while (cIterator.hasNext()) {
+			ChatContentView chatContentView = (ChatContentView) cIterator.next();
+			if (chatContentView.getName()=="11") {
+				cIterator.remove();
+			}
+

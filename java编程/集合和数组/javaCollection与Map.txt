@@ -1,0 +1,267 @@
+﻿http://www.cnblogs.com/liyiran/p/4607817.html
+http://m.blog.csdn.net/u014136713/article/details/52089156
+
+集合:
+	几乎所有集合都是基于数组来实现的，所以普通操作数组永远比任何一个集合要快。
+	有人想有可以自动扩展的数组,所以有了List
+	有的人想有没有重复的数组,所以有了set
+	有人想有自动排序的组数,所以有了TreeSet,TreeList,Tree**
+	集合（也叫容器）归类：
+		普通容器: List/Set/Map
+		同步容器:Vector/HashTable
+		并发容器：CopyOnWriteArrayList、ConcurrentHashMap、ArrayBlockQueue
+集合的继承关系:
+	Collection和Map都继承了Iterable接口，任何实现了Iterable接口的对象，都可以作为 foreach循环的目标对象。
+	Collection（接口） 
+	├List(列表,子接口)
+	│├LinkedList（具体实现类，基于链表的二次开发）
+	│├ArrayList（具体实现类，基于数组的二次开发）
+	│└Vector （线程安全,速度较慢。）
+	│　└Stack
+	└Set(集,子接口)
+		|-HashSet(具体实现类，基于哈希算法的开发)
+		|
+		|-TreeSet
+		
+	Map(映射,接口)
+	├HashMap
+	├HashTable （线程安全,速度较慢。）
+	└TreeMap
+
+set：
+	介绍：
+		集合中的对象不存在重复，不按特定的方式排序。（即对象无序不可重复。）
+	HashSet(基于哈希算法的开发，对象无序不可重复。)：
+		HashSet判断对象不同：对象存入HashSet前要先判断对象不同。（hashcode码约等于内存地址）
+				判断过程：首先调用hashcode方法判断，如果判断相同则接着调用equals判断是否雷同，还是判断雷同的话才不接收。
+				（
+					HashSet判断是否是同一个对象，equals方法比hashcode方法精度高（hashcode效率高）
+					hashcode 方法判断不同 equals一定不同
+					hashcode 方法判断同   equals可以不同
+					因为：
+						一个类的实例如果想放在hashset中存储的话，必须同时重写equals和hashcode方法，并保持一定的契约关系。
+						为啥要重写equals和hashcode：
+							为了达到我们想要的预期效果，即如不止地址不同且苹果颜色和重要不同。
+						重写一个类hashCode()，equals()例子：
+							暂定这个类实例属性就color，weight
+							@Override
+							public boolean equals(Object obj) {
+								System.out.println("equals method is invoked now!");
+								if(obj==null) return false;
+								if(obj==this) return true;
+								if(!(obj instanceof Apple)) return false;
+								Apple otherApple = (Apple)obj; //标配指向		
+								return this.color.equals(otherApple.color)
+										   && Math.abs(this.weight-otherApple.weight)==0;
+							}
+							@Override
+							public int hashCode() {
+								System.out.println("hashcode method is invoked now!");
+								return this.color.hashCode()+this.weight.hashCode();
+								/*可能出现4+4
+								  等3+5
+								*/
+							}
+				 ）
+	TreeSet（不能重复但有自然顺序（例从小到大顺序））:
+		对象存入TreeSet前提：
+			必须实现Comparable接口。
+			Comparable接口的实现方法之一：
+				@override
+				public int compareTO(){
+					//当前一个类与另一个类的比较。当前对象的某个判断比另一个对象的小返回-1，大返回1，等于返回0会拒接接收。
+						//从大到小排可以乘-1或另一个类与当前类比较。可进行多重比较排序如：颜色不同按颜色排，同按重量排 
+				}
+list:
+	介绍：
+		List的特征是其元素以线性方式存储，集合中可以存放重复对象。（能重复有顺序（按插入的先后顺序排序））
+	ArrayList(对数组的二次开发，对象有序（按插入的先后顺序）可重复):
+		介绍：
+			数组在使用上较为麻烦，ArrayList是一个类，其对数组进行了2次改造，或者说在数组的基础上进行了二次开发，从使用角度克服了数组的诸多缺点，但本质上还是依靠数组机制来完成。
+			ArrayList内部依赖的是一个对象数组Object[], 其有众多方法，均围绕该对象数组展开。
+		常用函数：
+			size()             获得arraylist中内部的实际包含元素的数量。
+			add()             追加到最后一个
+			add(index,obj)    插入数据到index所指定的下标位置
+			remove(index)    删除指定index位置的元素
+			remove(obj)      删除与该对象匹配的元素 （依靠equals匹配）
+			contains(obj)     查看是否存在该元素
+			indexOf(obj)      查看元素出现的索引位 （从头开始查）
+			lastIndexOf(obj)  查看元素出现的索引位 （从末尾开始查）
+			isEmpty()         查看arraylist是否存在有效元素
+			subList()          创造子List
+			toArray()          把List转数组
+			trimToSize        缩小容量到实际元素大小。
+		优点：
+			与数组类似，随机定位速度很快.
+			但在编码便捷性上大大优于数组，少写不少控制代码。
+			注：
+				在多用于查询时ArrayList是首选。
+		缺点：
+			与数组类似，插入和删除容易造成大幅波动，在元素数量超出范围的时候，也有大量的数组元素拷贝的操作发生，对系统性能有较大影响。
+		适用场景：
+			数据录入后，较为稳定，删除和插入操作较少，大多为定位查询操作
+			数据增加的频率间隔较长，不会持续性连续增加
+			适合队列等对元素的先后顺序极为敏感的数据结构。
+		ArrayList的泛型（generic type）控制:
+			由于ArrayList很灵活，内部可以放置各种数据类型，导致外部程序，从ArrayList中取出一个元素，还必须谨慎对其判断， 有的时候外部需要大量的各种类型的代码来针对不同的对象进行对应操作，成本高昂。 有的程序员忘记书写了一些代码，经常会导致ClassCastException, 所以后来，人们不得不限制了ArrayList中的元素的类型，要求其内部只能有一种元素。
+			实例： List<String> list= new ArrayList<String>();
+					（当然你要是没用泛型也可用instanceof 实例关键字来判断list中放的是什么类型;
+						if（obj instanceof Interger） Interger i=(Interger)obj;
+					）
+	LinkedList (以链表为基础实现)
+		底层数据结构：双向循环链表
+		链表：
+			链表介绍：链表是一种数据结构
+			一个链表节点组成：上一个节点地址+下个节点地址+当前节点值
+		LinkedList优点：
+			插入和删除性能优越，不会造成内存波动。 因为只要改一下前后节点就可插入和删除。
+			对内存成片性要求不高，array和arrayList对内存成片性高。
+		缺点：
+			与链表类似，随机定位速度慢，需要从头开始依次检索.
+			链表的内存消耗大。因为要记住前后地址
+		适用场景：
+			数据录入后，较为不稳定，有着频繁删除和插入操作，随机定位查询相对较少。
+			适合队列等对元素的先后顺序极为敏感的数据结构。
+	List的遍历
+		1.常规遍历法 
+			for(int i=0;i<al.size();i++)
+			System.out.println(al.get(i)):
+		2.foreach (jdk1.5以上版本支持)
+			for(Object obj:al)
+			 System.out.println(obj);
+			注：
+				增强的for底层是Iterator
+		3.迭代体(iterator)遍历法（推荐）
+			Iterator itr=al.iterator();
+			while(itr.hasNext())
+			   System.out.println(itr.next());
+	集合排序：
+		1.使用有顺序的的集合，如 list， TreeSet 或 TreeMap
+		2.集合的元素重写...方法
+		3.然后通过 Collections.sort() 来排序。
+Map(映射)：
+	Map接口介绍：
+		1.Map是一种把对象映射到其他对象映射的容器。
+			即：它的每一个元素都包含一对键对象和值对象。 
+		2.Map没有继承于Collection接口。
+		3.从Map集合中检索元素时，只要给出键对象，就会返回对应的值对象,这个过程无需遍历，效率高。！
+		注：
+			set的底层使用了Map集合。
+			在map中找一个元素的效率远高于list中找。
+	HashMap实现类：
+		介绍：
+			基于散列表实现，
+			注：
+				取代了HashTable
+		特性：
+			1.键值不能相同。
+				即：相同的key指向不同的对象会覆盖，不同的key可以指向相同的对象。
+				注：
+					1.HashMap用hashCode方法来判断是否是同一个key，因为HashMap以HashSet作为key管理机制的Map接口的实现。
+					所以一个java类如果想作为HashMap的key，必须恰当的重写hashcode和equals方法。
+					2.允许使用 null 值和 null 键
+					
+			2.性能：
+				hashMap使用对象的散列码来进行查询，提高了查询速度。
+				注：
+					1.散列码是唯一的，由一对象的某些信息生成。
+					2.The art of computer programming Volume 3：
+					sorting and searching，second Edition
+					构建自己的map提高查询速度
+		HashMap的实现原理：？
+	LinkedHashMap：
+		介绍：
+			类似hashMap，仅比hashMap慢一点，但迭代访问时更快。	
+				注：为了提高速度，LinkedHashMap散列化所有的元素，但又使用了链表保存了顺序。
+			迭代遍历它时，取得键值对的顺序是其插入顺序，因为其用链表维护了内部顺序。
+		注：
+			1.可以在构造器中设定LinkedHashMap,使之采用基于访问的最近最少使用(LRU)算祛，
+			于是没有被访问过的(可被看作需要删除的)元素就会出现在队列的前面。
+			对于需要定期清理元素以节省空间的程序来说，此功能使得程序很容易得以实现。
+		案例：
+			http://note.youdao.com/noteshare?id=731b2bd35e5a7a0002e36e9efcd17e45&sub=115E5987241C4DBCB07C45684036388E
+	TreeMap部分特点：
+		介绍：
+			基于红黑树实现。
+		特性：
+			1.键值不能相同。
+				即：相同的key指向不同的对象会覆盖，不同的key可以指向相同的对象。
+			注：
+				TreeMap用compareTo方法来判断是否是同一个key，因为TreeMap以TreeMap作为key管理机制的Map接口的实现。
+				所以一个java类如果想作为TreeMap的key，必须实现Comparable接口 。
+	WeakHashMap：
+	ConcurrentHashMap：
+		ConcurrentHashMap的工作原理：
+			ConcurrentHashMap在jdk 1.6和jdk 1.8实现原理是不同的。
+			jdk 1.6:
+				ConcurrentHashMap是线程安全的，但是与Hashtablea相比，实现线程安全的方式不同。Hashtable是通过对hash表结构进行锁定，是阻塞式的，当一个线程占有这个锁时，其他线程必须阻塞等待其释放锁。ConcurrentHashMap是采用分离锁的方式，它并没有对整个hash表进行锁定，而是局部锁定，也就是说当一个线程占有这个局部锁时，不影响其他线程对hash表其他地方的访问。 
+				具体实现:ConcurrentHashMap内部有一个Segment.
+			jdk 1.8:
+				在jdk 8中，ConcurrentHashMap不再使用Segment分离锁，而是采用一种乐观锁CAS算法来实现同步问题，但其底层还是“数组+链表->红黑树”的实现。
+	IdentityHashMap：
+	
+	map常见操作：
+		修改值对象：
+			map修改值,重新.put就可以。
+		判断是否包含某个键或值：
+			containsKey()
+			containsValue()
+		获取所有key值：
+			.keySet()
+		扩展到多维：
+			Map<Test,List<Test>>
+迭代器:
+	迭代器:
+		https://www.cnblogs.com/lxqiaoyixuan/p/7156944.html
+		介绍:
+			迭代器是一种设计模式，它是一个对象，它可以遍历并选择序列中的对象，而开发人员不需要了解该序列的底层结构。
+			迭代器通常被称为“轻量级”对象，因为创建它的代价小。
+		Iterator:
+			介绍：
+				iterator可以应用于所有的集合
+				Iterator是Java迭代器最简单的实现，其功能较简单，只能单向移动。
+			常用操作：
+				集合.iterator()返回一个Iterator。注：iterator()方法是java.lang.Iterable接口,被Collection继承。
+				.hasNext()判断序列中是否还有元素。
+				.next()获得序列中的下一个元素。
+				.remove()将集合中的元素删除。
+		ListIterator：
+			介绍：
+				ListIterator只能用于List及其子类型。
+			功能：
+				在遍历时修改 List 的元素；
+				遍历时获取迭代器当前游标所在位置；
+				允许我们向前、向后两个方向遍历 List;
+		注：
+			Iterator 本身并不牵扯线程安全的问题，Iterator主要是循环或操作你的集合。
+			所以iterator是否线程安全看你所用的集合是否是线程安全的。
+	遍历Collection中每一个元素：
+		// 迭代器遍历
+		Iterator it = collection.iterator(); // 获得一个迭代子, collection具体集合对象
+	　　while(it.hasNext()) {
+	　　	Object obj = it.next(); // 得到下一个元素
+	　　}
+		迭代时操作:
+			删除：
+				推荐使用Iterator自身删除
+				注：
+					 如果使用ArrayList 的 remove() ，会出现 ConcurrentModificationException 异常。
+			修改：推荐使用ListIterator对象的set(object)  https://blog.csdn.net/gooooa/article/details/77530112
+	遍历Map中每一个元素：
+		// 迭代器遍历
+			//先获取键，在取值。
+		Iterator it = tempMap.entrySet().iterator();//获取map的一条键值对。Map.Entry 其实Entry也是一个接口，它是Map接口中的一个内部接口。
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();//获取map的单个元素
+			Object key = entry.getKey();//获取map的键
+			Object value = entry.getValue();//获取map的值
+			System.out.println("key=" + key + " value=" + value);
+		}
+		//foreach遍历
+		for(key类型 key:Map对象.keySet())Map对象.get(key);
+
+	待看：！！！
+		多线程删除：https://blog.csdn.net/mayongzhan_csdn/article/details/79309722
+		poll()方法和remove()方法区别？
+			poll() 和 remove() 都是从队列中取出一个元素，但是 poll() 在获取元素失败的时候会返回空，但是 remove() 失败的时候会抛出异常。

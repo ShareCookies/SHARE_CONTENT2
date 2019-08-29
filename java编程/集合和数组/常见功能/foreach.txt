@@ -1,0 +1,42 @@
+介绍：
+	foreach是用来对数组或者集合进行遍历的语法。
+	是 Java 中的一种语法糖，几乎每一种语言都有一些这样的语法糖来方便程序员进行开发，
+	编译期间以特定的字节码或特定的方式来对这些语法进行处理。能够提高性能，并减少代码出错的几率。
+	在 Java 中还有比如 泛型、自动拆箱、自动装箱、内部类、枚举等等。
+具体语法：
+	for(元素类型 ele : 数组名/Iterable 实例){
+	} 
+例：
+	1.:
+		int [] array = {1,2,3};
+		for(int i : array){
+		}
+		通过反编译工具，查看 class 文件内容：
+		int array[] = {1,2,3};
+		int [] array$ = array;
+		for(int len$ = array$.length, i$ = 0; i$<len$; ++i$ ){
+			int i = array$[i$];
+		}
+	2.:
+		List list = new ArrayList();
+		list.add(1);
+		for(Object obj : list){
+		} 
+		通过反编译工具，查看 class 文件内容：
+		List list = new ArrayList();
+		list.add(1);
+		for(java.util.Iterator i$ = list.iterator(); i$.hasNext();){
+			String s = (String) i$.next();
+		}
+	很明显：
+		1、对于数组，foreach 循环实际上还是用的普通的 for 循环
+		2、对于集合，foreach 循环实际上是用的 iterator 迭代器迭代
+增强型for循环和普通循环比较：
+     (1)对于非集合类(没有实现 Iterable接口)的数组遍历,增强型for循环和普通循环遍历原理相同，效率相同
+     (2)对于集合类(实现了Iterable接口)，增强型for循环的遍历其本质就是迭代器 iterator的遍历,和普通循环遍历相比，各自有自己适用的场景，
+	 比如说普通for循环比较适合List类（数组类）遍历通过下标查找数据的，而增强型for循环则比较适合链表结构的集合的遍历。
+	 注：链表结构的遍历，增强型for循环的遍历速度是远远快于普通for循环的！
+异常：
+	为何foreach时直接删除list的对象报错：
+		https://m.jb51.net/article/113175.htm
+	

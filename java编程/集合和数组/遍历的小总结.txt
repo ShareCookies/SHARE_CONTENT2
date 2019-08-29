@@ -1,0 +1,20 @@
+基础遍历：
+	for，while
+常见遍历：
+	iterator，listIterator，foreach
+
+	iterator：
+		
+	foreach：
+		常见功能/foreach.txt
+遍历时的改值：
+	1.遍历数组时，改数组的值是无效的。	
+	2.遍历对象时，改对象的值是有效的，因为对象是引用传递。
+	注：
+		这里的对象变量，如果赋了别的值就无效了。
+循环时的跳出：
+	break 跳出当前循环
+	continue 跳过本次循环，继续下一次循环
+		例：
+			常见功能/ContinueTest.java
+		
