@@ -1,0 +1,8 @@
+https://blog.csdn.net/CZB_xiaoniu/article/details/79896672
+1.Run/Debug Configurations->+(Add a new Configurations )->新建一个tomcat 配置
+2.部署项目到tomcat上：
+	https://blog.csdn.net/qq_33257527/article/details/79716475
+	注：
+		artifacts，是maven中的概念？
+		Intellij IDEA部署JavaWeb项目 404:
+			https://blog.csdn.net/qq_33257527/article/details/79716475

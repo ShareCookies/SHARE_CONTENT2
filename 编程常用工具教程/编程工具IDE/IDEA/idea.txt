@@ -1,0 +1,115 @@
+IntelliJ IDEA 2018.3.1破解版：
+	https://blog.csdn.net/xiaocy66/article/details/83902477
+注：
+	1.使用idea编辑过的项目会产生.idea 文件夹
+	2.idea和webstorm可以说是同一个软件，它们之间的区别只是预安装插件的区别。
+	总之，idea安装插件后就能实现webstorm的功能。
+异常：
+	不能显示项目里的文件结构
+		方法一：
+			关闭IDEA，
+			然后删除项目文件夹下的.idea文件夹
+			重新用IDEA工具打开项目
+		方法二：
+			idea刷新项目、清除项目缓存
+	新建文件为红色：
+		https://blog.csdn.net/qq_24309787/article/details/79820818
+		原因：
+			是因为未提交到git版本库
+	暂用内存过大：
+		https://blog.csdn.net/mediocre117/article/details/54925038
+		建议关闭不必要的插件
+	idea解决Command line is to long	
+		https://blog.csdn.net/jerry11112/article/details/94844616
+idea编程辅助：
+	常用设置：
+		https://www.cnblogs.com/jajian/p/8108690.html#autoid-0-0-0
+	设置代码提示不区分大小写：
+		https://blog.csdn.net/yuanmomoya/article/details/86559607
+		https://blog.csdn.net/qq_22904145/article/details/78857948
+	IDEA包分层显示：
+		https://blog.csdn.net/u014604864/article/details/76577982
+	全局内容搜索和替换：
+		https://blog.csdn.net/gnail_oug/article/details/78281354
+		Edit–>Find–>Find in path或快捷键Ctrl+Shift+F
+	idea查看类属性与方法：
+		https://blog.csdn.net/weixin_36210698/article/details/78564252
+		View-》Tool Windows-》Structure
+	idea查看jar包中代码：
+		https://blog.csdn.net/qq_39704682/article/details/86610092
+	idea查看maven中jar包依赖关系：
+		https://www.cnblogs.com/xiohao/p/7016730.html
+		https://blog.csdn.net/u010003835/article/details/81634604
+
+	热部署：
+		*idea之插件jrebel实现热部署：
+			//官网：https://jrebel.com/software/jrebel/learn/
+			破解：
+				https://blog.csdn.net/qq_40110871/article/details/83420125
+				激活码https://tools.hexianwei.com/#/tools/jrebel
+		IDEA之SpringBoot自带服务器热部署:
+			https://blog.csdn.net/tree_ifconfig/article/details/79689304#commentBox
+			https://blog.csdn.net/weixin_39330443/article/details/81739271
+			DevTools是SpringBoot提供的开发工具，在激活了开发者工具以后，classpath 里对文件进行任何操作都会触发应用程序重新启动。
+			SpringBoot开发者工具在重新启动时会排除 /META-INF/resources 、/resources 、/static 、/public 和/templates ； 
+			可以设置Spring.devtools.restart.exclude 属性来覆盖默认的重启排除目录 ；
+			注：
+				该方式实现的springBoot的热部署，要在项目的pom中安装插件，麻烦且有代码耦合。
+		idea之Tomcat热部署:
+			https://blog.csdn.net/z15732621582/article/details/79439359
+			https://blog.csdn.net/csdn_kenneth/article/details/78499750  
+			tomcat配置-》server-》On frame deactivation-》update class and resources
+		注：
+			热部署即debug下有代码改变就自动重新编译代码
+		
+idea设置：
+	idea注释模板:
+			https://blog.csdn.net/sikefeng/article/details/80557265
+			$params$
+				groovyScript("def result=''; def params=\"${_1}\".replaceAll('[\\\\[|\\\\]|\\\\s]', '').split(',').toList(); for(i = 0; i < params.size(); i++) {result+=' * @param ' + params[i] + ((i < params.size() - 1) ? '\\n':'')}; return result", methodParameters())
+
+	idea修改选中单词颜色：
+		https://blog.csdn.net/qq_23146763/article/details/78722932
+		上面是同名单词背景色,
+		选中单词背景色：
+			...->Editor->selection bacground
+		颜色：
+			33 66 131
+	IDEA | 更改idea打开新项目默认配置
+		idea 打开一个新的项目，maven都需要重新配置，解决方案
+		https://blog.csdn.net/evan_leung/article/details/81505064
+		File->Other Settings ->...
+idea操作：
+	idea刷新项目、清除项目缓存：
+		点击File -> Invalidate caches ，点击之后在弹出框中点击确认，之后软件就自动重启了
+	idea导入maven项目：
+		注:
+			1.pom红波浪提示错误，这是因为项目中缺少包的原因。
+				点击maven命令的clean，在点击install，再点击一下运行按钮。
+				所有的jar包就会下载到本地的默认路径下（C:/Users/自己电脑的用户名/.m2），可能会有点久  稍微需要等一下，下载好了再运行项目就可以啦~~
+					
+				快捷键自动修复
+		idea配置maven：
+			File-Settings-Build...-BuildTools-maven:
+				设置maven home directory和user settings file
+			未设置的话要导一次项目要设置一次！
+	插件安装：
+		setting -》 marketplace（market市场）  可在线安装插件、
+	任务标记：
+		https://blog.csdn.net/weixin_39835887/article/details/84834934
+idea快捷键：
+	搜索窗口：
+		https://blog.csdn.net/gnail_oug/article/details/78281354
+		Ctrl+Shift+F
+	搜索和替换窗口：
+		Ctrl+Shift+R
+	Ctrl+X    不选中能剪切当前一整行，
+	Ctrl+Y	删除当前一整行
+	alt+enter 自动修复错误
+	返回上次查看代码的位置：
+		https://blog.csdn.net/u010814849/article/details/76682701/
+		ctrl+alt+方向键（左，右）
+		注：
+			win10要关闭显卡的快捷键功能。
+	IDEA开发SpringMVC/SpringBoot快速查找接口地址：
+		Ctrl+Shift+alt+N

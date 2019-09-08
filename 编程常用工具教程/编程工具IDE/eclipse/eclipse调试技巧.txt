@@ -1,0 +1,23 @@
+https://www.csdn.net/article/2012-09-03/2809495
+1.论细心的重要性：
+	一个小小的细节错误，可能会找死你。例：span少写/...
+	*若已经出错了，找不出异常，可以划块找错（即切分成一个个模块来找错）。
+	建议：
+		做一部分测试一部分。
+2.*出错时可先清空浏览器缓存，重启tomcat，最后清空tomcat。
+3.建议：
+	能不写的代码最好不要写！注：不是注释
+	不要使用System.out.println作为调试工具 https://blog.csdn.net/jijian_jinan/article/details/42777769
+4.javaEE调试技巧：？
+	使用log代替println：
+		使用log目的：
+			一般来说日志分为两种：业务日志和异常日志，
+			使用日志我们希望能达到以下目标：
+			1.对程序运行情况的记录和监控；
+			2.在必要时可详细了解程序内部的运行状态；
+			3.对系统性能的影响尽量小；
+		1.使用jdk自带的log：
+			简易使用之输出到控制：
+					Logger logger = Logger.getLogger(Test.class);
+					logger.log(Level.WARNING, "test"); 
+					//logger.log(Level.WARNING, "数组下标越界", e); 

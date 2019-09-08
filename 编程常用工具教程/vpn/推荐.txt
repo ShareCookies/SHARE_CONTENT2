@@ -1,0 +1,13 @@
+什么是vpn：
+	https://www.webhostingsecretrevealed.net/zh-CN/the-a-to-z-vpn-guide/
+测速网址：
+	http://www.speedtest.net/
+	
+	
+	第一步：连接vpn，这里使用3qvpn，网址：www.3qvpn.us
+	第二步：打开上面的测速网址，选择BEGIN TEST
+推荐vpn：
+	surfshark 每个月2美元要买24个月
+	https://surf-chinaz.com/zh
+	surfshark介绍：
+		https://www.webhostingsecretrevealed.net/zh-CN/blog/web-tools/surfshark-review/

@@ -1,0 +1,16 @@
+https://blog.csdn.net/happy_wu/article/details/80423150
+导入eclipse的web项目：
+	1.直接open打开eclipse项目
+	2.导包：
+		1.Idea无法自动加载web-inf/lib目录的jar包：
+			projuect Structure-->Libraries-->+-》java->项目下的lib
+		2.idea导入tomcat自带的servlet,jsp包：
+			projuect Structure-->Libraries-->+-》java->tomcat安装目录下的lib
+		
+刚导入时的异常：
+	1. Error:java: 无效的源发行版: 
+		ProjectStructur->project-> project language level ->修正为正确的即可
+	2.“Error:(1, 1) java: 非法字符: '\ufeff'”：
+		编码异常
+		选择utf-8-》convert就行。
+	
