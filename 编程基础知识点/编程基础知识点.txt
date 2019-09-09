@@ -1,0 +1,16 @@
+计算机存储单位:
+	https://zhidao.baidu.com/question/11549719.html
+	介绍：
+		计算机通信和存储的时候都是二进制数据为基础的。
+		0或1占的地方就叫bit(位),即一个二进制位。
+		字节，即是在电脑内一个英文字所占的最基本单元。而一个中文字是占两个字节的。
+	单位换算：
+		K是千 M是兆 G是吉咖 T是太拉
+		8bit(位)=1Byte(字节)
+		1024Byte(字节)=1KB
+		1024KB=1MB
+		1024MB=1GB
+		1024GB=1TB
+	那UTF-8了？
+	GET请求的请求参数最大长度：
+		https://www.cnblogs.com/lxyit/p/9017326.html
