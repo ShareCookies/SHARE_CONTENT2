@@ -45,7 +45,7 @@ fastJson转换：
 			.getJSONObject
 	
 JS:	
-字符串转对象：
-	JSON.parse() 将字符串转换为 JavaScript 对象。
-对象转字符串：	
-	JSON.stringify()	用于将 JavaScript 值转换为 JSON 字符串。
+	字符串转对象：
+		JSON.parse() 将字符串转换为 JavaScript 对象。
+	对象转字符串：	
+		JSON.stringify()	用于将 JavaScript 值转换为 JSON 字符串。

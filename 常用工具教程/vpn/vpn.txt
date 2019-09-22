@@ -14,15 +14,3 @@
 	个人建议，如果是大型局域网的话，购买路由器，交换机等设备时就不需要VPN这一项了。直接在服务器上安装相应的软件就可以了。
 vpn与ss/ssr的区别：
 	http://www.fly63.com/article/detial/3808
-
-测速网址：
-	http://www.speedtest.net/
-	
-	
-	第一步：连接vpn，这里使用3qvpn，网址：www.3qvpn.us
-	第二步：打开上面的测速网址，选择BEGIN TEST
-推荐vpn：
-	surfshark 每个月2美元要买24个月
-	https://surf-chinaz.com/zh
-	surfshark介绍：
-		https://www.webhostingsecretrevealed.net/zh-CN/blog/web-tools/surfshark-review/

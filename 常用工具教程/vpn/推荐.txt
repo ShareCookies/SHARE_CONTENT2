@@ -1,0 +1,18 @@
+测速网址：
+	http://www.speedtest.net/
+	Speedtest是首屈一指的全球宽带网络速度测试网站；
+	在全球有数百个测试节点，你可以自由选择测试你连接到某个节点的速度；
+	测试方法：
+		1、开启你的VPN或SSH等代理，通过VPN或SSH代理访问Speedtest网站。
+		打开网页后，点击“Begin Test”按钮，
+		Speedtest就开始帮你搜索你VPN服务器所在地附近测速节点开始测试
+		（当VPN服务器IP所在地识别错误时，测试结果会不准确，你可以在地图中自行选择你要测试的节点服务器）。
+		2、测速过程中不要开网页、视频、下载等，以免消耗宽带影响测试结果。
+		稍等片刻即可完成测试，测试完成后会显示从你的电脑连接到这些节点服务器的下载速度、上传速度、Ping值等信息
+		（Ping值越低越好，下载和上传速度除以8为我们常说的速度，可以多次测试以求准确）。
+		Speedtest常见问题：http://www.speedtest.net/support.php
+推荐vpn：
+	surfshark 每个月2美元要买24个月
+	https://surf-chinaz.com/zh
+	surfshark介绍：
+		https://www.webhostingsecretrevealed.net/zh-CN/blog/web-tools/surfshark-review/

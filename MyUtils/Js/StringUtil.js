@@ -33,3 +33,5 @@ Var StringUtil={
 		https://www.cnblogs.com/a-cat/p/8872498.html
 		去除字符串内所有的空格：
 			str = str.replace(/\s*/g,"");
+	删除最后一位字符：
+		s=s.substring(0,s.length-1)
