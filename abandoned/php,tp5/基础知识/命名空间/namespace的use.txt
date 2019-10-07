@@ -1,0 +1,37 @@
+						php命名空间的use操作符
+转载请注明出处：http://blog.csdn.net/qq_34819586
+什么是命名空间：http://php.net/manual/zh/language.namespaces.php
+1.use操作符的一些知识点：
+	1.1use操作符作用：PHP 5 >= 5.3.0，use操作符导入/使用别名（就是说use可以用来导入类或命名空间，并且还可以给导入的类或命名空间取别名。）
+	1.2use对谁起作用：即使导入了命名空间也只能使用这个命名空间下的类或接口，而不能使用这个这个命名空间下的变量等。PHP 5.6开始允许导入函数或常量或者为它们设置别名。
+	1.3use起作用前提：use可以用来导入一个类或命名空间，但是在这个类或命名空间被使用前一定要require或include这个类或命名空间所在下php文件。
+2.关于use的一些个人见解：	
+	我个人认为use应该只能叫取别名操作符，其作用就是把as后的符号定义为前的符号
+	理由：
+	<?php
+		header("Content-Type: text/html; charset=UTF-8");
+		use MyProject2\MyClass;//use MyProject2\MyClass as MyClass 这两种写法等价
+		include('php_namespace2.php');
+		$obj = new MyClass();
+		$obj->MyClass1(); 
+		//new MyClass()；等价于new MyProject2\MyClass()；编译时会告诉编译器去实例化MyProject2空间下的类。
+		//而且可以先use在require，那么要是叫做导入的话那么从那里导入了?我曾想过require编译会被先执行但是我把new实例化放在use和include之间会报错，可见php编译器是不会先执行require或include，它是按顺序从头到尾从左到右执行
+		//所以我认为use只能叫取别名操作符，其作用就是把as前的符号定义为前的符号
+	?>
+	php_namespace2.php：
+	<?php
+	//在命名空间内引入其他文件不会属于本命名空间，而属于公共空间或是文件中本身定义的命名空间	http://blog.csdn.net/jathamj/article/details/53102947
+	namespace MyProject2{
+		header("Content-Type: text/html; charset=UTF-8");
+		//const CONNECT_OK = 1;//定义个命名空间内常量
+		//echo 'MyProject2空间的'.CONNECT_OK.'常量';
+		//define("CONSTANT", "Hello world"); //定义一个全局常量
+		class MyClass{ 
+			function MyClass1(){
+				echo 'MyProject2空间的MyClass类';
+			}
+			
+		}
+	}//声明不分层次的单个命名空间
+	?>
+待学有余力之时在去看看use的源码！！！

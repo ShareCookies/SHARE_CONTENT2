@@ -1,0 +1,5 @@
+днЪБ
+http://www.runoob.com/php/php-oop.html
+http://www.thinkphp.cn/topic/46952.html
+http://www.thinkphp.cn/topic/44828.html
+http://www.cnblogs.com/VanQ/p/7007207.html

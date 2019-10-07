@@ -1,0 +1,50 @@
+LAMP https://lamp.sh/faq.html
+由浅入深学习Apache httpd原理与配置	http://blog.51cto.com/jackcui/1858989
+apache主要目录结构及主要配置文件	http://www.woaidiannao.com/html/ITjs/fwqjs/6724.html
+
+ /usr/local/apache/bin/apachectl restart
+ rm /usr/local/apache/conf/httpd.conf
+ 
+apache开启虚拟主机：
+	VirtualHost（虚拟主机）:即在一个网站上运行多个站点
+	https://zhidao.baidu.com/question/1818827992295416068.html
+	1.httpd.conf配置：
+		去掉
+		LoadModule vhost_alias_module modules/mod_vhost_alias.so
+		Include conf/extra/httpd-vhosts.conf
+		两句前面的#号
+	2.httpd-vhosts.conf配置：
+		Apache\conf\extra下的httpd-vhosts.conf文件，加入如下代码:
+			#配置自己的虚拟主机
+			<VirtualHost *:80>
+				#网站目录，如果在www目录下的php目录，下面    #就填写F:/www/php
+				DocumentRoot "D:/WALP/www" 
+				#域名
+				ServerName www.plqjnet.com
+				#这里配置欢迎首页面
+				DirectoryIndex index.html index.htm index.php
+				<Directory />
+				Options FollowSymLinks
+				#不允许别人修改我们的页面
+				AllowOverride None
+				#设置访问权限
+				order allow,deny
+				Allow from all
+				</Directory>   
+			</VirtualHost>
+			#把ServerName改成你自己的，最后重启Apache。
+127.0.0.1能访问localhost不行：
+	http://www.webkaka.com/tutorial/server/2013/121611/
+localhost能访问ip不行：
+	1.httpd.conf配置修改：
+		修改httpd.conf<Directory "网站目录">，重启
+			若无效看是否开启了虚拟主机，可先关闭虚拟主机或修改httpd-vhosts.conf（类似<VirtualHost *:80>）
+		查看Listen是否为Listen 80
+			https://www.tiandiyoyo.com/2014/03/cant-access-apache/comment-page-1/
+	2.服务器配置：
+		1.：开放80端口
+			若不是404或你没有权限提示而是一直连接了很久，很可能是服务器提供商安全策略没有开放80端口，你可以去服务器控制台开放端口
+		2.：可能是防火墙的问题。
+			CentOS 7.0关闭默认防火墙启用iptables防火墙	https://www.linuxidc.com/Linux/2015-05/117473.htm
+		
+	

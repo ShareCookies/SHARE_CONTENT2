@@ -1,0 +1,60 @@
+1.下载源码包：
+	1.0浏览器下载，地址.http://www.php.net/downloads.php
+	1.1命令下载，wget cn2.php.net/get/php-5.6.31.tar.gz	
+		注：下载下来的文件有误，用file php-5.6.31.tar.gz 提示是html格式文件
+		可能原因：原来页面中另有链接，wget把整个htmlpage当成压缩包下载下来了
+2.安装mysql：
+	0：tar -xvzf  php-5.6.33.tar.gz	解压gz格式文件，最好先把文件移动到指定文件夹
+	1：groupadd www
+	2：useradd -g www -s /sbin/nologin -M www		
+	上两步为添加www用户组和www用户（如果系统中已存在该用户组，不用添加该用户组）
+	3：./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache/bin/apxs --with-config-file-path=/usr/local/lib --with-mysql=/usr/local/src/mysql-5.6.39-linux-glibc2.12-x86_64 --with-zlib-dir=/usr/lib	配置
+	--prefix 指定安装路径
+	--with-mysql  指定mysql路径。。。find / -name mysql.h截取找到的路径，include前的路径
+	--with-apxs  指定apahce路径。。。用find / -name apxs找到的路径
+	配置过程如果报错，可以根据报错调用 ./configure --help查看编译参数，并下载安装相应的依赖包；
+	4：ln -s /usr/local/src/mysql-5.6.39-linux-glibc2.12-x86_64/include/* /usr/local/include/	!!!做一个mysql的header文件的软连接。因为mysql安装的时候指定了目录，不做软连接的话，还是找不到header文件。
+	5：make	编译
+	6：make install	安装
+	7：cp php.ini-production /usr/local/lib/php.ini	 安装包中的php.ini-production拷贝到/usr/local/php/lib/下
+	修改httpd.conf配置文件	/etc/httpd/httpd.conf 
+	8：
+		在"<IfModule dir_module>"的DirectoryIndex中的index.html后面添加 index.php
+		在“AddType application/x-gzip .gz .tgz”下添加AddType application/x-httpd-php .php 	AddType application/x-httpd-php-source .php5 
+	9：
+		/usr/local/apache/bin/apachectl restart重启apache
+		在/usr/local/apache2/htdocs中创建test.php并写入<?php phpinfo();?>
+		浏览器访问测试
+	参考自：
+		http://blog.csdn.net/Al_assad/article/details/76359955
+		https://www.cnblogs.com/milanmi/p/7124271.html
+3.错误：
+	0:	configure: error: xml2-config not found. Please check your libxml2 installation.
+		
+		解决方案：重新安装libxml2和libxml2-devel包
+		yum install libxml2
+		yum install libxml2-devel -y
+		参考自：https://www.cnblogs.com/happyhotty/articles/2539864.html
+	1：	Sorry, I cannot run apxs.  Possible reasons follow:
+		Perl is not installed
+		apxs was not found. Try to pass the path using --with-apxs2=/path/to/apxs
+		Apache was not built using --enable-so (the apxs usage page is displayed)
+		The output of /usr/local/apache/bin/apxs follows:./configure: line 6669: /usr/local/apache/bin/apxs: No such file or directoryconfigure: error: Aborting
+		
+		解决方案：据英文提示我们可以看到如下几点:perl没有安装,指定正确的apxs路径
+		于是进行如下操作
+		#yum install -y perl*
+		#yum install -y httpd-devel
+		#find / -name apxs  得到的路径是:/usr/sbin/apxs
+		于是修改--with-apsx2=/usr/sbin/apxs指定到正确路径
+		参考自：http://blog.sina.com.cn/s/blog_b5dfe4870102waso.html
+
+
+	2：	Cannot find MySQL header files under /... Note that the MySQL client library is not bundled anymore!
+		解决方案：多半是填写MySQL的路径不对导致的
+			用find / -name mysql.h找到的路径，并截取找到的路径include前的路径，赋值给--with-mysql
+		参考自：https://www.cnblogs.com/luomir/p/4772903.html
+备注：
+	0.一键安装：http://www.xampp.cc
+	1.php编译安装configure 一些参数详解：http://blog.csdn.net/niluchen/article/details/41513217
+	2.php配置文件：/usr/local/php/lib/php.ini 

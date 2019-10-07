@@ -1,0 +1,97 @@
+https://www.jianshu.com/p/276d59cbc529
+mysql默认配置：
+	vi /etc/my.cnf 
+	
+	[mysqld]
+	datadir=/myspace/developEnvironment/mysql8/data
+	basedir=/myspace/developEnvironment/mysql8
+	#mysql错误日志路径
+	log-error =  /usr/local/mysql/log/mysql.err 
+	port = 3306
+	sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+	symbolic-links=0
+	max_connections=400
+	innodb_file_per_table=1
+	#表名大小是否明感
+	lower_case_table_names=0
+	#socket=/var/lib/mysql/mysql.sock
+	symbolic-links=0
+	[mysqld_safe]
+	log-error=/var/log/mariadb/mariadb.log 
+	pid-file=/var/run/mariadb/mariadb.pid
+	# mysql服务启动日志
+	!includedir /etc/my.cnf.d
+	[mysql.server]
+	user=mysql
+	basedir=/myspace/developEnvironment/mysql8
+mysql是否运行：
+	ps -ef|grep mysql
+
+
+
+注：/usr/local/src/mysql-5.6.39-linux-glibc2.12-x86_64 地址
+1.下载源码包：
+	地址.https://www.mysql.com/downloads/
+	选择community  server
+	点击DOWLOAD
+	选择版本，如5.6版本
+	点击下载mysql-5.6.39-linux-glibc2.12-x86_64.tar.gz
+	选择no thanks
+2.安装mysql：
+	https://www.jianshu.com/p/276d59cbc529
+		1.
+		2.
+		3.检查mysql用户组和用户是否存在，如果没有，则创建
+			cat /etc/group | grep mysql
+			cat /etc/passwd |grep mysql
+			groupadd mysql 添加mysql用户组
+			useradd -r -g mysql mysql  添加mysql用户，并分配到mysql组  
+		4.从官网下载是用于Linux的Mysql安装包
+			wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.24-linux-glibc2.12-x86_64.tar.gz
+		
+		tar -xvzf mysql-5.6.39-linux-glibc2.12-x86_64.tar.gz 	解压文件
+		mv mysql-5.6.39-linux-glibc2.12-x86_64 /usr/local/src	剪切到指定位置
+		
+		mkdir 地址/data	mysql解压目录下创建文件夹
+		chown -R mysql:mysql 地址		修改mysql目录所属用户和用户组
+		chmod -R 755 地址  修改mysql目录权限
+		
+		编译安装并初始化mysql,务必记住初始化输出日志末尾的密码（数据库管理员临时密码）
+			# cd /usr/local/mysql/bin
+			# ./mysqld --initialize --user=mysql --datadir=/usr/local/mysql/data --basedir=/usr/local/mysql
+		6、编辑配置文件my.cnf，添加配置如下
+		启动mysql服务器
+			# /usr/local/mysql/support-files/mysql.server start
+		
+3.错误解决：
+	3.0：
+	FATAL ERROR: please install the following Perl modules before executing ./scripts/mysql_install_db:
+	Data::Dumper
+	解决方法 ：安装autoconf库
+	命令：yum -y install autoconf 
+	3.1：
+	FATAL ERROR: Neither host 'localhost.localdomain' nor 'localhost' could be looked up with ./bin/resolveip
+	Please configure the 'hostname' command to return a correct hostname.
+	If you want to solve this at a later stage, restart this script with the --force option
+	解决方法 ：1.在hosts文件中配置127.0.0.1主机，例 在/etc/hosts中输入以下内容：127.0.0.1localhost.localdomain localhost
+		2.如果hosts文件无误，执行mysql初始化脚本还报如上错误，查看是不是软件版本的问题。
+	3.2：
+	Starting MySQL * Couldn't find MySQL server (/usr/bin/mysqld_safe)
+	解决方法 ：找不到Mysql server了，查看my.cnf配置，查看是否有basedir
+		没有的话在里头添加basedir=地址
+		/etc/mysql/my.cnf这是别人的路径，我的是/etc/my.cnf！！！
+		etc目录在LINUX里很重要哦，里面装的都是些杂七杂八的配置文件
+
+	3.3：
+	Starting MySQL * The server quit without updating PID file (/var/lib/mysql/ubuntu.pid).
+	可能是之前的版本没有删除完全，删除完全，解决问题。
+	没遇到！！！
+	3.4：
+	Failed to start mysqld.service: Unit not found
+	出现地点：在启动mysql服务时出现
+	解决方法：2.0最后4步，执行完mysql也就运行了？？？
+	参考自：https://www.cnblogs.com/lushengle/p/7607953.html	
+		http://blog.csdn.net/ezitai/article/details/52085141
+4.查看mysql安装：
+	 whereis mysql
+	参考自：http://blog.csdn.net/qq_35624642/article/details/53538566

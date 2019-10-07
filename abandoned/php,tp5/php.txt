@@ -1,0 +1,2 @@
+php.ini:
+	1.:使用get_user_info，要开启php.ini中的extension=php_openssl.dll

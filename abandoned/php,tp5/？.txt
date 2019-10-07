@@ -1,0 +1,6 @@
+use think/db;
+php会满世界去找think/db空间吗？
+
+foreach（as  =>）!
+
+｛｝？   http://blog.csdn.net/yboker/article/details/8536304

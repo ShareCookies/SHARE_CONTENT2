@@ -1,0 +1,11 @@
+1：cmd 一些简易操作命令：
+cd..返回上级目录
+dir 查看当前目录下的文件夹
+cd bb 进入当前目录下的bb文件夹
+2：
+path中配置php.exe路径;C:\wamp\bin\php\php5.4.12   
+php -f c:\wamp\www\tp5\think 运行指定文件
+php -f c:\wamp\www\tp5\think --module test表示自动生成test模块。
+3：
+http://localhost:8080/tp5/public/index.php（入口文件在public中）/index（模块在application中）/index（控制器）/hello（方法）/name（参数）/thinkphp（参数值）
+隐藏index.php需要使用apache的Rewrite功能。

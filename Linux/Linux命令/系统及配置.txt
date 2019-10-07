@@ -1,0 +1,63 @@
+1.切换用户的命令：
+		su或su -
+			su命令和su -命令最大的本质区别：前者只是切换了root身份，但Shell环境仍然是普通用户的Shell；而后者连用户和Shell环境一起切换成root身份了。
+			只有切换了Shell环境才不会出现PATH环境变量错误。su切换成root用户以后，pwd一下，发现工作目录仍然是普通用户的工作目录；
+			而用su -命令切换以后，	工作目录变成root的工作目录了。用echo $PATH命令看一下su和su -以后的环境变量有何不同。
+		sudo可以针对单个命令授予临时权限？？？
+2.用户及用户组：
+	https://www.cnblogs.com/cisum/p/8005641.html
+	介绍：
+		Linux系统是一个多用户多任务的分时操作系统，
+		所有的文件皆有拥有者。
+	用户组：
+		介绍：
+			每个用户都有一个用户组，系统可以对一个用户组中的所有用户进行集中管理。
+		安全性：
+			用户组的特性在系统管理中为系统管理员提供了极大的方便，但安全性也是值得关注。
+			例子：一个用户可以归属一个或多个不同的用户组；同一用 户组的用户之间具有相似的特征。
+			比如我们把某一用户加入到root用户组，那么这个用户就可以浏览root用户家目录的文件，如果root用户把某个文件 的读写执行权限开放，
+			root用户组的所有用户都可以修改此文件，如果是可执行的文件（比如脚本），root用户组的用户也是可以执行的
+	相关命令： 
+		修改文件的拥有者：
+			利用 chown 将指定文件的拥有者改为指定的用户或组。
+		管理用户（user）的工具或命令：
+			useradd ：添加用户
+		管理用户组（group）的工具或命令：
+			groupadd ：添加用户组;
+		查看用户组信息：查看 /etc/group,其内容包括
+			group_name:passwd:GID:user_list
+			第一字段：用户组名称；
+			第二字段：用户组密码；
+			第三字段：GID
+			第四字段：用户列表，每个用户之间用,号分割；本字段可以为空；如果字段为空表示用户组为GID的用户名；
+			我测试了第四字段有点问题？？？测试命令：groupadd mysql和useradd -r -g mysql mysql	
+	详情：http://blog.csdn.net/windle89/article/details/70788519
+3.查看端口占用情况：
+	https://www.cnblogs.com/wangtao1993/p/6144183.html
+	lsof -i:8000 查看端口占用情况
+4.重启：
+	shutdown：　　
+	-r 重启计算器。
+	-h 关机后关闭电源〔halt〕。
+5.网络:
+	防火墙：
+		CentOS 7.0关闭默认防火墙启用iptables防火墙	https://www.linuxidc.com/Linux/2015-05/117473.htm
+	ping:
+		ctrl+c 可以停止ping (好似可以关闭所有程序)
+		ctrl+z可以暂停ping，ctrl+z是把进程放到后台去， 你只需要fg就可以把它弄到前台来！
+	查看ip：
+		ifconfig -a
+6.查看内存情况：
+	https://www.cnblogs.com/zhuiluoyu/p/6154898.html
+	cat /proc/meminfo http://blog.51cto.com/xujpxm/1961072
+	查看进程内存使用：
+		ps aux 
+	注：
+		RSS：指明了当前实际占用了多少内存 。
+		anon-rss值为30636060kBkB.RSS代表“驻留集大小”，即当前在进程中为RAM分配的内存量。
+文件链接：
+	ln命令用于为一个文件创建链接,
+	链接分为软链接(类似于windows系统中的快捷方式)
+	和硬链接(...)，
+	命令默认使用硬链接。
+

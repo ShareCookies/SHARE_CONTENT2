@@ -1,0 +1,17 @@
+URL：
+localhost/index.php/应用模块/控制器/函数  (有tp框架后会直接去public文件夹找index.php)
+
+Controller：（具体操作层，操作数据库数据，调用视图显示，都在这进行）
+
+
+View:（视图层，用户可以看到的界面）http://blog.csdn.net/self_realian/article/details/75214135
+
+Model:(用来配置数据库)http://www.thinkphp.cn/topic/46952.html
+tp5的model只做业务层操作，不做具体的链接数据库sql操作。
+think\db\Connection.php做链接数据库操作
+think\db\Builder.php做创建sql操作
+think\db\Query.php做数据CURD操作
+
+Basic：
+助手函数：系统为一些常用的操作方法封装了助手函数，便于使用。
+use think\t;使用think命名空间下的t类。

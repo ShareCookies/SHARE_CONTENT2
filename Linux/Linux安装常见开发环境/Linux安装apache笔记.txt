@@ -1,0 +1,77 @@
+1.准备：
+	1.0.文件下载：
+	下载 apr-1.4.6.tar.bz2与apr-util-1.5.2.tar.bz2版本，
+	apr和apr-util的下载路径为：http://archive.apache.org/dist/apr/  
+	下载httpd-2.4.4.tar.bz2下载地址为https://archive.apache.org/dist/httpd/
+	
+	1.1.文件解压：
+	mv  apr-1.4.6.tar.bz2  /usr/local/src
+	mv  apr-util-1.5.2.tar.bz2  /usr/local/src
+	mv httpd-2.4.4.tar.bz2  /usr/local/src
+	tar -xjvf  httpd-2.4.4.tar.bz2
+	tar -xjvf apr-1.4.6.tar.bz2 
+	tar -xjvf apr-util-1.5.2.tar.bz2
+	以上步骤均为把下载文件剪切到指定目录，并解压
+	1.2权限不足解决方案：
+		1.2.0用户类型：普通用户的话就是在$下输入指令，root用户的话就是在#下输入指令。
+		1.2.1切换用户命令：用su - 切换到root账号。（密码就是普通账号密码）
+			1.2.1.0为啥要切换账号：大部分Linux发行版的默认账户是普通用户，而更改系统文件或者执行某些命令，需要root身份才能进行，这就需要从当前用户切换到root用户。
+			1.2.1.1su和su -命令区别：su命令和su -命令最大的本质区别就是：前者只是切换了root身份，但Shell环境仍然是普通用户的Shell；而后者连用户和Shell环境一起切换成root身份了。	
+			1.2.1.2用户切换参考自：http://www.ha97.com/4001.html
+	1.3注意事项：
+	安装前保证系统时间正确（不知道为啥）
+	在安装Apache时，不同版本的编译时是不同的，即configure后跟的参数不同。
+2.部分错误解决方案：
+	
+	2.1.OpenSSL version is too old：安装时出现（这种只有mini安装会出现 一般大部分菜鸟都不会安装devel的包？？？）
+	解决办法
+	yum install openssl-devel
+	yum update openssl
+	2.1.Set the 'ServerName' ：启动apache时出现
+	解决方法	
+	vim /etc/httpd/httpd.conf  （vim？？？）
+	找到#ServerName **** 其中#去掉即去掉注释（**建议改为localhost:80）
+3.安装：
+	3.0安装apr：
+	cd apr-1.4.6	#进入到解压好的apr目录
+	./configure --prefix=/usr/local/apr	#允许配置文件，让程序会安装到/usr/local/apr目录
+	make	#编译
+	make install	#安装
+	3.1安装apr-util：
+	cd apr-util-1.5.2
+ 	./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr
+	make
+	make install
+	3.2安装pcre-devel：
+	此软件包系统光盘自带，因此，找到并安装即可
+	yum -y install pcre-devel	#安装指定的安装包
+	3.3httpd-2.4.4：
+	cd httpd-2.4.4
+	./configure --prefix=/usr/local/apache --sysconfdir=/etc/httpd --enable-so --enable-rewirte --enable-ssl --enable-cgi --enable-cgid --enable-modules=most --enable-mods-shared=most --enable-mpms-shared=all --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util
+	make
+	make install
+	3.4启动apache
+	/usr/local/apache/bin/apachectl start(启动方式之一)
+	3.5Apache安装参考自：http://www.linuxidc.com/Linux/2016-04/130079.htm
+Attention：
+	1.：
+	启动Apache：/usr/local/apache2/bin/apachectl start
+	停止Apache：/usr/local/apache2/bin/apachectl stop
+	重启Apache：/usr/local/apache2/bin/apachectl restart
+	2.网站放在/usr/local/apache2/htdocs目录下
+	3.在IE中通过http://localhost:80，如果看到页面中显示“It works!”字样，则代表Apache验证通过。
+	4.如果网站的index后缀是PHP格式的，则要修改httpd.conf配置文件（/usr/local/apache/conf），在DirectoryIndex增加 index.php。
+	# DirectoryIndex: sets the file that Apache will serve if a directory
+	# is requested.
+	#
+	<IfModule dir_module>
+		DirectoryIndex index.html index.php
+	</IfModule>
+	???
+	5.本部分参考自https://www.cnblogs.com/zhuque/archive/2012/11/03/2763352.html
+	6.	查看apache2的命令:？
+		httpd -V
+		其中HTTPD_ROOT和SERVER_CONFIG_FILE  就可以确定httpd.conf的路径了
+备注：
+	网站根目录：/usr/local/apache2/htdocs
+	apache配置文件：/etc/httpd/httpd.conf 
