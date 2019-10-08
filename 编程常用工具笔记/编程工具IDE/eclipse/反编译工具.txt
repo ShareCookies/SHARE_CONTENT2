@@ -1,0 +1,14 @@
+介绍：
+	Java Decompiler是Java语言的反编译工具，
+	目前提供了：图形界面化的工具、Elipse插件、Intellij Idea插件。
+官网：
+	http://jd.benow.ca/
+各操作系统的图形界面化工具GUI：
+	JD-GUI-》Download-》Releases-》选择下载
+Eclipse开发平台插件：
+	JD-Eclipse-》Download-》Releases-》选择下载
+插件的安装方法见博客：
+	Eclipse离线安装Java Decompiler插件 
+	http://blog.csdn.net/yh_zeng2/article/details/75948467
+	Intellij Idea离线安装Java Decompiler插件  
+	http://blog.csdn.net/yh_zeng2/article/details/75949310

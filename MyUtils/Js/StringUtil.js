@@ -35,3 +35,20 @@ Var StringUtil={
 			str = str.replace(/\s*/g,"");
 	删除最后一位字符：
 		s=s.substring(0,s.length-1)
+字符串包含：
+	判断字符串中是否包含某个字符串
+	var str = "123";
+	console.log(str.indexOf("3") != -1 );  // indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。如果要检索的字符串值没有出现，则该方法返回 -1。
+	if(str.indexOf("5") != -1){
+        console.log("字符串123456里包含了5");
+    }else{
+        console.log("字符串123456里没有包含5");
+    }
+js字符串切割：
+	var data= "起草正文|draftzw;打印|dy;编辑正文|editzw; 附件管理|fjgl;督办下发|dbxf";
+	var array = data.split(';');
+	console.log(array);
+数组合并为字符串：
+	var string = array.join(';');
+	console.log(array);
+	

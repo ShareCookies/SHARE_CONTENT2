@@ -128,4 +128,19 @@ public class StringUtils {
         htmlStr = htmlStr.replaceAll("\t", "");
         return htmlStr.trim(); //返回文本字符串 
     }
+	/*
+	字符串截取：
+		String sb = "bbbdsajj,d,s";
+		1.
+			sb.substring(2);//结果：bdsajj,d,s。从索引号为2开始截取，一直到字符串末尾
+			sb.substring(2, 4);//结果：bd 。索引号2开始到索引好4结束
+	字符串分割：
+		String[]  strs=sb.split(",");//结果：bbbdsajj    d    s
+		将正则传入split()。返回的是一个字符串数组类型。不过通过这种方式截取会有很大的性能损耗，因为分析正则非常耗时。
+		注：
+			1.无法分割点，.是正则表达式里的一个关键字，
+			如果没有经过转义split会把它当作一个正则表达式来处理的，
+			所以str.split("\\.");
+			2.sb为"",好像会切割为[]。 !
+	*/
 }

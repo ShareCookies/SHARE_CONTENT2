@@ -18,8 +18,8 @@ import java.util.Map;
 public class ClassUtils {
 	
 	/**
-	 * 获取对象的｛属性名：属性值｝，只返回属性值非null的。注：继承自父类的属性无法获取
-	 * @return Map<String������, Object����ֵ>
+	 * 反射获取对象的属性。
+	 * @return Map<String������, Object����ֵ> ｛属性名：属性值｝，只返回属性值非null的。注：继承自父类的属性无法获取
 	 * @param object
 	 * @throws Exception 
 	 * @throws SecurityException 

@@ -1,0 +1,12 @@
+getDate() 返回日期对象的天数。
+	dateObject.getDate()
+	例：
+		var d = new Date()
+		console.log(d.getDate());
+setDate() 设置日期对象为当前月的那一天：		
+	可以用来进行日期天数的加减：
+		var d = new Date()
+		d.setDate(20);console.log(d);//当前月的第20号
+		d.setDate(50);console.log(d);//下个月的第20号
+js中使用new Date(str)创建时间对象不兼容firefox和ie的解决方式
+	https://blog.csdn.net/weixin_34242331/article/details/94708413

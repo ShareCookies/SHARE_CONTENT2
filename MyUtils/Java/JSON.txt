@@ -25,6 +25,8 @@ fastJson转换：
 	https://blog.csdn.net/xuforeverlove/article/details/80842148
 	将JAVA对象转换为JSON对象：
 		JSONObject jsonObj = (JSONObject) JSON.toJSON(对象);
+		或
+			先对象转json字符串，在字符串转json对象
 	JAVA对象转JSON字符串：
 		String s = JSON.toJSONString(对象);
 	JSON字符串转JSON对象：
