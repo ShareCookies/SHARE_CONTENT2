@@ -6,3 +6,7 @@ https://blog.csdn.net/CZB_xiaoniu/article/details/79896672
 		artifacts，是maven中的概念？
 		Intellij IDEA部署JavaWeb项目 404:
 			https://blog.csdn.net/qq_33257527/article/details/79716475
+
+注：
+	idea 中 Tomcat 打war包：
+		deployment 设成 web application: archive

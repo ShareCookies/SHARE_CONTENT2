@@ -1,0 +1,14 @@
+maven项目创建：
+	使用Idea创建maven项目：	
+		下半部分：
+			https://blog.csdn.net/qq_37497322/article/details/78988378
+		注：
+			maven中archetype：
+				https://blog.csdn.net/bawcwchen/article/details/80298173
+				https://blog.csdn.net/cx1110162/article/details/78297654
+	使用Myeclipse创建maven项目：
+		使用myeclpse创建项目前，需要在myeclipse中配置maven的一些信息
+		比如：配置本地仓库、安装自定义maven(myeclipse中高版本自带了maven)等，这里省略。
+		web项目：
+			file-》new-》Maven Project
+	

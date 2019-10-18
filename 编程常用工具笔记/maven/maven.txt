@@ -47,16 +47,7 @@ maven环境安装：
 	上半部分：https://blog.csdn.net/qq_37497322/article/details/78988378
 	maven配置：
 		maven默认有个全局的配置conf\settings.xml。可以在里面设置远程仓库地址，依赖保存地址等
-maven项目创建：
-	使用Idea创建maven项目：	
-		下半部分：
-			https://blog.csdn.net/qq_37497322/article/details/78988378
 
-	使用Myeclipse创建maven项目：
-		使用myeclpse创建项目前，需要在myeclipse中配置maven的一些信息
-		比如：配置本地仓库、安装自定义maven(myeclipse中高版本自带了maven)等，这里省略。
-		web项目：
-			file-》new-》Maven Project
 
 maven多模块：
 	https://www.cnblogs.com/h--d/p/6001366.html

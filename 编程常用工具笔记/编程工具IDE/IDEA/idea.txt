@@ -1,7 +1,12 @@
 IntelliJ IDEA 2018.3.1破解版：
 	https://blog.csdn.net/xiaocy66/article/details/83902477
 注：
-	1.使用idea编辑过的项目会产生.idea 文件夹
+	1.
+		idea 文件夹：
+			使用idea编辑过的项目会产生.idea 文件夹
+		iml文件：
+			https://blog.csdn.net/u012627861/article/details/83028437
+			.iml文件是IDEA的项目标识文件，缺少了这个文件，IDEA就无法识别项目。
 	2.idea和webstorm可以说是同一个软件，它们之间的区别只是预安装插件的区别。
 	总之，idea安装插件后就能实现webstorm的功能。
 异常：
@@ -93,6 +98,8 @@ idea操作：
 			File-Settings-Build...-BuildTools-maven:
 				设置maven home directory和user settings file
 			未设置的话要导一次项目要设置一次！
+	IDEA修改项目名称：
+		project structure -》 project AND modules
 	插件安装：
 		setting -》 marketplace（market市场）  可在线安装插件、
 	任务标记：

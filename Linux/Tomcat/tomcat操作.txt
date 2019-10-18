@@ -1,0 +1,12 @@
+修改tomcat端口：
+	修改Tomcat默认监听端口的配置文件在Tomcat安装目录下的conf/servel.xml：
+		<Connector port="8080" protocol="HTTP/1.1"
+			   connectionTimeout="20000"
+			   redirectPort="8443" />
+tomcat实现默认访问某项目：
+	https://blog.csdn.net/MR_ZFJ/article/details/84295810
+	server.xml配置文件-》<Host>标签-》于其内添加<Context path=”” docBase=”项目名” />
+tomcat Context 不起作用：（即设置了默认的访问项目但无效）
+	https://blog.csdn.net/tengdazhang770960436/article/details/39554041
+	tomcat/work目录缓存清空即可
+	
