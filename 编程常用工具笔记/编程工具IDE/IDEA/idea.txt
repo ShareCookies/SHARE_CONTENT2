@@ -1,5 +1,6 @@
-IntelliJ IDEA 2018.3.1破解版：
-	https://www.cnblogs.com/yinyueyu/p/11451393.html?tdsourcetag=s_pctim_aiomsg
+IntelliJ IDEA 激活：
+	jetbrains-agent.jar
+
 注：
 	1.
 		idea 文件夹：
