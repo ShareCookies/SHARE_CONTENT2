@@ -130,6 +130,8 @@ js数组：
 		2.头部添加unshift() 
 		3.splice() ！
 		4.array[5]='a';
+		注：
+			concat() 方法用于连接两个或多个数组。
 	数组删除元素：
 		var fruits = ["Banana", "Orange", "Apple", "Mango"];
 		fruits.splice(2,1);

@@ -45,6 +45,8 @@ sourceTree推送代码：
 		II.Sourcetree中集成Beyond Compare 4 ：工具-》选项-》“比较”选项卡-》外部对比工具，合并工具均设为BY4
 
 sourceTree操作介绍：
+	sourceTree回滚git代码到历史节点：
+		https://blog.csdn.net/u012373815/article/details/78142806/
 	检出：
 		以该节点开始，创建一个head分支？
 	重置提交，提交回滚？

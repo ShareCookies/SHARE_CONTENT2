@@ -33,6 +33,8 @@ fastJson转换：
 		String s ="{\"action\":\"add\",\"id\":\"1\",\"ordinal\":8,\"organUnitFullName\":\"testJSON\",\"parent\":\"0\",\"suborderNo\":\"58961\"}";
 		JSONObject jsonObject = JSON.parseObject(s);
 	...
+	String转json数组
+		JSONArray jsArr = JSONObject.parseArray(aaa);
 	jsonArray遍历：
 		for遍历：
 			JSONArray jSONArray = new JSONArray();

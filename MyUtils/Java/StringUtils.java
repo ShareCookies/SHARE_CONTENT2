@@ -130,6 +130,8 @@ public class StringUtils {
     }
 	/*
 	字符串截取：
+		https://blog.csdn.net/zjx2016/article/details/74557301
+
 		String sb = "bbbdsajj,d,s";
 		1.
 			sb.substring(2);//结果：bdsajj,d,s。从索引号为2开始截取，一直到字符串末尾
@@ -142,5 +144,9 @@ public class StringUtils {
 			如果没有经过转义split会把它当作一个正则表达式来处理的，
 			所以str.split("\\.");
 			2.sb为"",好像会切割为[]。 !
+	字符串替换
+		http://c.biancheng.net/view/836.html
+		例：
+			../正则.txt
 	*/
 }

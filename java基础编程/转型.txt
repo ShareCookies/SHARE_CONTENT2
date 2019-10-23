@@ -1,0 +1,8 @@
+https://www.cnblogs.com/xiaoyezideboke/p/10939219.html
+
+父类引用能指向子类对象：
+	Father f1 = new Son();
+
+子类引用不能指向父类对象：
+	Father f2 = new Father();
+	Son s2 = (Son)f2;       // 出错，子类引用不能指向父类对象
