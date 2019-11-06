@@ -45,10 +45,13 @@ sourceTree推送代码：
 		II.Sourcetree中集成Beyond Compare 4 ：工具-》选项-》“比较”选项卡-》外部对比工具，合并工具均设为BY4
 
 sourceTree操作介绍：
-	sourceTree回滚git代码到历史节点：
+	*sourceTree回滚git代码到历史节点：
 		https://blog.csdn.net/u012373815/article/details/78142806/
+		1.需要回滚的分支节点右击选择“将master重置到这次提交“，选择重置（强行合并）到该历史节点。
+		2.当前分支最新的节点，右击重置(软合并)到最新节点。
+		此时在“文件状态“中即可获取到从历史节点到当前节点的所有修改记录
 	检出：
 		以该节点开始，创建一个head分支？
-	重置提交，提交回滚？
+	重置提交，提交回滚两操作意思：
 		http://www.code4app.com/thread-27603-1-1.html
 

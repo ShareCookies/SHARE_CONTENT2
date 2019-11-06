@@ -49,7 +49,7 @@ public class SortModel implements Comparable<SortModel>{
  
 	@Override
 	public int compareTo(SortModel o) {
-		int i = this.getAge() - o.getAge();//先按照年龄排序
+		int i = this.getAge() - o.getAge();//先按照年龄排序。当前的比对比的大，返回正数，排序放后头。
 		if(i == 0){
 			return this.score - o.getScore();//如果年龄相等了再用分数进行排序
 		}
