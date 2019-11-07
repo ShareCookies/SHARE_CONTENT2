@@ -48,11 +48,7 @@ idea编程辅助：
 		https://blog.csdn.net/u010003835/article/details/81634604
 
 	热部署：
-		*idea之插件jrebel实现热部署：
-			//官网：https://jrebel.com/software/jrebel/learn/
-			破解：
-				https://blog.csdn.net/qq_40110871/article/details/83420125
-				激活码https://tools.hexianwei.com/#/tools/jrebel
+		idea之插件jrebel实现热部署：
 		IDEA之SpringBoot自带服务器热部署:
 			https://blog.csdn.net/tree_ifconfig/article/details/79689304#commentBox
 			https://blog.csdn.net/weixin_39330443/article/details/81739271
