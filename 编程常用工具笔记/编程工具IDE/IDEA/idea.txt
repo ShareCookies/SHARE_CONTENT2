@@ -48,11 +48,7 @@ idea编程辅助：
 		https://blog.csdn.net/u010003835/article/details/81634604
 
 	热部署：
-		*idea之插件jrebel实现热部署：
-			//官网：https://jrebel.com/software/jrebel/learn/
-			破解：
-				https://blog.csdn.net/qq_40110871/article/details/83420125
-				激活码https://tools.hexianwei.com/#/tools/jrebel
+		idea之插件jrebel实现热部署：
 		IDEA之SpringBoot自带服务器热部署:
 			https://blog.csdn.net/tree_ifconfig/article/details/79689304#commentBox
 			https://blog.csdn.net/weixin_39330443/article/details/81739271
@@ -67,7 +63,8 @@ idea编程辅助：
 			tomcat配置-》server-》On frame deactivation-》update class and resources
 		注：
 			热部署即debug下有代码改变就自动重新编译代码
-		
+	idea中操作数据库：
+		https://www.cnblogs.com/Ran-Chen/p/9646187.html
 idea设置：
 	idea注释模板:
 			https://blog.csdn.net/sikefeng/article/details/80557265
@@ -121,3 +118,7 @@ idea快捷键：
 			win10要关闭显卡的快捷键功能。
 	IDEA开发SpringMVC/SpringBoot快速查找接口地址：
 		Ctrl+Shift+alt+N
+	查找类：
+		Ctrl+N
+	清理未用到的引用类：
+		Ctrl + Alt + O

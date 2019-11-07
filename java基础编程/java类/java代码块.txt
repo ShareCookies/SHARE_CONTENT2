@@ -1,0 +1,28 @@
+静态代码块：
+	使用static{}包裹的代码块，静态代码在类加载完后就会被执行一次。
+	注：
+		通过Class.forName("classPath")的方式来调用一次static{}代码块。
+	public class HelloA {
+		static{
+			System.out.println("I'm A static code block");
+		}
+
+	}
+
+构造代码块：
+	类下直接使用{}包裹的代码区域。
+	public class HelloA {
+		{
+			System.out.println("I'm A construct code block");
+		}
+	}
+	注：
+		构造代码块会优先于构造函数代码块。
+		因为反编译.class，其中构造代码块直接被内联到了构造函数代码块中，且处于开头位置。
+构造函数代码块：
+	构造函数中所包含的代码。
+	public class HelloA {
+		public HelloA(){
+			System.out.println("I'm A construct method code block");
+		}
+	}

@@ -1,5 +1,4 @@
-maven依赖查询：
-	https://mvnrepository.com/
+
 maven-pom标签：
 
 	maven中scope= import：

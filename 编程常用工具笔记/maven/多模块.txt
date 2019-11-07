@@ -21,22 +21,7 @@ https://blog.csdn.net/zhouyingge1104/article/details/82287046
 springBoot多模块创建：
 	https://blog.csdn.net/baidu_41885330/article/details/81875395
 	https://www.cnblogs.com/owenma/p/8029518.html
-springBoot多模块打包：
-	https://blog.csdn.net/bicheng4769/article/details/83656981
-maven打包三种方法：
-	https://blog.csdn.net/daiyutage/article/details/53739452#commentBox
-	maven多模块打包：
-		https://blog.csdn.net/bicheng4769/article/details/83656981
-jar包：
-	可执行jar包：
-		https://blog.csdn.net/programmer0804/article/details/78509846
-		https://www.cnblogs.com/yjmyzz/p/executable-jar.html
-		可直接运行的jar包（jar包中有main入口方法）
-		例：
-			使用命令运行科执行的jar包
-			java -jar test.jar 
-	普通jar包：
-		jar里有一些封装好的类（不包含main入口方法）
+
 scope：
 	https://www.cnblogs.com/hzzll/p/6738955.html
 	https://blog.csdn.net/huangweijian93/article/details/79461657

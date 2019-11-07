@@ -11,3 +11,10 @@ Step Over （F8）
 		单步执行，不会进入子函数。
 Step Return（Shift+F11/F7）
 	在单步执行到子函数内时，用Step Return就可以执行完子函数余下部分，并返回上一层函数。
+
+
+创建异常断点：
+	https://www.jianshu.com/p/6c7a4f7129b6?tdsourcetag=s_pctim_aiomsg
+断点回退：
+	...
+	Drop Frame 

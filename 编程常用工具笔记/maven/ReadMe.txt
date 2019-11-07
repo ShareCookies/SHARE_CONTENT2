@@ -1,0 +1,9 @@
+maven配置文件（settings.xml）：
+	mirrors：
+		https://blog.csdn.net/liangwenmail/article/details/94555054
+		多个mirror的情况下，默认第一个生效。
+依赖：
+	maven依赖查询：
+		https://mvnrepository.com/
+注：
+	1.命令正确，但执行失败，提示未找到一类异常，注意maven镜像。

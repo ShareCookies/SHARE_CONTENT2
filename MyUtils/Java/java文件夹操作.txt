@@ -6,7 +6,20 @@ Java复制文件的4种方式
 	https://blog.csdn.net/jovi_zhao/article/details/78142552
 	
 	
-创建一个文件直接new File(路径);
-
+创建文件：
+	创建一个文件直接new File(路径);
+创建文件夹：
+	https://blog.csdn.net/qq_29720657/article/details/78582763
+删除文件：
+	
 java IO、NIO、AIO
 	https://www.cnblogs.com/sxkgeek/p/9488703.html
+	
+Path
+	https://blog.csdn.net/u010889616/article/details/52694061
+	Path就是取代File的
+
+文本换行：
+	https://www.cnblogs.com/Andrew520/p/11191055.html
+java获取当前类的绝对路径：
+	https://www.cnblogs.com/liuzhipeng/p/7816507.html
