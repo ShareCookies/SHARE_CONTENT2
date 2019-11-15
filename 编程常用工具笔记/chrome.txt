@@ -1,0 +1,36 @@
+快捷键：
+	清空缓存：Ctrl+Shift+Del
+调试界面：
+	f12快速开启chrome的调试界面。
+附录：
+	扩展程序手动安装：
+		https://www.jianshu.com/p/b7d782ef81e0
+		.crx改为.rar后缀解压，然后谷歌点击更多工具-》扩展程序-》开发者模式-》加载已解压的扩展程序即可
+f12：
+	NetWork：
+		1.网页上进行一操作后，出现的所有http传输都会出现在这。
+
+		2.点击一个具体的http传输，可以看到http传输的具体内容：
+		点击请求后显示的页签：
+			Headers：
+				可以看到http传输所有内容
+				General:
+					一般在这里查看请求地址和get携带参数
+				Response Header:
+				Request Header:
+				Request Payload：
+					post携带参数
+			Preview：
+				服务器返回内容，经过google优化便于程序员查看
+			Response：
+				服务器返回内容
+
+			Timing：
+				http传输各种花费的时间
+		3.从上到下http传输，最上的为最先开始的
+			Performance:！
+	Elements：
+		Event Listeners：
+			选中对应的元素后，可查看该元素的事件。
+				注：
+					取消勾选 Ancestors All，这个包含该元素所有父类绑定的监听事件。
