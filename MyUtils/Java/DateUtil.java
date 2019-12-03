@@ -14,6 +14,7 @@ public class DateUtil {
 	public static void main(String[] args) {
 		
 		Date date=new Date();//java.util.Date对象实例化的时候就保存了时间，时间是实例化时的时间戳。
+		//System.currentTimeMillis();
 		
 		/**
 		 * 通过java.util.Date获取时间戳，时间戳就是long型变量

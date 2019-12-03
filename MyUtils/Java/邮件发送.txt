@@ -10,9 +10,26 @@
 			要不就自己搭建郵件服務器，自己發。
 
 
-https://blog.csdn.net/a2241076850/article/details/52856863
-https://blog.csdn.net/qq_36468243/article/details/82464022#commentBox
-https://blog.csdn.net/rhy0619/article/details/81184482
-依赖包：
-		https://mvnrepository.com/artifact/javax.activation/activation/1.1.1
-		https://mvnrepository.com/artifact/com.sun.mail/javax.mail/1.6.2
+JavaMail解析：
+	https://blog.csdn.net/a2241076850/article/details/52856863
+	javamail例子：
+		https://blog.csdn.net/qq_36468243/article/details/82464022#commentBox
+		https://blog.csdn.net/rhy0619/article/details/81184482
+	JavaMail依赖包：
+			https://mvnrepository.com/artifact/javax.activation/activation/1.1.1
+			https://mvnrepository.com/artifact/com.sun.mail/javax.mail/1.6.2
+SpringBoot整合Mail:
+	* https://blog.csdn.net/qq_37745470/article/details/89094227
+附：
+spring:
+  #邮箱配置
+  mail:
+    host: smtp.163.com
+	port: 465
+	default-encoding: UTF-8
+	#公用的邮件服务器，发送者账号要和验证账号一样的！
+    username: ***@163.com
+    password: 授权码
+    properties:
+      mail:
+		smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory			
