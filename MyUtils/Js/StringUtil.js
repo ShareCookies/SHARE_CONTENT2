@@ -50,5 +50,5 @@ js字符串切割：
 	console.log(array);
 数组合并为字符串：
 	var string = array.join(';');
-	console.log(array);
-	
+正则：
+	../正则.txt
