@@ -30,6 +30,8 @@ IntelliJ IDEA 激活：
 idea编程辅助：
 	常用设置：
 		https://www.cnblogs.com/jajian/p/8108690.html#autoid-0-0-0
+		查看类之间的关系：
+			选中类-》右键Diagram
 	设置代码提示不区分大小写：
 		https://blog.csdn.net/yuanmomoya/article/details/86559607
 		https://blog.csdn.net/qq_22904145/article/details/78857948
