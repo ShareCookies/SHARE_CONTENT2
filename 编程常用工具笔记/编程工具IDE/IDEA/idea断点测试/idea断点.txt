@@ -1,5 +1,4 @@
-
-https://blog.csdn.net/minkeyto/article/details/81489041
+https://blog.csdn.net/yxl_1207/article/details/80973622
 Step Into（F11/F5）
 	单步执行，遇到子函数就进入并且继续单步执行；
 	hcg：
@@ -18,3 +17,13 @@ Step Return（Shift+F11/F7）
 断点回退：
 	...
 	Drop Frame 
+中断Debug
+　　1.Force Return来强制返回，从而不再进行后续的流程。
+	2.关闭程序
+Frames方法调用栈:
+	Frames显示了该线程调试所经过的所有方法。
+	注：
+		1.勾选右上角的[Show All Frames]按钮，就不会显示第三方类库的方法了。
+		2.这是个栈，所以最下面的（栈底）才是最早调用的方法。
+		3.类名带$的是匿名内部类。
+			/java基础编程/java类/java类.txt goto:Java匿名内部类

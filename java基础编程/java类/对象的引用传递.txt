@@ -1,0 +1,66 @@
+https://www.cnblogs.com/binyue/p/3862276.html
+2.值传递和引用传递：
+	值传递是对基本型变量而言的,传递的是该变量的一个副本,改变副本不影响原变量. 
+	引用传递一般是对于对象型变量而言的,传递的是该对象地址的一个副本, 所以对参数的修改会影响到实际的对象 。 
+		注：
+			1.修改形参时，如果把形参指向另一个内存地址，这个时候对实际的对象是没有影响的。
+			2.方法的参数变量，就算形参
+	注：
+		String, Integer, Double等immutable的类型特殊处理，可以理解为传值，最后的操作不会修改实参对象。
+
+1.变量数据类型的保存：
+	Java中数据类型分为两大类，基本类型和对象类型。
+		注：
+			基本类型数据包括：byte,short,int,...
+			引用类型数据包括：类类型，接口类型和数组
+	相应的，变量也有两种类型：基本类型和引用类型。
+	基本类型的变量保存原始值（原始值就是数值本身），而引用类型的变量保存引用值（引用值指向内存空间的地址）。
+	注：
+		对象本身存放在引用值所表示的地址的位置。
+
+例子：
+	public class TransferParameter {
+		public  void a(){
+			Object1 object1=new Object1();//这个变量就算实参
+			object1.a="1";
+			String s="string1";
+			b(object1,s);
+			System.out.println(object1);
+			System.out.println(s);
+		}
+		public  void b(Object1 o,String s){//方法的参数变量，就算形参
+			//o=new Object1();//修改形参时，如果把形参指向另一个内存地址，这个时候对实际的对象是没有影响的。
+			o.b="666";
+			s="string2";
+		}
+		public static void main(String[] args) throws IOException {
+			TransferParameter transferParameter=new TransferParameter();
+			transferParameter.a();
+		}
+		class Object1{
+			public String a;
+			public  String b;
+
+			@Override
+			public String toString() {
+				return "Object1{" +
+						"a='" + a + '\'' +
+						", b='" + b + '\'' +
+						'}';
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
