@@ -20,5 +20,7 @@ maven配置文件（settings.xml）：
 依赖：
 	maven依赖查询：
 		https://mvnrepository.com/
+	maven依赖关系图：
+		https://blog.csdn.net/yangxiaobo118/article/details/79890124
 注：
 	1.命令正确，但执行失败，提示未找到一类异常，注意maven镜像。

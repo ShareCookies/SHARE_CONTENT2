@@ -1,3 +1,7 @@
+日期对象设空值：
+	date = null;
+	java :
+		SetNull() 功  能：将指定变量的值设置为NULL。这里的变量可以是除数组、结构、自动实例化对象之外的任何数据类型。
 getDate() 返回日期对象的天数。
 	dateObject.getDate()
 	例：
