@@ -1,0 +1,55 @@
+线程池：
+	https://www.cnblogs.com/superfj/p/7544971.html
+	https://www.cnblogs.com/fengsehng/p/6048610.html
+	介绍：
+		为了避免重复的创建线程，线程池的出现可以让线程进行复用。
+		通俗点讲，当有工作来，就会向线程池拿一个线程，当工作完成后，并不是直接关闭线程，而是将这个线程归还给线程池供其他任务使用。
+	为什么要使用线程池：
+		1.避免频繁地创建和销毁线程，达到线程对象的重用。
+		2.使用线程池还可以根据项目灵活地控制并发的数目。
+	执行器：
+		能创建线程池来管理线程，并驱动任务。
+		Executor（接口）：
+			介绍：
+				Executor是个线程池框架，其内部使用了线程池机制。
+				hcg：
+					凡是Executor的实现类，其内部均要实现线程池机制。
+					框架就是一套已经写好的代码，这些代码可简称为工具。
+					你想使用这些工具，你就得按照框架的流程和规范。
+				Executor框架包括：
+					线程池，Executor，Executors，ExecutorService，CompletionService，Future，Callable等。！
+					通过Executor框架来控制线程的启动、执行和关闭，可以简化并发编程的操作。
+			任务的执行：
+				一旦Runnable任务传递到execute（）方法，该方法便会自动将一任务放到一个线程上执行。
+				Callable任务要用Executor的submit(Callable task) 方法来执行。
+			ExecutorService（接口，且继承了Executor接口）：
+				介绍：
+					ExecutorService提供了更丰富的实现多线程的方法，最重要的是其定义了一些生命周期的方法。
+					ExecutorService的生命周期包括三种状态：
+						运行、关闭、终止。
+						创建后便进入运行状态。
+						当调用了shutdown（）方法时，便进入关闭状态。
+						调用了shutdown，且当前已经提交了的任务执行完后，便到达终止状态。
+					hcg：
+						可将对象的运行，进行阶段划分，就是生命周期。
+				方法：
+					shutdown()：
+						方法在终止前允许执行以前提交的任务。即线程将在，Executor中的任务完成之后，尽快退出
+					shutdownNow()：
+						方法阻止等待任务启动并试图停止当前正在执行的任务。
+					...
+				
+		Executors：
+			使用Executors的工厂方法创建线程池。
+			Executors提供四种线程池的创建方法。
+			newCachedThreadPool() ：
+				创建一个可根据需要创建新线程的线程池，但是在以前构造的线程可用时将重用它们。
+				CachedThreadPool：为每一个任务创建一个线程。
+			newFixedThreadPool(int nThreads) 
+				创建一个可重用固定线程数的线程池，以共享的无界队列方式来运行这些线程。
+				使用了有限的线程集来执行提交的任务。
+			例：
+				ExecutorService exe= Executors.newFixedThreadPool(10);//创建一个拥有10个线程的线程池。
+				exe.execute(new Task());		
+	注：
+		任何线程池中，现有线程在可能的情况下都会被自动复用。！

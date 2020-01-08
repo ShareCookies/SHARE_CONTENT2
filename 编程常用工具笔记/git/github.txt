@@ -1,2 +1,10 @@
+介绍：
+	trending 趋势
+		热门项目 ，当你的项目starts高了，就可能上趋势。
 修改 Github 项目的语言分类：
 	https://hacpai.com/article/1502242955731
+
+附：
+	第三方网站：
+		对你github的start进行归类划分：
+			https://www.gitstart.com/

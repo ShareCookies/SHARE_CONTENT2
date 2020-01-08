@@ -1,0 +1,98 @@
+Thread类:
+	方法:
+		.start():
+			该方法用于启动线程来驱动任务。			
+		.run()
+			只是调用任务,未开辟线程。
+			程序还是按顺序执行。
+		.setPriority():
+			介绍：
+				设置线程的优先级
+			例：
+				Thread.currentThread().setPriority();
+				//值建议Thread.MAX_ PRIORITY、 NORM_ PRIORITY和MIN_ PRIORITY
+		.join()：
+			加入一个线程。
+			在某个线程中(调用线程)调用其他线程的join方法(被调用线程)时，
+			调用线程将被阻塞，直到被调用线程执行完它才会继续运行。
+			例：
+				b任务的run中，写a线程.join(),则b线程要等待a线程运行完才能继续运行。
+			注：
+				调用线程将被阻塞，那么其恢复后是重新排队还是直接运行！
+				若调用的线程耗时，那么会被剥夺cpu资源吧，那么此时调用线程还是在阻塞状态吗！
+			join()中断：
+				介绍：
+					interrupt()；
+					调用interrupt方法可以中断join。
+				例：
+					被调用线程引用.interrupt();被调用线程任务要捕获InterruptedExeception。
+				注：
+					isInterrupted()判断是否在join调用状态。
+		.sleep():
+			介绍：
+				线程休眠指定时间
+				线程睡眠(即阻塞)到期后自动苏醒，并返回到可运行状态(不是运行状态)。
+			例：
+				TimeUnit.MILLISECONDS.sleep(100);//Java SE5/6-Style 
+				或Thread.sleep(100);//Old-Style
+			注：
+				对sleep()的调用可能抛出InterruptedException异常，并且你要在run()中捕获它。
+				因为异常不能跨线程传播回main(),所以你必须在本地处理所有在任务内部产生的异常。
+				不能抛出吗！
+			.sleep(0)作用：
+				由于Java采用抢占式的线程调度算法，因此可能会出现某条线程常常获取到CPU控制权的情况。
+				为了让某些优先级比较低的线程也能获取到CPU控制权，可以使用Thread.sleep(0)手动触发一次操作系统分配时间片的操作，这也是平衡CPU控制权的一种操作。
+		.yield():
+			介绍：
+				设置当前线程让步。
+				提示线程调度机制我的任务已经差不多完成，允许放弃cpu资源进入就绪状态重新排队，让别的线程调用cpu。
+				这只是对jvm线程调度器的一个建议，没有任何机制保证它会被采纳，所以重要的控制或调用不能依赖于yield。
+			例：
+				Thread.yield();
+		.interrupt():
+			介绍：
+				可以用来终止被阻塞的任务。
+				该方法将设置线程的状态中断状态，但它不会中断一个正在运行的线程。
+				！！！
+				更确切的说，如果线程被Object.wait, Thread.join和Thread.sleep三种方法之一阻塞，
+				此时调用该线程的interrupt()方法，那么该线程将抛出一个 InterruptedException中断异常（该线程必须事先预备好处理此异常），从而提早地终结被阻塞状态。
+				如果线程没有被阻塞，这时调用 interrupt()将不起作用，直到执行到wait(),sleep(),join()时,才马上会抛出 InterruptedException。
+				
+				即如果一个线程已被阻塞，那么interrupt将设置这个线程的中断状态，然后线程抛出InterruptedException。
+				所以在你的线程中应编写catch语句。
+			例子：
+				Thread.interrupt()//中断当前线程
+				thread.interrupt();//中断持有的线程对象
+			interrupt、interrupted和isInterrupted区别：
+				https://blog.csdn.net/smiles13/article/details/81292608
+		.isDaemon():
+			介绍：
+				判断线程是否是一个后台线程。
+			例：
+				Thread t=...;
+				syso(t.isDaemon);
+				或
+				Thread.currentThread().isDaemon();//判断当前线程是否为后台线程
+		.getName():
+			介绍：获取当前线程名字
+			例：Thread.currentThread().getName();//主线程默认名main，创建的线程名默认从Thread-0开始
+		后台线程：
+			介绍：
+				后台线程(daemon),指在程序运行的时候在后台提供一种通用服务的线程。
+				注：
+					当所有非后台线程结束时，程序就终止了，同时会杀死进程中所有的后台线程。
+			实现：
+				在一个线程对象启动之前（即start()之前）,
+				调用该对象的setDaemon（true）方法即可把一个线程设置为后台线程。
+			例：
+				Thread daemon=new Thread(new Task());
+				daemon.setDaemon(true);//must call before start()
+				daemon.start();
+			注：
+				1.后台线程创建的任何线程都将自动设置为后台线程。
+				2.后台线程在不执行finally的情况下就会终止其run()方法。			
+	注：
+		程序结束：
+			1.对Java程序来说，一个进程只要还有一个前台线程在运行，那么进程就不会结束。
+			如果一个进程只有后台线程运行，那么该进程就会结束。
+			2.使用Thread时，每个Thread都注册了自己，在它的任务退出其run()并死亡之前，垃圾回收器无法清除它。

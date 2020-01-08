@@ -1,0 +1,131 @@
+捕获线程中异常：
+	介绍:
+		由于线程的本质特性，使得你不能捕获从线程中逃逸的异常。
+		一旦异常逃出任务的run方法，它就会向外传播到控制台。
+		在JavaSE5之前,你可以使用线程组来捕获这些异常，JavaSE5后就可以用Executor来解决这个问题，因此你就不再需要了解有关线程组的任何知识了。
+	实现：
+		实现UncaughtExceptionHandler接口创建一异常处理器类，
+		把异常处理器类绑定到线程。
+		绑定3方式:
+			1.
+				线程引用设置异常处理器thread.setUncaughtExceptionHandler
+			2.
+				修改Executor产生线程的方式，给其传递一个ThreadFactory,该工厂将在每个新创建的Thread对象上附着一个Thread.UncaughtExceptionHandler。
+			3.
+				Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+终结任务：
+	即把线程设置为中断状态，然后在任务中检测线程是否中断，或捕获中断异常，来结束线程。
+	中断发生的唯一时刻是在任务要进入阻塞操作中，或已经在阻塞操作内部。
+	结束（中断）任务方法：
+		1.Thread.interrupt()
+			
+		2.executorService.awaitTermination()！
+			当前线程阻塞，直到
+				等所有已提交的任务（包括正在跑的和队列中等待的）执行完
+				或者等超时时间到（那么已提交任务还会执行吗？）
+				或者线程被中断，抛出InterruptedException
+				然后返回true（所有任务在超时时间之前全部结束执行完毕）或false（已超时）
+				shuntdown()和awaitTermination()效果差不多，方法执行之后，都要等到提交的任务全部执行完才停。
+		3.executorService.shuntdownNow():
+			在Executor上调用shutdownNow,那么它将发送一个interrupt调用给它启动的所有线程。
+			这么做是有意义的，因为当你完成工程中的某个部分或者整个程序时，通常会希望同时关闭某个特定Executor的所有任务。
+		4.future.cancel(true):
+			使用Executor，有时也会希望只中断某个单一任务。
+			那么通过调用submit()而不是executor()来启动任务，就可以持有该任务的上下文。
+			submit()将返回一个泛型Future<?>,其中有一个未修饰的参数，因为你永远都不会在其上调用get(),持有这种Future的关键在于你可以在其上调用cancel(),并因此可以使用它来中断某个特定任务。
+			当你将true传递给cancel(),那么它就会拥有在该线程上调用interrupt()以停止这个线程的权限。因此，cancel()是一种中断由Executor启动的单个线程的方式。
+			例子：
+				Future<?> f =exec.submit(runnable);//runnable任务要处于阻塞状态
+				TimeUnit.MILLISECONDS.sleep(100);//延迟来确保任务处于阻塞
+				f.cancel(true);
+
+		注：
+			1.新的concurrent类库似乎在避免对Thread对象的直接操作，转而尽量通过Executor来执行所有操作。
+			2.无法中断正在试图获取synchronized锁或试图执行I/O的线程
+			但可以用别的方式中断....
+	检测中断：
+		interrupted()：
+			测试当前线程（当前线程是指运行interrupted()方法的线程）是否已经中断，且清除中断状态。
+			如果连续两次调用该方法，则第二次调用将放回false，因为中断状态在第一次已经清除掉。
+		isInterrupted()：测试线程（调用该方法的线程）是否已经中断，不清除中断状态。
+		interrupted 是作用于当前线程，isInterrupted 是作用于调用该方法的线程对象所对应的线程。
+		例：
+			Thread.interrupted();
+			线程对象.isInterrupted();
+	中断特殊阻塞：
+		
+		无法中断正在试图获取synchronized锁或试图执行I/O的线程。
+		
+		中断试图执行I/O的线程：
+			关闭任务上发生阻塞的底层资源。
+			先把线程设为中断状态，
+			再释放任务上发生阻塞的底层资源，来达到中断线程的目的。
+			例：
+				CloseResource.java
+		中断互斥所阻塞的线程：		
+			如果你尝试着在一个对象上调用其synchronized方法,而这个对象的锁已经被其他任务获得，那么调用任务将被挂起(阻塞)，直至这个锁可获得。
+			但ReentrantLock上阻塞的任务可以被中断。
+			例：
+				InterruptMutex.java
+				关键代码：
+					private Lock lock=new ReentrantLock();
+					lock.lock();//获取锁
+					try {
+						...
+					} catch (Exception e) {
+						// TODO: handle exception
+						System.out.println("reentrantLock被中断或出现异常");
+					}
+		注：
+			1.nio类提供了更人性化io中断，被阻塞的nio通道会自动响应中断。
+			即设置线程为中断状态，nio就会自动响应中断。
+	注：
+		1.任务的结束：退出run()方法即算任务结束。 
+		2.被设计用来响应interrupt()的类通常要建立一种策略，来确保它将保持一致性。
+		即中断发生后，某代码后要跟try-finally子句，使得无论run()如何退出，清理都会发生。
+		3.！！！
+
+线程协作（线程通信）：
+	介绍：
+		线程协作，是使多个任务一起工作去解决某个问题。
+		线程的协作关键问题是任务之间的握手，可使用互斥或挂起来实现握手。
+			互斥：确保只有一个任务可以响应某个信号。
+			挂起：直至某些外部条件发生变化后任务才可继续。
+	synchronized下：
+		以下方法均要在synchronized作用域中才能使用
+		wait()：
+			使当前线程进入挂起状态，等待唤醒。
+			注：
+				1.调用sleep和yield后，对象上的锁并未被释放。
+				而调用wait对象上的锁被释放，因此该对象上的synchronized方法可以在挂起期间被调用。
+				2.wait有两种形式，一种能接受毫秒作为参数，一种不接受任何参数。
+		notify：
+			唤醒此同步锁上等待的第一个调用wait()的线程。
+		notifyAll：
+			唤醒此同步锁上调用wait()的所有线程。
+		例：
+			NotifyVsNotifyaAll.java
+		注：
+			1.三个方法是Object类的方法，且调用者都应该是同步控制方法或同步控制块，否则JVM抛出IllegalMonitorStateException。
+			即方法的调用者必须要有能获取对象锁的能力。
+	Lock与Condition：
+		使用lock显示的实现了同步后，要想实现线程之间通信要使用Conditon对象。
+		例：
+				private Lock lock=new ReentrantLock();
+				private Condition condition=lock.newCondition();
+				private Condition condition2=lock.newCondition();
+				condition.await();
+				condition.signal();
+				condition2.await();
+				condition2.signal();
+				一个condition对象的signal（signalAll）方法和该对象的await方法是一一对应的，
+				也就是一个condition对象的signal（signalAll）方法不能唤醒其他condition对象的await方法。
+		注：
+			Condition类的awiat方法和Object类的wait方法等效
+			Condition类的signal方法和Object类的notify方法等效
+			Condition类的signalAll方法和Object类的notifyAll方法等效
+	同步队列：
+		同步队列在任何时刻都只允许一个任务插入或移除元素。
+		所以使用同步队列解决任务协作问题更好。
+		BlockingQueue接口提供了队列，其实现类LinkedBlockingQueue是一个无届队列，
+		实现类ArrayBlockingQueue，具有固定的大小。

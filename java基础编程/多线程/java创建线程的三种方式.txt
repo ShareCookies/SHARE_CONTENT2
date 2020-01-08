@@ -1,0 +1,43 @@
+java创建线程的三种方式：
+	1.用new Thread(Runnable target).start()启动一线程，并驱动任务：
+		介绍：
+			线程可以驱动任务，因此需要一种描述任务的方式。、
+			Runnable接口可以定义任务，实现Runnable接口并编写run()方法即定义了一个任务。
+		例：
+			new Thread(new Runnabel(){//实现Runnable接口
+				public void run(){
+					System.err.println("线程");
+				}
+			}).start();
+	2.实现Callable接口：
+		介绍：
+			Callable 接口相较于Runnable 接口，可以有返回值，并且可以抛出异常。
+			https://www.cnblogs.com/baizhanshi/p/6425209.html
+			http://www.threadworld.cn/archives/39.html
+		实现：
+			1.任务实现Callable接口
+				注：Callable的泛型用来，修饰从call()中返回的值
+			2.FastTask修饰任务
+			3.线程驱动FastTask(修饰过的任务)
+			4.通过FastTask获取任务完成后返回结果
+		例：
+			Callable/CallaleDemo.java
+		Future：
+			介绍：
+				通过Future可以获取任务的执行结果
+			方法：
+				isDone()：
+					isDone()方法可以用来检查分配的任务是否已经被处理了
+				get()：	
+					？
+	3.继承Thread，并重写run()方法:
+		介绍：
+			任务简单的情况下，直接继承Thread，在里头编写任务
+		例：
+			class ThreadTest extends Thread{
+				public void run(){//在该方法里写该线程要干的事。
+					System.err.println("线程");
+				}
+			}
+			ThreadTest t = new ThreadTest();
+			t.start();//线程的启动:		
