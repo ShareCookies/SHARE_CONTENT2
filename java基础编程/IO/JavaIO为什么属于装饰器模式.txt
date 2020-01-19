@@ -1,0 +1,57 @@
+为啥说JavaIO流是装饰器模式：
+	为啥说javaIO是装饰器了，因为一些IO类能不改变别的io类结构，来为其添加一些功能。
+	例：FileReader能读取文件到字符流中，BufferedReader能把字符流缓冲到缓存区。即BufferedReader为FileReader添加一个功能，使其功能变为读取文件到缓冲区。
+	
+对流对象属于哪个角色的分析，及其简易功能介绍：
+	字符输入流树结构：
+		java.io.Reader (implements java.io.Closeable, java.lang.Readable)抽象类。抽象组件。（注:或叫具体组件，因为下面的装饰器是能为所有继承了reader的类，添加功能）
+			java.io.BufferedReader类。具体装饰器。能把继承自Reader的类，读取到缓存区。
+				java.io.LineNumberReader具体装饰器
+			java.io.CharArrayReader具体组件，把字符数组转换为字符流
+			java.io.FilterReader抽象装饰者 
+				java.io.PushbackReader具体装饰者，该对象能将数据推回流的前端。
+			java.io.InputStreamReader把字节流转换为字符流An InputStreamReader is a bridge from byte streams to character streams
+				java.io.FileReader 具体组件，一个便捷类，把字符文件读取为FileReader
+			java.io.PipedReader把 piped writer src连接到PipedReader
+			java.io.StringReader把字符串转换为字符流
+		介绍：
+			1.子类继承reader父类，一些子类用来做输入输出流，一些子类做装饰器类（能修饰输入输出流，即为它添加功能）。
+			这些类互相配合可以组合出多种功能。
+			2.缓冲有提前读取数据的功能！
+	字符输出流结构：
+
+		java.io.Writer (implements java.lang.Appendable, java.io.Closeable, java.io.Flushable)抽象类。抽象组件
+			java.io.BufferedWriter类。具体装饰器。为字符输出流提供缓冲
+			java.io.CharArrayWriter类。具体组件。
+				This class implements a character buffer that can be used as an Writer. The buffer automatically grows when data is written to the stream. 
+				The data can be retrieved using toCharArray() and toString().可以把流转换为字符。注：也可以把字符·转换为流
+			java.io.FilterWriter 
+			java.io.OutputStreamWriter把字符流转换为字节流 An OutputStreamWriter is a bridge from character streams to byte streams:
+				java.io.FileWriter类，一个便捷类。具体组件。把流写入文件
+			java.io.PipedWriter
+			java.io.PrintWriter
+			java.io.StringWriter
+
+			
+	字节输入流树结构：
+		java.io.InputStream (implements java.io.Closeable)抽象类。抽象组件
+			java.io.ByteArrayInputStream类，字节数组输入流。具体组件。能把字节数组转换为字节数组输入流。
+			java.io.FileInputStream
+			java.io.FilterInputStream类，但其方法并没有做什么实现。
+				java.io.BufferedInputStream类。具体装饰器。能缓冲InputStream（即继承自InputStream的类）
+				java.io.DataInputStream (implements java.io.DataInput)
+				java.io.LineNumberInputStream
+				java.io.PushbackInputStream
+			java.io.ObjectInputStream (implements java.io.ObjectInput, java.io.ObjectStreamConstants)
+			java.io.PipedInputStream
+			java.io.SequenceInputStream
+	字节输出流树结构：
+		java.io.OutputStream (implements java.io.Closeable, java.io.Flushable)抽象类。抽象组件
+			java.io.ByteArrayOutputStream
+			java.io.FileOutputStream
+			java.io.FilterOutputStream类，但其方法并没有做什么实现。
+				java.io.BufferedOutputStream类。具体装饰器。能缓冲OutputStream（即继承自OutputStream的类）
+				java.io.DataOutputStream (implements java.io.DataOutput)
+				java.io.PrintStream (implements java.lang.Appendable, java.io.Closeable)
+			java.io.ObjectOutputStream (implements java.io.ObjectOutput, java.io.ObjectStreamConstants)
+			java.io.PipedOutputStream		

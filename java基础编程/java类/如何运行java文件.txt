@@ -1,0 +1,14 @@
+命令行运行java文件
+	1.首先确定电脑环境变量配置正确
+	2.cmd进入java文件路径下
+	3.编译成字节码.class文件 javac HelloWorld.java 
+	4.运行文件，使用-cp参数指定类文件搜索路径 java -cp D:\ajava\test HelloWorld 
+	附：
+		编码GBK的不可映射字符
+			使用notpad++编辑器自带的转码功能
+			使用-encoding指令指定运行编码为UTF-8
+				javac -encoding UTF-8 XXX.java
+idea中运行java文件：
+	1.把java文件置于一个标注为source的文件夹下，此时main函数即会出现一个运行按钮。
+	注：
+		运行时会提示你标明输出的文件夹路径。

@@ -1,0 +1,21 @@
+adb命令：
+	https://developer.android.google.cn/studio/command-line/adb#screencap
+	https://blog.csdn.net/qq_39969226/article/details/87897863
+	常用命令：
+		显示活动程序
+		dumpsys activity activities
+		启动应用程序
+		am start -n 要启动的应用Activity名称（realActivity）
+		点击：input tap x像素 y像素
+cmd清屏命令：cls
+Process q = Runtime.getRuntime().exec("cmd.exe /c start D:\\startActivity.bat" );
+
+
+
+在编写Java程序时，有时候我们需要调用其他的诸如exe,shell这样的程序或脚本。在Java中提供了两种方法来启动其他程序：
+
+     (1) 使用Runtime的exec()方法
+
+     (2) 使用ProcessBuilder的start()方法
+
+       Runtime和ProcessBulider提供了不同的方式来启动程序，设置启动参数、环境变量和工作目录。但是这两种方法都会返回一个用于管理操作系统进程的Process对象。这个对象中的waitFor()是我们今天要讨论的重点。

@@ -1,0 +1,64 @@
+装饰者模式（Decorator模式）：
+	https://www.jianshu.com/p/d7f20ae63186
+	概念：
+		装饰者模式动态地将责任附加到对象身上。
+		即向一个现有的对象添加新的功能，同时又不改变其结构。（所以只要代码能实现该功能就算装饰器模式）。
+		注：
+			1.装饰者模式又名包装(Wrapper)模式。
+			2.这种类型的设计模式属于结构型模式，它是作为现有的类的一个包装。
+			3.若要扩展功能，装饰者提供了比继承更有弹性的替代方案
+			4.装饰者模式以对客户端透明的方式扩展对象的功能，是继承关系的一个替代方案。
+    实现方式之一介绍：
+        涉及角色：
+        （1）Component抽象组件:接口。来规范准备附加功能的类。
+        （2）ConcreteComponent具体组件：类。实现抽象组件。将要被附加功能的类。
+        （3）Decorator抽象装饰者：抽象类。实现抽象组件。主要用来规范具体装饰者，且持有一个具体组件的引用。
+        （4）ConcreteDecorator具体装饰者：类。继承抽象装饰者。通过具体组件引用，来对具体组件添加额外功能。
+	优点/缺点：
+		优点：
+		缺点：
+	使用场景：
+	实现案例：
+		Component：
+			//抽象组件接口，人接口定义一个eat()方法，这是所有的具体构件类和装饰类必须实现的。
+			public interface Component {
+				void eat();
+			}
+			//具体构件角色,人的一具体分类男人，男人一定有人的eat()方法
+		ConcreteComponent：具体组件实现抽象组件接口
+			public class ConcreteComponent implements Component {
+				public void eat() {
+					System.out.println("男人在吃");
+				}
+			}
+			//抽象装饰角色,
+		Decorator：抽象装饰者1.得到具体组件的引用。2.利用引用，实现抽象组件接口
+			public abstract class Decorator implements Component {
+				protected Component person;
+				public void setPerson(Component person) {
+					this.person = person;
+				}
+				public void eat() {
+					person.eat();
+				}
+			}
+		//具体装饰角色,a类型男，能吃两顿
+		ConcreteDectrator：	具体装饰类继承抽象装饰者，负责对具体组件添加额外功能（即给具体组件方法添加额外功能）
+			public class ConcreteDectratorA extends Decorator {
+				public void eat() {
+					super.eat();
+					reEat();
+					System.out.println("ManDecoratorA类");
+				}
+				public void reEat() {
+					System.out.println("再吃一顿饭");
+				}
+			}
+			//具体装饰角色,b类型男，能吃一顿
+			public class ConcreteDectratorB extends Decorator {
+				public void eat() {
+					super.eat();
+					System.out.println("===============");
+					System.out.println("ManDecoratorB类，吃一顿");
+				}
+			}

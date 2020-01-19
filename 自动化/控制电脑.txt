@@ -1,0 +1,37 @@
+https://www.cnblogs.com/7758520lzy/p/11994776.html
+https://blog.csdn.net/fanguoddd/article/details/78677064
+
+
+
+
+开启飞行模式并开启wifi 
+开启允许抖音安装软件
+启动抖音
+am start -n com.ss.android.ugc.aweme/.main.MainActivity
+点击20亿活动
+input tap 40 420
+点击新增卡片
+input tap 720 1510
+点击下载app 2分钟
+input tap 900 1725
+点击安装app 1分钟
+input tap 540 2100
+点击打开软件
+input tap 900 1725
+
+input tap 550 1600
+
+input tap 110 2010
+input tap 280 2200
+input tap 110 2010
+input tap 280 2200
+
+
+附：
+	ocr https://blog.csdn.net/qq_35820350/article/details/78802276
+		https://www.cnblogs.com/huanghongbo/p/9066225.html
+		https://www.ifanr.com/app/716445
+		https://blog.csdn.net/crazyboy_long/article/details/86554819
+	java robot：https://blog.csdn.net/qq_38901340/article/details/99225140
+	跳一跳：https://www.ctolib.com/article/comments/72966
+	

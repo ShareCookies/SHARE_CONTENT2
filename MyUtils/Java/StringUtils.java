@@ -148,5 +148,10 @@ public class StringUtils {
 		http://c.biancheng.net/view/836.html
 		例：
 			../正则.txt
+	字符串转字符数组：
+	    char ss[] = "rgrgd rgre 444".toCharArray();//利用toCharArray方法转换
+        for (int i = 0; i < ss.length; i++) {
+            System.out.print(ss[i]);
+        }
 	*/
 }
