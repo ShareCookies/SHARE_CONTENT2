@@ -25,6 +25,8 @@
 	例：
 		...
 		即指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。
+		减少if else ：
+			https://blog.csdn.net/zzti_erlie/article/details/102988486
 
 废：
 	继承不是合适的解决方案，使用接口则造成代码无法复用。

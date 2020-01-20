@@ -68,6 +68,7 @@ idea编程辅助：
 			热部署即debug下有代码改变就自动重新编译代码
 	idea中操作数据库：
 		https://www.cnblogs.com/Ran-Chen/p/9646187.html
+		https://blog.csdn.net/Colton_Null/article/details/78857855
 idea设置：
 	idea注释模板:
 			https://blog.csdn.net/sikefeng/article/details/80557265

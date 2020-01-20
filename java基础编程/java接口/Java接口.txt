@@ -1,0 +1,39 @@
+接口作用:
+	接	口也是类它继承自object类。
+	接口其实就是为了描述一个共有行为，所以ava的接口用来指定一个类必须做什么.。
+	注：
+		接口常用于解耦
+定义接口：
+	//注意:implements实现，extend继承，	
+	public  interface  student(){
+		public  String  school="哈哈哈";//接口成员变量默认会添加  public static final修饰   	
+		public   void  test();//接口成员方法会默认添加 public abstract修饰
+	}
+	注：
+		以抽象类模拟接口：
+			public  abstract   class  student(){
+				public  static  final String  school="哈哈哈";
+				public  abstract  void  test();
+			}
+			//但抽象类的方法是写好的，接口不行只能让子类实现。
+接口注意事项：
+	1.接口特性：
+		1.一个类只能继承一个类，但实现多个接口。
+		2.写在接口方法上的注解，可以被子类方法继承。（即子类不必在写该注解）
+
+	2.接口成员变量只能是常量(静态最终)。默认修饰符 public static final
+		1.使用static原因:接口不涉及和任何具体实例相关的细节,因此接口没有构造方法,不能被实例化,没有实例变量，只有静态（static）变量。
+		2.使用final原因:接口的中的变量是所有实现类共有的，既然共有，肯定是不变的东西，因为变化的东西也不能够算共有。所以变量是不可变(final)类型。
+		3.使用public原因:接口用于描述系统对外提供的所有服务,因此接口中的成员常量和方法都必须是公开(public)类型的,确保外部使用者能访问它们。
+		4.使用abstract原因:接口仅仅描述系统能做什么,但不指明如何去做,所以接口中的方法,都是抽象(abstract)方法。
+	3.:接口成员方法只能是公有抽象方法。默认修饰符 public abstract
+		注：
+			1.接口中每一个方法也是隐式抽象的，声明时可不加abstract。
+			2.接口中的方法都是公有的。
+	4.接口是隐式抽象的，当声明一个接口的时候，不必使用abstract关键字。
+		注：
+			1.public abstract interface与public  interface本质上完全一样，在java编译后都是abstract interface
+			2.接口要用public修饰，因为接口可以让所有的类去实现（非继承），不只是其子类，所以接口要用public去修饰。
+	5.一个接口不能够实现另一个接口，但它可以继承多个其他接口。
+		https://blog.csdn.net/chengqiuming/article/details/91346453
+		https://blog.csdn.net/qq_38140683/article/details/78460235
