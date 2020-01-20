@@ -21,6 +21,7 @@ public class OpenCMD {
                     System.out.println("listener started");
                     try {
                         while (inputStream.read(cache) != -1) {
+
                             System.out.println(new String(cache));
                         }
                     } catch (IOException e) {

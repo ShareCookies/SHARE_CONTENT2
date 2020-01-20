@@ -7,18 +7,22 @@ import java.awt.event.KeyEvent;
 /**
  * @autor hecaigui
  * @date 2020-1-18
- * @description
+ * @description Robot常用工具类（外观模式）
  */
 public class RobotCommonUtils {
     public  Robot rb ;
     public RobotCommonUtils(Robot rb ){
         this.rb = rb;
+        //设置Robot产生一个动作后的默认休眠时间ms,否则执行过快可能会有异常
+        this.rb.setAutoDelay(5);
     }
-    //?
-    private static boolean isUpperLetter() {
+    /**
+     * @description 判断是否开启大写键
+     * @return  true 开启 false关闭
+     */
+    public static boolean isUpperLetter() {
         return Toolkit.getDefaultToolkit().getLockingKeyState(
                 KeyEvent.VK_CAPS_LOCK);
-
     }
     /**
      * @description 鼠标左击
@@ -46,10 +50,15 @@ public class RobotCommonUtils {
         rb.keyRelease(KeyEvent.VK_ALT);
     }
     /**
-     * @description 字符串转robot键盘事件 todo:确保键盘处于英文且大写状态
+     * @description 字符串转robot键盘事件 todo:确保键盘处于英文
      * @param s 数字，26字符 空格 . 等部分特殊字符
      */
     public  void stringTransferToRobotKeyEvent(String s) {
+        //确保处于大写状态
+        if (!RobotCommonUtils.isUpperLetter()){
+            rb.keyPress(KeyEvent.VK_CAPS_LOCK);
+            rb.keyRelease(KeyEvent.VK_CAPS_LOCK);
+        }
         char ss[] = s.toCharArray();
         for (int i = 0; i < ss.length; i++) {
             switch (ss[i]){
@@ -410,4 +419,8 @@ public class RobotCommonUtils {
             }
         }
     }
+    /**
+     * @description 判断是当前输入法未英文还是中文状态 思路想办法通过robot？
+     * @return english chinese
+     */
 }

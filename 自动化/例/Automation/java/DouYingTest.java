@@ -14,8 +14,6 @@ public class DouYingTest {
         // 初始化工作
         try {
             DouYingTest.rb = new Robot();
-            //设置Robot产生一个动作后的默认休眠时间ms,否则执行过快
-            DouYingTest.rb.setAutoDelay(5);
         } catch (AWTException e) {
             e.printStackTrace();
             throw new RuntimeException("Robot对象初始化失败");

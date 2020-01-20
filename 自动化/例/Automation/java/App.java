@@ -8,9 +8,10 @@ public class App {
         // TODO Auto-generated method stub
 //        Scanner input=new Scanner(System.in);
 //        String str=input.next();
-        char ss[] = "rgrgd rgre 444".toCharArray();//利用toCharArray方法转换
-        for (int i = 0; i < ss.length; i++) {
-            System.out.print(ss[i]);
-        }
+//        char ss[] = "rgrgd rgre 444".toCharArray();//利用toCharArray方法转换
+//        for (int i = 0; i < ss.length; i++) {
+//            System.out.print(ss[i]);
+//        }
+        System.out.print(RobotCommonUtils.isUpperLetter());
     }
 }
