@@ -1,3 +1,5 @@
+官网：https://maven.apache.org/
+pom reference：https://maven.apache.org/pom.html
 maven配置文件（settings.xml）：
 	mirrors：
 		https://blog.csdn.net/liangwenmail/article/details/94555054
