@@ -37,3 +37,8 @@
 	5.一个接口不能够实现另一个接口，但它可以继承多个其他接口。
 		https://blog.csdn.net/chengqiuming/article/details/91346453
 		https://blog.csdn.net/qq_38140683/article/details/78460235
+	6.Java8默认接口方法：
+		https://blog.csdn.net/fly910905/article/details/87534052
+		从java8开始，接口可以给方法一个默认的实现，称之为默认接口方法，这样所有实现该接口的子类都可以持有该方法的默认实现。
+
+

@@ -7,15 +7,27 @@ adb命令：
 		启动应用程序
 		am start -n 要启动的应用Activity名称（realActivity）
 		点击：input tap x像素 y像素
-cmd清屏命令：cls
-Process q = Runtime.getRuntime().exec("cmd.exe /c start D:\\startActivity.bat" );
+		向下滑动：input swipe 300 500 300 300
+		
+		实体按键：
+			adb shell input keyevent 4 #返回
+			adb shell input keyevent 3 #Home
+			音量：
+				adb shell input keyevent 24 #音量+
+				adb shell input keyevent 25 #音量-
+	连接多台设备：
+		https://stackoverflow.com/questions/14654718/how-to-use-adb-shell-when-multiple-devices-are-connected-fails-with-error-mor
+		得到当前设备的序列号
+		adb devices
+		进入指定模拟器的shell
+		adb -s {emulator-name} shell
+		附录：
+			也可不进入shell模式，而是直接跟命令
+			adb -s {emulator-name} shell {command}
+			例：
+				adb -s 序列号 shell input keyevent 82
 
-
-
-在编写Java程序时，有时候我们需要调用其他的诸如exe,shell这样的程序或脚本。在Java中提供了两种方法来启动其他程序：
-
-     (1) 使用Runtime的exec()方法
-
-     (2) 使用ProcessBuilder的start()方法
-
-       Runtime和ProcessBulider提供了不同的方式来启动程序，设置启动参数、环境变量和工作目录。但是这两种方法都会返回一个用于管理操作系统进程的Process对象。这个对象中的waitFor()是我们今天要讨论的重点。
+	ADB连接Android设备的三种方法：	
+		https://blog.csdn.net/c1063891514/article/details/79039384
+附：
+	android adb shell 常用命令https://www.jianshu.com/p/ccd35afa8470

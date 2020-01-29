@@ -69,6 +69,8 @@ idea编程辅助：
 	idea中操作数据库：
 		https://www.cnblogs.com/Ran-Chen/p/9646187.html
 		https://blog.csdn.net/Colton_Null/article/details/78857855
+	IDEA同一个工程启动多个实例：
+		run/debug configuration -》新增application实例即可。
 idea设置：
 	idea注释模板:
 			https://blog.csdn.net/sikefeng/article/details/80557265

@@ -1,4 +1,4 @@
-import sun.awt.datatransfer.DataTransferer;
+package common.utils;
 
 import java.awt.*;
 import java.awt.event.InputEvent;

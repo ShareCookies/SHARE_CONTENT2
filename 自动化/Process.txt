@@ -4,5 +4,33 @@
     2.使用ProcessBuilder的start()方法
 	Runtime和ProcessBulider提供了不同的方式来启动程序，设置启动参数、环境变量和工作目录。
 	但是这两种方法都会返回一个用于管理操作系统进程的Process对象。
+	
+	
+	java开启应用程序：（java执行cmd命令）
+		https://www.cnblogs.com/jeryM/p/8459709.html
+		https://www.cnblogs.com/wang-liang-blogs/p/11022869.html
 Process：
 	api文档：https://docs.oracle.com/javase/8/docs/api/java/lang/Process.html
+	
+	附：
+		1.
+			对像p为进程,在给p赋值以前,必须保证p为空
+if(p != null){
+p.destory();
+p = null;
+}
+
+		2.Runtime.getRuntime().exec();有些时候回出现命令卡死在p.waitFor()上，造成线程阻塞，
+		原因：https://blog.csdn.net/weixin_34408624/article/details/86015882
+		3.
+			可以用cmd /?查看帮助信息。
+			cmd指令：
+				cmd /c 命令 是执行完dir命令后关闭命令窗口。
+				cmd /k 命令 是执行完dir命令后不关闭命令窗口。
+				cmd /c start dir 会打开一个新窗口后执行dir指令，原窗口会关闭。
+				cmd /k start dir 会打开一个新窗口后执行dir指令，原窗口不会关闭。
+			cmd命令：
+	
+
+？
+	java为什么可以通过输入流向exe写命令，因为exe有通用的一个规范吗。
