@@ -1,0 +1,21 @@
+easyconnect连接失败：
+	方式1.SSL VPN Windows环境诊断修复工具
+	https://bbs.sangfor.com.cn/forum.php?mod=viewthread&tid=37746
+	方式2.
+	重新安装easyconnect
+easyconnect连接成功，但内网无法访问：
+	1.可能是网络适配有问题：
+		ping 本地ip (判断网卡是否正常)
+		解决方案：
+			方式1.360安全卫士-》断网急救箱，试试看能否修复其中的网络连接配置
+			方式2.控制面板中禁用对应适配器，在重启看看
+			最终解决方案：
+				重装系统，以前有备份过系统那么你就很机智了O(∩_∩)O
+		附：
+			用ping命令检查网络故障
+			1.  ping 127.0.0.1(判断本地tcp/ip协议是否正常)
+			2   ping 本地ip (判断网卡是否正常)
+			3.  ping  网关（判断路由器是否正常）
+			4.  ping  外网ip （判断网络连接是否正常）  
+			5.  ping  外网域名（判断DNS是否正常）
+附：备选teamview，向日葵，qq远程连接

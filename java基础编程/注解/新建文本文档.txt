@@ -1,0 +1,2 @@
+父类上的注解能被子类继承吗，接口上面的注解呢：
+	https://www.cnblogs.com/grasp/p/11362118.html

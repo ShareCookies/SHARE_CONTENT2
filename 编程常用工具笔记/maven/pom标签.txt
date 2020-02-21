@@ -17,3 +17,5 @@ maven插件：
 		https://blog.csdn.net/J080624/article/details/78353634
 	maven-release-plugin：！
 		https://blog.csdn.net/shenchaohao12321/article/details/79302791#commentBox
+！！！	
+	https://www.cnblogs.com/ywjy/p/10587865.html

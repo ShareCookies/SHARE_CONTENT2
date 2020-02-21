@@ -31,3 +31,6 @@ adb命令：
 		https://blog.csdn.net/c1063891514/article/details/79039384
 附：
 	android adb shell 常用命令https://www.jianshu.com/p/ccd35afa8470
+	叉叉助手：https://blog.csdn.net/w739639550/article/details/77435600?utm_source=distribute.pc_relevant.none-task
+	java实现代理转发请求
+	

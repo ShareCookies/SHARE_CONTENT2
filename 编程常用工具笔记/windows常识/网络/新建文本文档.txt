@@ -1,0 +1,13 @@
+ping 与 tracert：
+	https://blog.csdn.net/lhq186/article/details/89630931
+	ping ：
+		ping 主要是用来查看到目的地址的时延和丢包情况，网络是否能通。
+	tracert：
+		tracert是用来查看所经过的每一个路由
+
+用ping命令检查网络故障
+	1.  ping 127.0.0.1(判断本地tcp/ip协议是否正常)
+	2   ping 本地ip (判断网卡是否正常)
+	3.  ping  网关（判断路由器是否正常）
+	4.  ping  外网ip （判断网络连接是否正常）  
+	5.  ping  外网域名（判断DNS是否正常）

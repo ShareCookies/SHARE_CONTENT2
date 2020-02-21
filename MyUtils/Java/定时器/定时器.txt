@@ -1,0 +1,9 @@
+ScheduledThreadPoolExecutor使用：
+	https://www.cnblogs.com/fpqi/p/9720014.html
+	解析:
+		https://www.jianshu.com/p/502f9952c09b
+
+ThreadFactory使用
+	https://blog.csdn.net/nicolastsuei/article/details/84628873
+附：
+	https://blog.csdn.net/u013164931/article/details/80762356

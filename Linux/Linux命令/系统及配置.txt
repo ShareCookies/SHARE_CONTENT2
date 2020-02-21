@@ -41,7 +41,24 @@
 	-h 关机后关闭电源〔halt〕。
 5.网络:
 	防火墙：
-		CentOS 7.0关闭默认防火墙启用iptables防火墙	https://www.linuxidc.com/Linux/2015-05/117473.htm
+		https://www.linuxprobe.com/chapter-08.html
+		一般而言，防火墙策略规则的设置有两种：一种是“通”（即放行），一种是“堵”（即阻止）。
+		防火墙会从上至下的顺序来读取配置的策略规则，
+		在找到匹配项后就立即结束匹配工作并去执行匹配项中定义的行为（即放行或阻止）。
+		如果在读取完所有的策略规则之后没有匹配项，就去执行默认的策略。
+		
+		firewalld与iptables：
+			https://blog.csdn.net/weixin_40658000/article/details/78708375
+			iptables与firewalld都不是真正的防火墙，它们都只是一个服务，用来定义防火墙策略。
+			常用操作：
+				https://www.linuxidc.com/Linux/2015-05/117473.htm
+				firewall：
+					systemctl stop firewalld.service #停止firewall
+					systemctl disable firewalld.service #禁止firewall开机启动
+					firewall-cmd --state #查看默认防火墙状态（关闭后显示notrunning，开启后显示running）
+					
+		附：
+			两个都开启了？
 	ping:
 		ctrl+c 可以停止ping (好似可以关闭所有程序)
 		ctrl+z可以暂停ping，ctrl+z是把进程放到后台去， 你只需要fg就可以把它弄到前台来！
