@@ -10,3 +10,8 @@ https://blog.csdn.net/CZB_xiaoniu/article/details/79896672
 注：
 	idea 中 Tomcat 打war包：
 		deployment 设成 web application: archive
+	项目导入lib中的包：
+		project structure ->libraries ->新增选择lib中的jar包即可
+	项目导入tomcat的包：
+		同上
+		

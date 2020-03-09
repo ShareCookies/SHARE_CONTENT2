@@ -1,3 +1,11 @@
 js遍历对象：
 	var obj = {"name":"tom","sex":"male"};
 	for(var a in obj){console.log(a);console.log(obj[a]);}
+map对象：
+	https://blog.csdn.net/qq_40144558/article/details/80775287
+	https://www.cnblogs.com/mywangpingan/p/10309058.html
+	
+	map.forEach(function(value,key){
+	　　console.log("value",value);  
+	　　console.log("key",key);  
+	});

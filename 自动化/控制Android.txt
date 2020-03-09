@@ -29,8 +29,21 @@ adb命令：
 
 	ADB连接Android设备的三种方法：	
 		https://blog.csdn.net/c1063891514/article/details/79039384
+		以wifi连接调试：
+			https://www.jianshu.com/p/9c28d76bd587
+			数据线连接，adb tcpid 5555
+			断开数据线连接，adb connect 手机ip
+			adb disconnect
+		附：
+			手机IP地址：
+				关于手机-》状态信息
 附：
 	android adb shell 常用命令https://www.jianshu.com/p/ccd35afa8470
+		开启wifi：
+			adb shell svc wifi enable（disable）|adb shell chmod 777 data/local/tmp
+			//adb shell dumpsys wifi
+			
+			
 	叉叉助手：https://blog.csdn.net/w739639550/article/details/77435600?utm_source=distribute.pc_relevant.none-task
 	java实现代理转发请求
 	

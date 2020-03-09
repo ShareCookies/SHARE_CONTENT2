@@ -77,4 +77,17 @@ public class ClassUtils {
 		return map;
 	}
 	
+	/**
+	* 路径获取
+	*/
+	public static void main(String[] args) {
+        // 用户的当前工作目录 !
+		String currentUserWorkingPath = System.getProperty("user.dir");
+        System.out.println(System.getProperty("user.dir"));
+
+        //当前类路径
+        //Thread.currentThread().getContextClassLoader() and Class.getClassLoader() 的区别：https://blog.51cto.com/tianya23/731287
+        String path = Thread.currentThread().getContextClassLoader().getResource(".").getPath();
+        System.out.println(path);
+    }
 }

@@ -26,3 +26,5 @@
 			System.out.println("I'm A construct method code block");
 		}
 	}
+执行顺序：
+	静态代码块(类加载) > 构造代码块(类实例化) > 构造函数代码块()

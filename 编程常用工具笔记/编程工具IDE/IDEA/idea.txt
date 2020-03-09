@@ -50,7 +50,7 @@ idea编程辅助：
 		https://blog.csdn.net/u010003835/article/details/81634604
 
 	热部署：
-		idea插件实现热部署：
+		*idea插件实现热部署：
 			https://www.cnblogs.com/flyrock/archive/2019/09/23/11574617.html
 		IDEA之SpringBoot自带服务器热部署:
 			https://blog.csdn.net/tree_ifconfig/article/details/79689304#commentBox
@@ -128,3 +128,6 @@ idea快捷键：
 		Ctrl+N
 	清理未用到的引用类：
 		Ctrl + Alt + O
+	复制错误提示信息：
+		alt+鼠标左键，即可把全部错误信息复制到剪切板
+
