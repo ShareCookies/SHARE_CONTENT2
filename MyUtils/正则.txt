@@ -12,7 +12,7 @@ https://juejin.im/post/5d245d4151882555300feb77#heading-1
     }
 	
 	替换具体字符串：
-		String newStr = words.replaceAll("o","你好");//输出：hell你好 java，hell你好 php
+		String newStr = words.replaceAll("hello","你好");//输出：你好 java，你好 php
 
 	替换单个字符：
 		String newStr = words.replaceAll("o","你好");//输出：hell你好 java，hell你好 php

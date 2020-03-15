@@ -1,0 +1,46 @@
+dom4jAPI:
+	https://www.oschina.net/uploads/doc/dom4j-1.6.1/org/dom4j/package-summary.html
+	
+	
+dom4j
+	https://blog.csdn.net/qq_41860497/article/details/84339091
+
+
+
+Element常用方法：
+
+	将文档写入XML文件：
+		OutputFormat format = OutputFormat.createPrettyPrint();//缩减型格式
+		//OutputFormat format = OutputFormat.createCompactFormat();//紧凑型格式
+		format.setTrimText(false);//设置text中是否要删除其中多余的空格
+		format.setEncoding("UTF-8");// 指定XML编码
+		XMLWriter writer = new XMLWriter(new FileWriter("output.xml"),format);
+		writer.write(document);
+		writer.close();
+		
+	字符串与XML的转换      
+		1.将字符串转化为XML      
+			String text = "<members> <member>sitinspring</member> </members>";      
+			Document document = DocumentHelper.parseText(text);      
+		2.将文档或节点的XML转化为字符串.     
+			String docXmlText=document.asXML(); //把整个文档转为string
+			String rootXmlText=elemnent.asXML();
+	获取元素节点下所有内容：
+		.content();
+		.setContent();
+		获取元素：
+			List elements
+		获取指定元素：
+			Attribute	attribute(String name) // 根据属性名获取元素对应属性
+			Returns the attribute with the given name	  
+			  例：
+				Attribute attribute = root.attribute("size");  
+		获取文本：
+			String	getText() // 获取节点的文本内容
+			Returns the text value of this element without recursing through child elements.
+		获取元素本身内容：
+			取得节点名：
+				elm.getName()); // 节点名
+			取得属性的值:			  
+				String text = attribute.getText();    
+				String text2=root.element("name").attributeValue("firstname");

@@ -148,6 +148,15 @@ public class StringUtils {
 		http://c.biancheng.net/view/836.html
 		例：
 			../正则.txt
+			//根据map替换参数，来替换字符串 replaceParams.put("域对象类名","User");
+			public static String traverseMapForReplaceString(Map<String,String> replaceParams,String sourceString ){
+				String resultString = sourceString;
+				for (String key : replaceParams.keySet()){
+					resultString = resultString.replaceAll(key,replaceParams.get(key));
+				}
+				return resultString;
+			}			
+			
 	字符串转字符数组：
 	    char ss[] = "rgrgd rgre 444".toCharArray();//利用toCharArray方法转换
         for (int i = 0; i < ss.length; i++) {

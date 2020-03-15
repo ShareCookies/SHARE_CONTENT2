@@ -20,7 +20,7 @@ https://blog.csdn.net/yxl_1207/article/details/80973622
 		...
 		Drop Frame 
 	中断Debug
-	　　1.Debugger上 -》点击Force Return来强制返回一参数，从而不再进行后续的流程。
+	　　1.Debugger -》Frames上 -》点击Force Return来强制返回一参数，从而不再进行后续的流程。
 		2.关闭程序
 Frames方法调用栈:
 	Frames显示了该线程调试所经过的所有方法。

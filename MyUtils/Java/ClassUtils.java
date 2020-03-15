@@ -81,7 +81,7 @@ public class ClassUtils {
 	* 路径获取
 	*/
 	public static void main(String[] args) {
-        // 用户的当前工作目录 !
+        // 用户的当前工作目录 ! F:\autoGenerateMapper
 		String currentUserWorkingPath = System.getProperty("user.dir");
         System.out.println(System.getProperty("user.dir"));
 

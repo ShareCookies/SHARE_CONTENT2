@@ -1,0 +1,5 @@
+运行Python：
+	通过解释器：
+		$ python script.py # Unix/Linux
+		或者
+		C:>python script.py # Windows/DOS

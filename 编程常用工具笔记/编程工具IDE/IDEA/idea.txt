@@ -1,6 +1,6 @@
 IntelliJ IDEA 激活：
 	jetbrains-agent.jar
-
+	
 注：
 	1.
 		idea 文件夹：
@@ -9,7 +9,10 @@ IntelliJ IDEA 激活：
 			https://blog.csdn.net/u012627861/article/details/83028437
 			.iml文件是IDEA的项目标识文件，缺少了这个文件，IDEA就无法识别项目。
 	2.idea和webstorm可以说是同一个软件，它们之间的区别只是预安装插件的区别。
-	总之，idea安装插件后就能实现webstorm的功能。
+		总之，idea安装插件后就能实现webstorm的功能。
+	3.
+		idea是自动保存的。可关闭
+		
 异常：
 	不能显示项目里的文件结构
 		方法一：
@@ -22,7 +25,7 @@ IntelliJ IDEA 激活：
 		https://blog.csdn.net/qq_24309787/article/details/79820818
 		原因：
 			是因为未提交到git版本库
-	暂用内存过大：
+	占用内存过大：
 		https://blog.csdn.net/mediocre117/article/details/54925038
 		建议关闭不必要的插件
 	idea解决Command line is to long	
@@ -50,22 +53,27 @@ idea编程辅助：
 		https://blog.csdn.net/u010003835/article/details/81634604
 
 	热部署：
+		https://my.oschina.net/u/4006148/blog/3173833
 		*idea插件实现热部署：
 			https://www.cnblogs.com/flyrock/archive/2019/09/23/11574617.html
-		IDEA之SpringBoot自带服务器热部署:
-			https://blog.csdn.net/tree_ifconfig/article/details/79689304#commentBox
-			https://blog.csdn.net/weixin_39330443/article/details/81739271
-			DevTools是SpringBoot提供的开发工具，在激活了开发者工具以后，classpath 里对文件进行任何操作都会触发应用程序重新启动。
-			SpringBoot开发者工具在重新启动时会排除 /META-INF/resources 、/resources 、/static 、/public 和/templates ； 
-			可以设置Spring.devtools.restart.exclude 属性来覆盖默认的重启排除目录 ；
+			实时编译：
+				https://blog.csdn.net/qq38397892/article/details/49759207
+				编译快捷键：Ctrl+Shift+F9
+		附：
+			IDEA之SpringBoot自带服务器热部署:
+				https://blog.csdn.net/tree_ifconfig/article/details/79689304#commentBox
+				https://blog.csdn.net/weixin_39330443/article/details/81739271
+				DevTools是SpringBoot提供的开发工具，在激活了开发者工具以后，classpath 里对文件进行任何操作都会触发应用程序重新启动。
+				SpringBoot开发者工具在重新启动时会排除 /META-INF/resources 、/resources 、/static 、/public 和/templates ； 
+				可以设置Spring.devtools.restart.exclude 属性来覆盖默认的重启排除目录 ；
+				注：
+					该方式实现的springBoot的热部署，要在项目的pom中安装插件，麻烦且有代码耦合。
+			idea之Tomcat热部署:
+				https://blog.csdn.net/z15732621582/article/details/79439359
+				https://blog.csdn.net/csdn_kenneth/article/details/78499750  
+				tomcat配置-》server-》On frame deactivation-》update class and resources
 			注：
-				该方式实现的springBoot的热部署，要在项目的pom中安装插件，麻烦且有代码耦合。
-		idea之Tomcat热部署:
-			https://blog.csdn.net/z15732621582/article/details/79439359
-			https://blog.csdn.net/csdn_kenneth/article/details/78499750  
-			tomcat配置-》server-》On frame deactivation-》update class and resources
-		注：
-			热部署即debug下有代码改变就自动重新编译代码
+				热部署即debug下有代码改变就自动重新编译代码
 	idea中操作数据库：
 		https://www.cnblogs.com/Ran-Chen/p/9646187.html
 		https://blog.csdn.net/Colton_Null/article/details/78857855
@@ -130,4 +138,4 @@ idea快捷键：
 		Ctrl + Alt + O
 	复制错误提示信息：
 		alt+鼠标左键，即可把全部错误信息复制到剪切板
-
+	编译快捷键：Ctrl+Shift+F9
