@@ -10,6 +10,8 @@ JAVA之Json对象和Json字符串的区别：
 使用JSONObject生成和解析json
 	https://www.cnblogs.com/joahyau/p/6736637.html
 fastJson：
+	maven地址：
+		https://mvnrepository.com/artifact/com.alibaba/fastjson
 	import com.alibaba.fastjson.JSONObject;
 	https://www.cnblogs.com/cdf-opensource-007/p/7106018.html	
 	fastJson对于json格式字符串的解析主要用到了一下三个类：

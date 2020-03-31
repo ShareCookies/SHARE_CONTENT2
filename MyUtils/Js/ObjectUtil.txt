@@ -4,11 +4,22 @@ js遍历对象：
 map对象：
 	https://blog.csdn.net/qq_40144558/article/details/80775287
 	https://www.cnblogs.com/mywangpingan/p/10309058.html
-	
-	map.forEach(function(value,key){
-	　　console.log("value",value);  
-	　　console.log("key",key);  
-	});
+
+	创建map对象
+		var map = new Map();	
+	常用方法：
+		map.set("key",value)
+		map.get(key)
+		map.delete(key)
+	遍历：
+		map.forEach(function(value,key){
+		　　console.log("value",value);  
+		　　console.log("key",key);  
+		});
+		Map.keys()转换成数组：
+			https://blog.csdn.net/fengqiuzhihua/article/details/103057071
+			let keys = map.keys();
+			let arr = Array.from(keys);
 	
 const ObjectUtil = {
 	//值复制（深拷贝）

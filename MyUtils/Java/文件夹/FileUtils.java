@@ -95,10 +95,10 @@ public class FileUtils {
             String line =bufferedReader.readLine();
             while (line != null){
                 //System.out.println(line);
-                line = bufferedReader.readLine();
-                if (line != null){
+				if (line != null){
                     content.append(line+"\n");
                 }
+                line = bufferedReader.readLine();
             }
         }catch (IOException exception){
             System.err.println(exception);

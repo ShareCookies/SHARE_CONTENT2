@@ -139,3 +139,6 @@ idea快捷键：
 	复制错误提示信息：
 		alt+鼠标左键，即可把全部错误信息复制到剪切板
 	编译快捷键：Ctrl+Shift+F9
+	撤销：
+		ctrl+z  恢复撤回代码：ctrl+shift+z
+	复制当前行：ctrl+d

@@ -17,4 +17,4 @@
 			if (chatContentView.getName()=="11") {
 				cIterator.remove();
 			}
-
+	此时chatContentViews中对应的就已经删除了

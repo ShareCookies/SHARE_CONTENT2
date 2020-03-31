@@ -1,0 +1,53 @@
+侦查是任何网络攻击的第一步。在选择目标的漏洞利用程序之前攻击者必须找
+出漏洞在哪。
+
+构建一个端口扫瞄器
+	建立一个小型的侦查脚本用来扫描目标主机开放的 TCP 端口。
+	然而，为了与 TCP 端口进行交互，我们需要先建立TCP 套接字
+
+?
+	Python，提供了访问 BCD 套接字的接口。BCD 套接字提供了一个应用程序编程接口，允许程序员编写应用程序用以执行主机之间的网络通讯。
+	通过一系列的 socket API 函数，我们可以创建，绑定，监听，连接或者发送流量在 TCP/IP 套接字上。
+
+更好的理解TCP/IP 和 socket 是为了帮助我们更加进一步的发展我们自己的攻击
+
+一种类型的端口扫描就是发送一个 TCP SYN 包,里面包含了一系列的常用的端口并等待 TCP ACK 响应，从而判断端口是否开放。
+相比之下，也可以用一个全握手协议的 TCP 连接扫描来确定服务或者端口的可用性。
+
+TCP 全连接扫描
+
+
+
+
+
+
+
+socket文档：https://docs.python.org/zh-cn/3/library/socket.html
+
+导入 Python 的 BCD 套接字 API 模块 socket。
+Socket API 提供了一系列的函数将用来实现我们的 TCP 端口扫描。
+
+socket.gethostbyname(hostname) ：这个函数将主机名换换为 IP 地址，如
+ www.syngress.com 将会返回 IPv4 地址为 69.163.177.2。
+socket.gethostbyaddr(ip_address) ：这个函数传入一个 IP 地址将返回一个元组， 
+ 其中包含主机名，别名列表和同一接口的 IP 地址列表。
+socket.socket([family[, type[, proto]]]) ：这个函数将产生一个新的 socket，通过给定
+的 socket 地址簇和 socket 类型，地址簇的可以是 AF_INET(默认),AF_INET6 或者
+是 AF_UNIX,另外，socket 类型可以为一个 TCP 套接字即 SOCK_STREAM(默认)，或者是
+UDP 套 接字即 SOCK_DGRAM，或者其他的套接字类型。最后协议号通常为零，在大多
+数 情况下省略不写。
+socket.create_connection(address[, timeout[, source_address]] ：这个函数传入一个
+包含 IP 地 址和端口号的二元元组返回一个 socket 对象，此外还可以选择超时重连。
+(注：这个 函数比 socket.connect()更加高级可以兼容 IPv4 和 IPv6)
+
+
+
+五个步骤
+第一步，我们要输入目标主机名和要扫描的常用端口列表。
+接着，我们将通过目标主机名得到目标的网络 IP 地址。
+我们将用列表里面的每一个端口去连接目标地址，最后确定端口上运行的特殊服务。
+我们将发送特定的数据，并读取特定应用程序返回的标识。
+
+（注：
+optparse 模块在 2.7 版本后将被弃用也不会得到更新，会使用 argparse 模块
+来替代）下面的例子显示了一个快速解析目标主机和扫描端口的方法。

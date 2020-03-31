@@ -167,6 +167,7 @@ js数组：
 		4.array[5]='a';
 		注：
 			concat() 方法用于连接两个或多个数组。
+			arr.concat(arr2,arr3) 该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。
 	数组删除元素：
 		var fruits = ["Banana", "Orange", "Apple", "Mango"];
 		fruits.splice(2,1);

@@ -1,0 +1,2 @@
+long（Long）与int（Integer）之间的转换：
+	https://blog.csdn.net/u014039577/article/details/37925611
