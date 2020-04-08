@@ -1,3 +1,4 @@
+IDEA官网插件下载地址：https://plugins.jetbrains.com/
 链接：https://pan.baidu.com/s/1uRS50GYFySPznlnIWdfclg 
 提取码：rbwg
 
@@ -8,6 +9,7 @@
 6 Statistic: 代码统计
 7 Markdown Navigator
 9 GsonFormat: Json转Java类
+Java Bean to Json : Java类转Json
 
 
 Lombok 样版代码插件

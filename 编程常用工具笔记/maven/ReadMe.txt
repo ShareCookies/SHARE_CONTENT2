@@ -24,5 +24,7 @@ maven配置文件（settings.xml）：
 		https://mvnrepository.com/
 	maven依赖关系图：
 		https://blog.csdn.net/yangxiaobo118/article/details/79890124
+	maven引入本地jar包：
+		https://www.cnblogs.com/chywx/p/11563318.html
 注：
 	1.命令正确，但执行失败，提示未找到一类异常，注意maven镜像。

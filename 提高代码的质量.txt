@@ -1,0 +1,14 @@
+http://luopq.com/2016/02/21/write-good-function
+解决if嵌套：
+	http://luopq.com/2016/02/21/write-good-function
+
+	1 尽早终止函数或返回数据 
+		如果符合某个条件下可以直接终止函数，则应该将这个条件放在第一位。 
+	2 提取内层嵌套为一个函数进行调用	
+	附：
+		使用递归来解决if嵌套：
+			https://www.cnblogs.com/xiongmeiqiang/p/4049398.html
+解决if-else嵌套：	
+	https://www.cnblogs.com/vandusty/p/12375475.html
+	枚举：
+		.\java基础编程\枚举.txt

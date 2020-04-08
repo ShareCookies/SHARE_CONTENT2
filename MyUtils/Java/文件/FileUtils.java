@@ -195,4 +195,17 @@ public class FileUtils {
 //            }
 //        }
 //    }
+
+	//文件转流
+	File file = new File(resourcePath);
+	new FileInputStream(file);
+	//将流转成字节数组
+	  ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+	  byte[] buff = new byte[100]; //buff用于存放循环读取的临时数据
+	  int rc = 0;
+	  while ((rc = inputIs.read(buff, 0, 100)) > 0) {
+		  outStream.write(buff, 0, rc);
+	  }
+	  //合并之后的字节数组
+	  byte[] in_merge = outStream.toByteArray();
 }
