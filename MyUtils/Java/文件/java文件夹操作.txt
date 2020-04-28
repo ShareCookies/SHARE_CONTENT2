@@ -14,7 +14,15 @@ Java读取txt文件和写入txt文件：
 创建文件夹：
 	https://blog.csdn.net/qq_29720657/article/details/78582763
 删除文件：
-	
+
+判断文件夹 ，文件是否存在：
+	http://blog.chinaunix.net/uid-26284395-id-3260936.html
+	File dest = new File(path);
+	if  (!dest .exists()  && !dest .isDirectory())
+	{
+		System.out.println("文件目录不存在");
+		dest .mkdir();
+	}	
 java IO、NIO、AIO
 	https://www.cnblogs.com/sxkgeek/p/9488703.html
 	

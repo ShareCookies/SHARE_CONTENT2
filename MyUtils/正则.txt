@@ -16,6 +16,22 @@ https://juejin.im/post/5d245d4151882555300feb77#heading-1
 
 	替换单个字符：
 		String newStr = words.replaceAll("o","你好");//输出：hell你好 java，hell你好 php
+	html内容替换：
+		https://blog.csdn.net/qq_35008624/article/details/95046932
+		贪婪
+		 String regEx_html = "<[^>]+>"; //定义HTML标签的正则表达式
+		 String regEx_special = "\\&[a-zA-Z]{1,10};";// 定义一些特殊字符的正则表达式 如：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
+		例：
+		    public static void main( String[] args ) {
+			   String  htmlStr= "[{\"填写人\":\"系统测试员\",\"填写时间\":\"2020年04月17日\",\"意见内容\":\"<p>\\n\\t放散阀<span style=\\\"font-size:14px;\\\">放散阀</span>\\n</p>\\n<p>\\n\\t<span style=\\\"font-size:14px;\\\">fsfs</span>\\n</p>\\n<p>\\n\\t<span style=\\\"font-size:14px;\\\"><br />\\n</span>\\n</p>\\n<p>\\n\\t<span style=\\\"font-size:14px;\\\">放散阀<span style=\\\"font-size:24px;\\\">放散阀</span><br />\\n</span>\\n</p>\\n<p>\\n\\t<span style=\\\"font-size:14px;\\\"><span style=\\\"font-size:24px;\\\"><br />\\n</span></span>\\n</p>\\n<p>\\n\\t<span style=\\\"font-size:14px;\\\"><span style=\\\"font-size:24px;\\\">放松放松地方&nbsp; &nbsp;1 1放松放松附&nbsp; 11</span></span>\\n</p>\\n<p>\\n\\t<span style=\\\"font-size:14px;\\\"><span style=\\\"font-size:24px;\\\">范德萨发</span></span>\\n</p>\"}]\n";
+				String regEx_html = "<[^>]+>";
+			   String regEx_special = "\\&[a-zA-Z]{1,10};";
+				htmlStr = htmlStr.replaceAll(regEx_html,"");
+				htmlStr = htmlStr.replaceAll(regEx_special,"");
+				htmlStr = htmlStr.replace("\\n", "");
+				htmlStr = htmlStr.replace("\\t", "");
+				System.out.println(htmlStr);    
+			}
 js：
 	https://www.cnblogs.com/moqiutao/p/6513628.html
 	例：

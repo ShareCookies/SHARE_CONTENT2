@@ -1,26 +1,14 @@
-maven命令基础：
-	https://blog.csdn.net/chy555chy/article/details/86742353
-	命令	含义
-	mvn clean	删除 target 目录
-	mvn package	把 jar 打到本项目的 target 目录下
-	mvn install	把 jar 打到本项目的 target 目录下，之后再将它安装到本地的 maven 仓库中
+
 maven打包三种方法：
 	https://blog.csdn.net/daiyutage/article/details/53739452#commentBox
 	maven多模块打包：
 		https://blog.csdn.net/bicheng4769/article/details/83656981
 		springBoot多模块打包：
 			https://blog.csdn.net/bicheng4769/article/details/83656981
-
+	mvn package:
+		mvn package	把 jar 打到本项目的 target 目录下
+		clean package spring-boot:repackage -Dmaven.test.skip=true --update-snapshots
 
 附录:
 	https://blog.csdn.net/wqc19920906/article/details/79257402
 
-	什么是可执行jar包：
-		https://blog.csdn.net/programmer0804/article/details/78509846
-		https://www.cnblogs.com/yjmyzz/p/executable-jar.html
-		可直接运行的jar包（jar包中有main入口方法）
-		例：
-			使用命令运行科执行的jar包
-			java -jar test.jar 
-		注：
-			普通jar包：jar里是一些通用的工具类（不包含main入口方法）

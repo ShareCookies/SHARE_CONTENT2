@@ -1,0 +1,98 @@
+lsof -i:6051 -t|xargs kill -9
+软件:
+	1.定时执行任务：
+		https://www.cnblogs.com/longjshz/p/5779215.html
+		http://linux.51yip.com/search/crontab
+		创建cron脚本：
+			命名可为crontest.cron。在该脚步中写15,30,45,59 * * * * echo "xgmtest....." >> xgmtest.txt  表示，每隔15分钟，执行打印一次命令 
+			cron脚步语法介绍：
+				第1列 第2列 3 4 5 6
+					第1列表示分钟1～59 每分钟用*或者 */1表示
+					第2列表示小时1～23（0表示0点）
+					第3列表示日期1～31
+					第4列表示月份1～12
+					第5列标识号星期0～6（0表示星期天）
+					第6列要运行的命令
+		添加定时任务：
+			注：一个用户只能添加一个cron脚步，但脚步中可以写多个计划任务
+			crontab crontest.cron
+		crontab命令参数：
+			-l 列出当前计时器的设置
+			-r 删除计时器的设置
+
+
+软件：	
+	守护进程：
+		守护进程（Daemon Process），即Daemon进程是 Linux 中的后台服务进程。
+		它是一个生存期较长的进程，通常独立于控制终端并且周期性地执行某种任务或等待处理某些发生的事件。
+		注：
+			https://www.cnblogs.com/jinxiao-pu/p/9131057.html
+			nohup： 该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。
+			&： 指在后台运行，终端任然能够接收任何输入
+				例：
+					sh test.sh & 任务放后台运行，关闭xshell对应的任务也跟着停止。
+			nohup COMMAND & 使命令永久的在后台执行
+
+
+守护进程是个特殊的孤儿进程，这种进程脱离终端，为什么要脱离终端呢？之所以脱离于终端是为了避免进程被任何终端所产生的信息所打断，其在执行过程中的信息也不在任何终端上显示。由于在 linux 中，每一个系统与用户进行交流的界面称为终端，每一个从此终端开始运行的进程都会依附于这个终端，这个终端就称为这些进程的控制终端，当控制终端被关闭时，相应的进程都会自动关闭。
+	1.Linux软件安装方式:
+		https://blog.csdn.net/aosica321/article/details/77085512
+		http://blog.sina.com.cn/s/blog_55128b090102xn4h.html
+		wget：
+			类似于迅雷，是一种下载工具。
+			通过HTTP、HTTPS、FTP三个最常见的TCP/IP协议下载。
+		rpm：
+			Red-Hat Package Manager（RPM软件包管理器）
+			rpm 只能安装已经下载到本地机器上的rpm 包.
+		yum：
+			Yellow dog Updater, Modified（yum软件包管理器）
+			基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，
+			可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
+			例子：
+				1.安装：
+					yum install package1 安装指定的安装包package1
+				2.更新：
+					yum update package1 更新指定程序包package1
+		dpkg：
+			Debian Package是Debian系统的后台包管理器,类似RPM。
+		apt：
+			Advanced Packaging Tool（apt软件包管理工具）
+			apt包管理工具类似yum,主要用于自动从互联网的软件仓库中搜索、安装、升级、卸载软件或操作系统。
+		串联：
+		   使用wget下载一个 rpm包, 然后用 rpm -ivh  xxx.rpm  安装这个软件
+		   或可以直接用  yum  install  sqoop   来自动下载和安装依赖的rpm软件。
+		以源码安装软件:
+			先下载源码包文件：xxxx.tgz。
+			解压源码包，然后根据情况来进行安装。
+			例：
+				1、解包软件
+					tar zxf xxxx.tgz
+				2、配置
+					cd xxxx
+					./configure ....
+				3、编译
+					make
+				4、安装
+					make install
+				5、卸载        
+					make uninstall		  
+	2.linux下如何查看某软件是否已安装:
+		https://www.cnblogs.com/yuanqiangfei/p/8033000.html
+		因为linux安装软件的方式比较多，所以没有一个通用的办法能查到某些软件是否安装了。
+		总结起来就是这样几类：
+			1、rpm包安装的:
+				可以用rpm -qa看到（查询系统中安装的所有RPM软件包），
+				如果要查找某软件包是否安装，用 rpm -qa | grep 软件或包的名字。
+			2、以deb包安装的：
+				可以用dpkg -l能看到。
+				如果是查找指定软件包，用dpkg -l | grep 软件或者包的名字。
+			3、yum方法安装的：
+				可以用yum list installed查找，
+				如果是查找指定包，命令后加 | grep 软件名或者包名；
+			4、如果是以源码包自己编译安装的，
+				例如.tar.gz或者tar.bz2形式的，这个只能看可执行文件是否存在了，
+				上面两种方法都看不到这种源码形式安装的包。
+				如果是以root用户安装的，可执行程序通常都在/sbin:/usr/bin（/usr/local/bin）目录下。
+				最可靠的去看NSTALL和README文件，一般都会有说明。
+			注：
+				其中rpm yum 是Redhat系linux的软件包管理命令，dpkg是debian系列的软件包管理命令

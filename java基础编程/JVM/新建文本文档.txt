@@ -1,0 +1,4 @@
+GC（Garbage Collector）的真正目的是：
+	回收没有利用价值的被占用的内存。
+	不能被使用或者访问内存区域：没有被其他对象引用到的对象，或者说是引用数为0的对象。
+	（不太理解，activity都要被结束了，那么activity里头的引用对象不是应该也要被终结吗？为啥还要null下了）http://blog.csdn.net/dongsheng186/article/details/46563831

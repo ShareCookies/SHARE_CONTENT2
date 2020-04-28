@@ -7,6 +7,10 @@ https://www.cnblogs.com/binyue/p/3862276.html
 			2.方法的参数变量，就算形参
 	注：
 		String, Integer, Double等immutable的类型特殊处理，可以理解为传值，最后的操作不会修改实参对象。
+	Java对象的复制三种方式
+		https://blog.csdn.net/ztchun/article/details/79110096
+		import org.springframework.beans.BeanUtils;  工具类BeanUtils 
+		BeanUtils.copyProperties(source,target)；source 到 traget
 
 1.变量数据类型的保存：
 	Java中数据类型分为两大类，基本类型和对象类型。
