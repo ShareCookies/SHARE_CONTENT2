@@ -1,20 +1,89 @@
-基础遍历：
-	for，while
-常见遍历：
-	iterator，listIterator，foreach
+遍历两种方式：
+	for：
+		for循环：
+			...就是普通循环
+			例：
+				List的for循环常规遍历： 
+					for(int i=0;i<al.size();i++)
+						System.out.println(al.get(i));
 
-	iterator：
-		
-	foreach：
-		常见功能/foreach.txt
-遍历时的改值：
-	1.遍历数组时，改数组的值是无效的。	
-	2.遍历对象时，改对象的值是有效的，因为对象是引用传递。
-	注：
-		这里的对象变量，如果赋了别的值就无效了。
-循环时的跳出：
-	break 跳出当前循环
-	continue 跳过本次循环，继续下一次循环
+		foreach：
+			foreach是java的一种语法糖，其实际还是使用了迭代器遍历。
+			详：
+				./案例/foreach.txt
+
+	迭代器:
+		https://www.cnblogs.com/lxqiaoyixuan/p/7156944.html
+		介绍:
+			迭代器属于一种设计模式，它可以遍历序列中的对象，而开发人员不需要了解该序列的底层结构。
+			注：
+				1.迭代器通常被称为“轻量级”对象，因为创建它的代价小。
+				2.Iterator 本身并不牵扯线程安全的问题，Iterator主要是循环或操作你的集合。
+				所以iterator是否线程安全得看你所用的集合是否是线程安全的。
+		Iterator:
+			介绍：
+				Iterator是Java迭代器最简单的实现，其功能较简单，只能单向移动。
+			常用操作：
+				集合.iterator()返回一个Iterator。注：iterator()方法是java.lang.Iterable接口,被Collection继承。
+				.hasNext()判断序列中是否还有元素。
+				.next()获得序列中的下一个元素。
+				.remove()将集合中的元素删除。
+		ListIterator：
+			介绍：
+				ListIterator只能用于List及其子类型。
+				注：
+					允许我们向前、向后两个方向遍历 List;
+					遍历时能够获取迭代器当前游标所在位置；
+		...
 		例：
-			常见功能/ContinueTest.java
-		
+			迭代器遍历Collection中每一个元素：
+				Iterator it = collection.iterator(); // 获得一个迭代子, collection具体集合对象
+			　　while(it.hasNext()) {
+			　　	Object obj = it.next(); // 得到当前元素
+			　　}
+			迭代器遍历Map中每一个元素:	
+				Iterator it = tempMap.entrySet().iterator();//获取获取map的键值对条目
+				while (it.hasNext()) {
+					Map.Entry entry = (Map.Entry) it.next();//获取map的单个元素
+					Object key = entry.getKey();//获取map的键
+					Object value = entry.getValue();//获取map的值
+					System.out.println("key=" + key + " value=" + value);
+				}
+	案例代码：
+		./案例/（数组和集合的遍历）ArrayAndCollection.java
+遍历时进行操作：
+	循环时的跳出：
+		跳出当前循环：
+			break 跳出当前循环
+		跳过本次循环：
+			continue 跳过本次循环，继续下一次循环
+				例：
+					./案例/ContinueTest.java
+	遍历时进行改值：
+		遍历同时，修改当前项值，然后在设置回去。
+		注：
+			遍历时当前项是对象的话，只是改对象的值那么无序在设置回去(因为引用传递)。
+		例：
+			使用Iterator遍历集合并修改值：
+				./案例/（list改值）throughSetAndEdit.java
+
+	遍历时删除：
+		推荐使用Iterator来进行遍历删除。
+		否则for遍历array和集合时进行删除，会导致索引改变，遍历抛出异常，或遍历异常。
+			1.如出现 ConcurrentModificationException 异常。
+			2.为何foreach时直接删除list的对象报错：
+				https://m.jb51.net/article/113175.htm
+		例：
+			List边遍历边删除：
+				Iterator<ChatContentView> cIterator=chatContentViews.iterator();
+				while (cIterator.hasNext()) {
+					ChatContentView chatContentView = (ChatContentView) cIterator.next();
+					if (chatContentView.getName()=="11") {
+						cIterator.remove();//此时chatContentViews中对应的就已经删除了
+					}
+				}
+
+待看：！
+	多线程删除：https://blog.csdn.net/mayongzhan_csdn/article/details/79309722
+	poll()方法和remove()方法区别？
+		poll() 和 remove() 都是从队列中取出一个元素，但是 poll() 在获取元素失败的时候会返回空，但是 remove() 失败的时候会抛出异常。
