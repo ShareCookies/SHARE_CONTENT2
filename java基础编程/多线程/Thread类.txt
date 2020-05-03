@@ -85,14 +85,10 @@ Thread类:
 				在一个线程对象启动之前（即start()之前）,
 				调用该对象的setDaemon（true）方法即可把一个线程设置为后台线程。
 			例：
+				./案例/Daemon/
 				Thread daemon=new Thread(new Task());
 				daemon.setDaemon(true);//must call before start()
 				daemon.start();
 			注：
 				1.后台线程创建的任何线程都将自动设置为后台线程。
 				2.后台线程在不执行finally的情况下就会终止其run()方法。			
-	注：
-		程序结束：
-			1.对Java程序来说，一个进程只要还有一个前台线程在运行，那么进程就不会结束。
-			如果一个进程只有后台线程运行，那么该进程就会结束。
-			2.使用Thread时，每个Thread都注册了自己，在它的任务退出其run()并死亡之前，垃圾回收器无法清除它。

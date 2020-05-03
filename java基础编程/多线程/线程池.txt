@@ -51,6 +51,8 @@
 				使用了有限的线程集来执行提交的任务。
 			例：
 				ExecutorService exe= Executors.newFixedThreadPool(10);//创建一个拥有10个线程的线程池。
-				exe.execute(new Task());		
+				exe.execute(new Task());
+	例：
+		./案例/线程池/
 	注：
 		任何线程池中，现有线程在可能的情况下都会被自动复用。！

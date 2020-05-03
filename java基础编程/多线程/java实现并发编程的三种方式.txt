@@ -1,0 +1,90 @@
+java实现多线程编程的三种方式：
+	方式1.
+		介绍：
+			线程可以驱动任务，因此需要一种描述任务的方式。
+			Runnable接口可以定义任务，实现Runnable接口重写run()方法即定义了一个任务。
+		实现：
+			编写任务（即实现Runnable接口）
+			创建线程并驱动任务。
+				用new Thread(Runnable target).start()启动一线程，并驱动任务：
+		例：
+			new Thread(new Runnabel(){//实现Runnable接口
+				public void run(){
+					System.err.println("线程");
+				}
+			}).start();
+			实现Runnabel接口：
+				./案例/Task.java
+	方式2.：
+		实现Callable接口
+		介绍：
+			Callable 接口相较于Runnable 接口，可以有返回值，并且可以抛出异常。
+			https://www.cnblogs.com/baizhanshi/p/6425209.html
+		实现：
+			1.编写任务（即实现Callable接口）
+				注：Callable的泛型对应call()的返回值类型
+			2.Callable编写的任务需要用Future包裹，可用来接收任务返回值。
+				注：FutureTask 是  Future 接口的常用实现类
+			3.创建线程驱动修饰过的任务
+			4.通过FastTask获取任务完成后的返回结果
+		例：
+			./案例/Callable/CallaleDemo.java
+		附：
+			Future：
+			方法：
+				isDone()：
+					isDone()方法可以用来检查分配的任务是否已经被处理了
+				get()：	
+					接收线程运算后的结果
+	方式3.继承Thread，并重写run()方法:
+		介绍：
+			直接继承Thread，重写run方法来编写任务，最后启动线程来驱动任务。
+		例：
+			class ThreadTest extends Thread{
+				public void run(){//在该方法里写该线程要干的事。
+					System.err.println("线程");
+				}
+			}
+			ThreadTest t = new ThreadTest();
+			t.start();//线程的启动:
+		注：
+			为啥可以直接重写Thread的run来实现多线程：
+				线程是用来驱动任务的，
+				而 Thread 又实现了 Runnabel 接口，
+				所以我们可以直接重写Thread的 run 方法来实现任务，并通过Thread的start方法来启用线程来驱动任务执行。
+				注：我认为Thread主要功能是用来开启线程，定义任务只是他的一个附属功能。
+			注：
+				1.
+				private native void start0();
+				这个是Thread用来启动线程的方法,它是由虚拟机去调用了由c语言实现的启动线程的方法。
+				2.
+				我认为这句话可以证明,线程是用来驱动任务的
+				The <code>Runnable</code> interface should be implemented by any
+				class whose instances are intended to be executed by a thread.
+并发编程问题之资源共享：!
+	./共享资源.txt
+注：
+	线程池：
+		./线程池.txt
+	程序结束：
+		1.对Java程序来说，一个进程只要还有一个前台线程在运行，那么进程就不会结束。
+		如果一个进程只有后台线程运行，那么该进程就会结束。
+			注：一个线程未进入死亡状态，垃圾回收器是无法清除它。
+	线程的生命周期:
+		./线程相关内容.txt goto:线程的生命周期
+	线程的调度:
+		./线程相关内容.txt goto:线程的调度
+	Thread类方法介绍：
+		./Thread类.txt
+		设置后台线程：
+			./Thread类.txt goto：后台线程
+	线程的相关操作：
+		捕获线程中异常:
+			./线程的相关操作.txt goto:捕获线程中异常
+		终结任务:
+			./线程的相关操作.txt goto:终结任务
+		线程协作（线程通信）:
+			./线程的相关操作.txt goto:线程协作（线程通信）
+附：
+	线程相关内容介绍:
+		./线程相关内容.txt goto:线程相关内容介绍

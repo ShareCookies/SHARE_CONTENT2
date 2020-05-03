@@ -27,7 +27,7 @@
 		
 		注：
 			1.Collection和Map都继承了Iterable接口，都拥有一个iterator()的方法，该方法返回一个Iterator对象，可以用来遍历集合中的元素 。
-			./遍历小总结.txt
+				例：./遍历小总结.txt
 			2.Collection和Collections：
 				Collection：
 					java.util.Collection 是集合框架的一个父接口。它提供了对集合对象进行基本操作的通用接口方法。Collection接口的意义是为各种具体的集合提供了最大化的统一操作方式。

@@ -13,6 +13,8 @@
 				修改Executor产生线程的方式，给其传递一个ThreadFactory,该工厂将在每个新创建的Thread对象上附着一个Thread.UncaughtExceptionHandler。
 			3.
 				Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+	例：
+		./案例/线程异常/
 终结任务：
 	即把线程设置为中断状态，然后在任务中检测线程是否中断，或捕获中断异常，来结束线程。
 	中断发生的唯一时刻是在任务要进入阻塞操作中，或已经在阻塞操作内部。
@@ -38,7 +40,8 @@
 				Future<?> f =exec.submit(runnable);//runnable任务要处于阻塞状态
 				TimeUnit.MILLISECONDS.sleep(100);//延迟来确保任务处于阻塞
 				f.cancel(true);
-
+		例：
+			./案例/终结任务/
 		注：
 			1.新的concurrent类库似乎在避免对Thread对象的直接操作，转而尽量通过Executor来执行所有操作。
 			2.无法中断正在试图获取synchronized锁或试图执行I/O的线程
