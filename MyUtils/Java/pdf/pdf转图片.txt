@@ -1,0 +1,17 @@
+使用icepdf实现pdf转换成png：
+	...
+	附：
+		Linux系统下使用ICEPdf中的切图片时，PDF文件切图之后生成的图片是乱码的：
+			https://www.cnblogs.com/ch-fl-lc/p/7515019.html
+			乱码是因为服务器没有支持中文的字体库。
+			查看服务器中的中文字体
+				fc-list :lang=zh
+			1.linux服务器中字体库路径：
+				/usr/share/fonts/
+
+				到C:\Windows\Fonts 下拷贝自己想要的字体，在linux下的 /usr/share  下找到fonts文件夹，如果没有找到，那就新建。进入fonts目录，再新建文件夹，名字随便写，如msyh，把从Windows上拷的目录放到这个新建的文件夹msyh内.
+			2.重新加载字体：执行  fc-cache -fv  命令
+
+			3.重启了下tomcat
+		ICEpdf简介
+			https://blog.csdn.net/u012345283/article/details/41284979
