@@ -1,0 +1,16 @@
+java图片压缩：
+	1.使用Thumbnailator 压缩图片大小：
+		https://blog.csdn.net/u014401141/article/details/53391390?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-3.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-3.nonecase
+		https://www.xuebuyuan.com/3229489.html
+		https://blog.csdn.net/zmx729618/article/details/78729049
+	2.使用java类进行图片压缩：
+		https://blog.csdn.net/yang_1996/article/details/78612646?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase
+		https://blog.csdn.net/weixin_42074152/article/details/81029354?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.nonecase
+		https://www.iteye.com/blog/jiangpin1987-749690
+java 中 image 和 byte[] 相互转换：
+	
+	https://blog.csdn.net/huang9012/article/details/18241539/
+	
+	
+
+		

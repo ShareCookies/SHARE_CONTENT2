@@ -1,0 +1,9 @@
+虚拟机网络设置
+	https://blog.csdn.net/lsr40/article/details/79411563
+	https://blog.csdn.net/zhang33565417/article/details/97779579
+安装系统出现directory ezboot not found error loading image:CDMENU.EZB：
+	https://blog.csdn.net/weixin_43564391/article/details/83582792?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1
+	https://blog.csdn.net/yangdan1025/article/details/80649261?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1
+VMware Workstation 15 激活码：
+	CG392-4PX5J-H816Z-HYZNG-PQRG2
+
