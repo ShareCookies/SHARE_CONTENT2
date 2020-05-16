@@ -1,0 +1,29 @@
+java必阅书籍：
+	设计模式：Head First 设计模式 附：《重构 改善既有代码的设计》
+	java基础：java编程思想
+	java框架：spring实战。附：springboot实战，SPRING技术内幕
+	java深入：《深入理解Java虚拟机》
+
+
+书籍介绍：
+	首先，我比较推崇的基础书籍有三本：
+		分别是《深入理解计算机系统》，《tcp/ip详解 卷一、二、三》，《数据结构与算法》。
+		
+		《深入理解计算机系统》
+			比较适合一直从事Java Web开发和APP后端开发工作的人群。
+		《tcp/ip详解 卷一、二、三》
+			其中TCP/IP有三本书，但我们这里把这三本看成是一本大书。
+			比较适合做网络编程的人群，比如你使用netty去开发的话，那么就要对TCP/IP有更深入的了解。
+		《数据结构与算法》
+			这本书，则比较适合做计算研究工作的人，比如刚才提到的分布式计算。
+		注：
+			这里所说的适合，并不是其它两本对你就没有用。
+			比如你做Java Web和APP后端开发，《tcp/ip详解 卷一、二、三》这本书对你的作用也是很大的。
+			这里只是分出个主次关系而已，你要是时间足够的话，能把三本都精读那当然最好不过了。
+
+书籍：
+	《TCP/IP详解》《计算机网络 自顶向下》
+	《算法导论》《Spring揭秘》《高性能MySQL》
+	《Spring实战》第四版，《Java编程思想》《Head First 设计模式》
+	附：
+		https://www.bilibili.com/video/av80660080?share_medium=android&share_source=copy_link&bbid=B4BDC270-2DBF-488D-9867-57FD7A09DF2C6688infoc&ts=1585498860428&tdsourcetag=s_pctim_aiomsg
