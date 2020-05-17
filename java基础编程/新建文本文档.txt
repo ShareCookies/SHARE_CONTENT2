@@ -1,24 +1,13 @@
-
-
-
-
-Java接口：
-接口作为参数传递：
-	介绍：
-将接口类型的参数作为方法参数，
-在使用时则可以将,
-实现了接口的类传递给方法。
-		注：
-			1.传递过去的类可不用强转。
-			（强制转为接口那变成什么？）
-			2.传递过去的类只能调用接口定义的方法。
-接口做方法返回值类型：
-即返回值只要是实现了该接口的类的对象即可。
-接口之间的多继承：
-https://www.cnblogs.com/littlepanpc/p/3616300.html
-一个类只能extends一个父类，可以implements多个接口。
-但一个接口则可以同时extends多个接口，却不能implements任何接口。因而，Java中的接口是支持多继承的。
-
+2.修饰符
+	1.0访问修饰符：
+		可见修饰符：protected,private,public
+		默认修饰符：package（package不是显示的修饰符，它是隐含的，即如果在类、变量等前没加显示的可见性修饰符，那它就是package级别的。所以用package修饰类会报错）
+	1.1非访问修饰符：abstract、static、final。
+		synchronized 
+		transient
+		volatile  
+			
+			
 Serializable接口（序列化接口）：！！！
 https://blog.csdn.net/leixingbang1989/article/details/50556966
 历史：
