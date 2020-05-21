@@ -116,6 +116,8 @@ idea操作：
 		setting -》 marketplace（market市场）  可在线安装插件、
 	任务标记：
 		https://blog.csdn.net/weixin_39835887/article/details/84834934
+	看代码是谁提交的：
+		idea 对应行上右击，选 annotate，可看到代码是谁提交的。
 idea快捷键：
 	搜索窗口：
 		https://blog.csdn.net/gnail_oug/article/details/78281354

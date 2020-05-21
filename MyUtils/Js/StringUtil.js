@@ -7,6 +7,15 @@ Var StringUtil={
 	str .toLowerCase();//.toLowerCase()字符串全转小写
 	var str = "string";
 	str.toUpperCase()//.toUpperCase()字符串全转大写
+字符串比较：
+	js字符串比较的是ascII码
+	let t = "50";let tt="2400";
+	t>tt
+	true //5与2比，因为5ascii大于2的，所以返回true
+	注：
+		1.字符串和数字比，则会自动转换为数字进行比较。
+		2.js字符串转数字
+			Number(11); //无法转换报NaN异常
 查找字符串：
 	indexOf()：
 		可返回指定字符串在字符串中首次出现的位置，若没有找到指定字符串，则会返回-1
