@@ -3,6 +3,11 @@ java图片压缩：
 		https://blog.csdn.net/u014401141/article/details/53391390?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-3.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-3.nonecase
 		https://www.xuebuyuan.com/3229489.html
 		https://blog.csdn.net/zmx729618/article/details/78729049
+		例：
+			Thumbnails.of(file).scale(thumScale) // File //  图片大小比例 0.25f 1/4
+				.outputQuality(thumQuality) //缩放质量 1f 
+				.toFile(file);
+
 	2.使用java类进行图片压缩：
 		https://blog.csdn.net/yang_1996/article/details/78612646?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase
 		https://blog.csdn.net/weixin_42074152/article/details/81029354?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.nonecase

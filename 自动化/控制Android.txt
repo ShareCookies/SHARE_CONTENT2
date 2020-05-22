@@ -42,6 +42,11 @@ adb命令：
 		开启wifi：
 			adb shell svc wifi enable（disable）|adb shell chmod 777 data/local/tmp
 			//adb shell dumpsys wifi
+Auto.JS:
+	https://blog.csdn.net/zy0412326/article/details/105710886
+	https://blog.csdn.net/qq_40618664/article/details/103276120?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-38.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-38.nonecase
+	https://blog.csdn.net/zy0412326/article/details/105474695?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-71.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-71.nonecase
+	https://blog.csdn.net/weixin_44520088/article/details/103000661
 			
 			
 	叉叉助手：https://blog.csdn.net/w739639550/article/details/77435600?utm_source=distribute.pc_relevant.none-task
