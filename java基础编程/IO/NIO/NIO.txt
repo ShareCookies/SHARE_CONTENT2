@@ -116,8 +116,18 @@ NIO核心API：
 			Buffer的实现类：
 				ByteBuffer,CharBuffer,DoubleBuffer,FloatBuffer,IntBuffer,LongBuffer,ShortBuffer,MappedByteBuffer
 	Selector选择器:
-		多个Channel以事件的方式可以注册到同一个Selector，从而达到用一个线程处理多个请求成为可能。
-		Selector可以检测多个NIO channel，看看读或者写事件是否就绪(是否为读写事件做好准备)。
+		http://ifeve.com/selectors/
+		介绍：
+			Selector（选择器）是Java NIO中能够检测一到多个NIO通道，并能够知晓通道是否为诸如读写事件做好准备的组件。
+				多个Channel以事件的方式可以注册到同一个Selector，从而达到用一个线程处理多个请求成为可能。
+			附：
+				为什么要使用Selector：
+					仅用单个线程来处理多个Channels的好处是，只需要更少的线程来处理通道。
+					对于操作系统来说，线程之间上下文切换的开销很大，而且每个线程都要占用系统的一些资源（如内存）。因此，使用的线程越少越好。
+
+					但是，现代的操作系统和CPU在多任务方面表现的越来越好，所以多线程的开销随着时间的推移，变得越来越小了。实际上，如果一个CPU有多个内核，不使用多任务可能是在浪费CPU能力。
+		使用Selector管理Channel:
+			./使用Selector管理Channel.txt
 案例：
 	Socket服务端和客户端案例：
 		有问题
