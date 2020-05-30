@@ -2,6 +2,9 @@ adb命令：
 	https://developer.android.google.cn/studio/command-line/adb#screencap
 	https://blog.csdn.net/qq_39969226/article/details/87897863
 	常用命令：
+		截屏下载图片到电脑：
+			adb shell  screencap /sdcard/screen.png
+			adb pull /sdcard/screen.png
 		显示活动程序
 		dumpsys activity activities
 		启动应用程序
@@ -51,4 +54,6 @@ Auto.JS:
 			
 	叉叉助手：https://blog.csdn.net/w739639550/article/details/77435600?utm_source=distribute.pc_relevant.none-task
 	java实现代理转发请求
+截图识别文字：
+	https://www.csdn.net/gather_27/MtjaAg2sMzc1Mi1ibG9n.html
 	
