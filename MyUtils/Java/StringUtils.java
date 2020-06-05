@@ -162,5 +162,38 @@ public class StringUtils {
         for (int i = 0; i < ss.length; i++) {
             System.out.print(ss[i]);
         }
+	将byte转为String：
+		可以使用 String 接收 byte[] 参数的构造器来进行转换，
+		注：
+			需要注意的点是要使用的正确的编码，否则会使用平台默认编码。	
+	String类中的intern()方法：！
+		intern()方法会首先从常量池中查找是否存在该常量值，如果常量池中不存在则现在常量池中创建，如果已经存在则直接返回。
+		例：
+			String s1=”aa”; 
+			String s2=s1.intern(); 
+			System.out.print(s1==s2);//返回true			
+	*/
+	/*
+	
+	String和StringBuilder、StringBuffer的区别：
+		Java平台提供了两种类型的字符串：String和StringBuffer/StringBuilder，它们均可以储存和操作字符串。
+		String是常量字符串：
+			String引用的字符串内容是不能被改变的。
+			例：
+				String str="abc";System.out.println(str);
+				str=str+"de";System.out.println(str);
+				该段代码会先输出“abc”，然后又输出“abcde”，好像是str这个对象被更改了，其实，这只是一种假象罢了。
+				JVM对于这几行代码是这样处理的，首先创建一个String对象str，并把“abc”赋值给str，
+				然后在第三行中，其实JVM又创建了一个新的对象也名为str，然后再把原来的str的值和“de”加起来再赋值给新的str。
+				而原来的str就会被JVM的垃圾回收机制（GC）给回收掉了，所以，str实际上并没有被更改，也就是前面说的String对象一旦创建之后就不可更改了。
+				所以，Java中对String对象进行的操作实际上是一个不断创建新的对象并且将旧的对象回收的一个过程，所以执行速度很慢。
+		StringBuffer/StringBuilder是变量字符串：
+			其表示的字符串对象可以直接进行修改。
+			StringBuilder是Java 5中引入的，它和StringBuffer的方法完全相同，
+			区别在于StringBuilder是在单线程环境下使用的，因为它的所有方法都没有被synchronized修饰，因此它的效率也比StringBuffer要高。
+		总结：
+	　　String：适用于少量的字符串操作的情况
+	　　StringBuilder：适用于单线程下在字符缓冲区进行大量操作的情况
+	　　StringBuffer：适用多线程下在字符缓冲区进行大量操作的情况	
 	*/
 }

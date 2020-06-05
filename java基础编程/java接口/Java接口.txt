@@ -1,8 +1,13 @@
 接口作用:
-	接口也是类它继承自object类。
 	接口其实就是为了描述一个共有行为，所以ava的接口用来指定一个类必须做什么.。
 	注：
 		接口常用于解耦
+		Interface是否继承自Object：
+			不是
+			https://blog.csdn.net/xidiancoder/article/details/78011148?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase
+			https://www.cnblogs.com/softnovo/articles/4546418.html
+			接口不implements或extend自Object。JLS有一个特殊的子句来将Object方法添加到接口。
+
 接口定义：
 	public  interface  student(){
 		public  String  school="哈哈哈";//接口成员变量默认会添加  public static final修饰   	
