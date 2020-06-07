@@ -1,4 +1,0 @@
-上网的流程：
-	....
-dns：
-	https://blog.csdn.net/houerfei/article/details/44966559
