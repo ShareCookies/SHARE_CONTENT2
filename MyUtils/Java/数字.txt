@@ -3,7 +3,7 @@ long（Long）与int（Integer）之间的转换：
 	int与logn之间的转换
 	1.直接强转：
 		long a = 10;     
-		int b = (int)a;  long a = (int)b;
+		int b = (int)a;  long a = (long)b;
 	2.使用方法：
 		Long a=10; 
 		int b=a.intValue();Long b=a.longValue();

@@ -1,16 +1,44 @@
-
+dependencies与dependencyManagement:
+	<dependencyManagement>：
+		统一管理项目的版本号.
+			确保应用的各个项目的依赖版本一致，才能保证测试的和发布的是相同的成果
+		注：
+			如果某个子项目需要另外一个版本号时，只需要在dependencies中声明一个版本号即可。子类就会使用子类声明的版本号，不继承于父类版本号。
+		使用：
+			
+			1.继承父类：
+				<parent>  
+					<artifactId>itoo-base-parent</artifactId>  
+					<groupId>com.tgb</groupId>  
+			  
+					<version>0.0.1-SNAPSHOT</version>  
+					<relativePath>../itoo-base-parent/pom.xml</relativePath>  
+				</parent>  
+			2.导入引用：
+				<dependencyManagement>
+					<dependencies>
+						<!-- 该pom提供依赖版本管理和项目属性配置 -->
+						<dependency>
+							<groupId>com.rongji.egov</groupId>
+							<artifactId>dependencies</artifactId>
+							<version>1.0.0-SNAPSHOT</version>
+							<type>pom</type>
+							<scope>import</scope>
+						</dependency>
+					</dependencies>
+				</dependencyManagement>
+	<dependency>：
+		scope属性：
+			？
+		附：
+			1.dependency没有注明version时，maven项目依赖会报错误
+				当父工程指定过版本号的情况下可以不显式指定
+				即父工程使用dependencyManagement
 maven-pom标签：
 
 	maven中scope= import：
 		https://blog.csdn.net/leoxyk/article/details/79622507
-<dependency>：
-	scope属性：
-		？
-	注：
-		1.dependency没有注明version时，maven项目依赖会报错误
-		2.依赖时什么时候可以不指定版本号：
-			1.当依赖在父工程指定过版本号的情况下可以不显式指定
-			即父工程使用dependencyManagement
+
 maven插件：
 	maven-source-plugin：
 		https://blog.csdn.net/u014515854/article/details/79696894
