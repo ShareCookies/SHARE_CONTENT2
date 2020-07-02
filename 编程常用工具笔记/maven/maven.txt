@@ -1,9 +1,11 @@
-mvn简洁：https://www.cnblogs.com/yjmyzz/p/3495762.html
-https://blog.csdn.net/hcmony/article/details/56013655
-
-https://www.cnblogs.com/whgk/p/7112560.html
-https://blog.csdn.net/qq_28411869/article/details/82909032
-maven教程：http://www.yiidian.com/maven/maven-life-cycle.html
+maven教程：
+	http://www.yiidian.com/maven/maven-life-cycle.html
+	
+	
+	https://www.cnblogs.com/yjmyzz/p/3495762.html
+	https://blog.csdn.net/hcmony/article/details/56013655
+	https://www.cnblogs.com/whgk/p/7112560.html
+	https://blog.csdn.net/qq_28411869/article/details/82909032
 maven是什么：
 	Maven是基于项目对象模型(POM project object model)。
 	maven不仅是一款优秀的构建工具，而且是一款优秀的依赖管理工具和项目信息管理工具。
@@ -39,9 +41,8 @@ maven是什么：
 		也就是一般公司都会创建这种第三方仓库，保证项目开发时，项目所需用的jar都从该仓库中拿，每个人的版本就都一样。
 		注意：连接私服，需要单独配置。如果没有配置私服，默认不使用
 	中央仓库：
+		这个公共仓库是由Maven自己维护，里面有大量的常用类库，并包含了世界上大部分流行的开源项目构件。目前是以java为主
 		Maven内置了远程公用仓库：http://repo1.maven.org/maven2
-　　	这个公共仓库是由Maven自己维护，里面有大量的常用类库，并包含了世界上大部分流行的开源项目构件。目前是以java为主
-		工程依赖的jar包如果本地仓库没有，默认从中央仓库下载
 maven环境安装：
 	maven环境的安装，其目的是为了使用命令行创建和操作解析maven项目。
 	上半部分：https://blog.csdn.net/qq_37497322/article/details/78988378
