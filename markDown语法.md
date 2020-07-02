@@ -8,6 +8,8 @@
 **换行方式1**：尾部两个空格，然后回车，下一行的内容即可换行  
 **换行方式2**：与上个内容中间空出一行
 
+&emsp;&emsp;**缩进**
+
 * 无序列表1 
 * 1
 
@@ -40,9 +42,9 @@
 例子  
 [百度](https://www.baidu.com/)
 
-**插入图像**:![描述](图片链接地址)  
-例子  
-![描述](https://www.baidu.com/img/bd_logo1.png)
+**插入图像**:![描述](https://www.baidu.com/img/bd_logo1.png)
+[插入图像的3种方式](https://www.jianshu.com/p/280c6a6f2594)  
+
 
 
 - [目录的制作，可跳转到二级标题的位置，gitub上有效](#二级分级标题)

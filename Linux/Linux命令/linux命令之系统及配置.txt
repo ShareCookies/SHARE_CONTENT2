@@ -90,4 +90,9 @@
 	链接分为软链接(类似于windows系统中的快捷方式)
 	和硬链接(...)，
 	命令默认使用硬链接。
-
+service服务：
+	https://blog.csdn.net/fly_captain/article/details/82894014
+	服务本质就是运行在后台的进程，因此我们又称为守护进程。
+	服务管理指令
+       service    服务名 [start | stop | restart | reload | status]
+	   例：查看当前防火墙的状况 service firewalld  status

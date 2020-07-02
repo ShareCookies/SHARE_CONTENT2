@@ -32,6 +32,17 @@ https://juejin.im/post/5d245d4151882555300feb77#heading-1
 				htmlStr = htmlStr.replace("\\t", "");
 				System.out.println(htmlStr);    
 			}
+	正则查找：
+		https://www.runoob.com/java/java-regular-expressions.html
+		https://blog.csdn.net/weixin_42868638/article/details/82721489
+		Pattern pattern = Pattern.compile("Java");
+		String test = "123Java456";
+
+		Matcher matcher = pattern.matcher(test);
+		matcher.find();
+		System.out.println(matcher.start());//返回3
+		System.out.println(matcher.end());//返回7
+		System.out.println(matcher.group());//返回Java
 js：
 	https://www.cnblogs.com/moqiutao/p/6513628.html
 	例：

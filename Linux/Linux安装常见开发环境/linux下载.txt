@@ -1,0 +1,2 @@
+CentOS 7镜像下载：
+	https://www.jianshu.com/p/a63f47e096e8
