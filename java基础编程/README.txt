@@ -10,3 +10,8 @@ java 8 API:
 	下载链接：http://download.csdn.net/detail/qw599186875/9608724
 	oracle公司官方英文API： 
 	https://docs.oracle.com/javase/8/docs/api/
+安装：
+	./windows安装java开发环境.txt
+	./Linux安装java.txt
+Java基础：
+	./Java基础.txt

@@ -13,75 +13,75 @@ import java.util.Date;
 public class DateUtil {
 	public static void main(String[] args) {
 		
-		Date date=new Date();//java.util.Date¶ÔÏóÊµÀı»¯µÄÊ±ºò¾Í±£´æÁËÊ±¼ä£¬Ê±¼äÊÇÊµÀı»¯Ê±µÄÊ±¼ä´Á¡£
+		Date date=new Date();//java.util.Dateå¯¹è±¡å®ä¾‹åŒ–çš„æ—¶å€™å°±ä¿å­˜äº†æ—¶é—´ï¼Œæ—¶é—´æ˜¯å®ä¾‹åŒ–æ—¶çš„æ—¶é—´æˆ³ã€‚
 		//System.currentTimeMillis();
 		
 		/**
-		 * Í¨¹ıjava.util.Date»ñÈ¡Ê±¼ä´Á£¬Ê±¼ä´Á¾ÍÊÇlongĞÍ±äÁ¿
+		 * é€šè¿‡java.util.Dateè·å–æ—¶é—´æˆ³ï¼Œæ—¶é—´æˆ³æ˜¯the number of milliseconds since 1970-07-01, 00:00:00 GMT
 		 */
-		date.getTime();//»ñÈ¡Ê±¼ä´Á
+		date.getTime();//è·å–æ—¶é—´æˆ³
 		System.out.println(date.getTime());
 
 		/**
-		 * util.Date×ª»»³ÉÊı¾İ¿âÄÜ±£´æµÄÊ±¼ä£º
-		 * ÕâÀïÊÇjava.util.Date×ª³É java.sql.Date¡£×ª³ÉÆäËûsqlÊ±¼äÏÂÍ¬Àí¡£
-		 * java.sql°üÏÂÊ±¼ä½éÉÜ£º
-		 * 	Date£º±íÊ¾ÈÕÆÚ£¬Ö»ÓĞÄêÔÂÈÕ£¬Ã»ÓĞÊ±·ÖÃë¡£»á¶ªÊ§Ê±¼ä£»
-		 * 	Time£º±íÊ¾Ê±¼ä£¬Ö»ÓĞÊ±·ÖÃë£¬Ã»ÓĞÄêÔÂÈÕ¡£»á¶ªÊ§ÈÕÆÚ£»
-		 * 	Timestamp£º±íÊ¾Ê±¼ä´Á£¬ÓĞÄêÔÂÈÕÊ±·ÖÃë£¬ÒÔ¼°ºÁÃë¡£
-		 * 	×¢:util.Date×ªsql.Dateºó£¬ÔÙ´Ósql.Date»ñÈ¡Ê±¼ä´Á£¬¸ÃÊ±¼ä´ÁÈÎÈ»±£ÁôÁËÊ±·ÖÃë¡£
+		 * util.Dateè½¬æ¢æˆæ•°æ®åº“èƒ½ä¿å­˜çš„æ—¶é—´ï¼š
+		 * è¿™é‡Œæ˜¯java.util.Dateè½¬æˆ java.sql.Dateã€‚è½¬æˆå…¶ä»–sqlæ—¶é—´ä¸‹åŒç†ã€‚
+		 * java.sqlåŒ…ä¸‹æ—¶é—´ä»‹ç»ï¼š
+		 * 	Dateï¼šè¡¨ç¤ºæ—¥æœŸï¼Œåªæœ‰å¹´æœˆæ—¥ï¼Œæ²¡æœ‰æ—¶åˆ†ç§’ã€‚ä¼šä¸¢å¤±æ—¶é—´ï¼›
+		 * 	Timeï¼šè¡¨ç¤ºæ—¶é—´ï¼Œåªæœ‰æ—¶åˆ†ç§’ï¼Œæ²¡æœ‰å¹´æœˆæ—¥ã€‚ä¼šä¸¢å¤±æ—¥æœŸï¼›
+		 * 	Timestampï¼šè¡¨ç¤ºæ—¶é—´æˆ³ï¼Œæœ‰å¹´æœˆæ—¥æ—¶åˆ†ç§’ï¼Œä»¥åŠæ¯«ç§’ã€‚
+		 * 	æ³¨:util.Dateè½¬sql.Dateåï¼Œå†ä»sql.Dateè·å–æ—¶é—´æˆ³ï¼Œè¯¥æ—¶é—´æˆ³ä»»ç„¶ä¿ç•™äº†æ—¶åˆ†ç§’ã€‚
 		 */
 		java.sql.Date sqlDate=new java.sql.Date(date.getTime());
 		System.out.println(sqlDate);
 		
 		/**
-		 * ÈÕÆÚÍùºóÍÆ³ÙnÌì
+		 * æ—¥æœŸå¾€åæ¨è¿Ÿnå¤©
 		 */
-		Date date1 = new Date();//È¡Ê±¼ä 
+		Date date1 = new Date();//å–æ—¶é—´ 
 	    Calendar calendar  =   Calendar.getInstance();
-	    calendar.setTime(date1); //ĞèÒª½«dateÊı¾İ×ªÒÆµ½Calender¶ÔÏóÖĞ²Ù×÷
-	    calendar.add(calendar.DATE,2);//°ÑÈÕÆÚÍùºóÔö¼ÓnÌì.ÕıÊıÍùºóÍÆ,¸ºÊıÍùÇ°ÒÆ¶¯ 
-	    date1=calendar.getTime();   //Õâ¸öÊ±¼ä¾ÍÊÇÈÕÆÚÍùºóÍÆÒ»ÌìµÄ½á¹û 
+	    calendar.setTime(date1); //éœ€è¦å°†dateæ•°æ®è½¬ç§»åˆ°Calenderå¯¹è±¡ä¸­æ“ä½œ
+	    calendar.add(calendar.DATE,2);//æŠŠæ—¥æœŸå¾€åå¢åŠ nå¤©.æ­£æ•°å¾€åæ¨,è´Ÿæ•°å¾€å‰ç§»åŠ¨ 
+	    date1=calendar.getTime();   //è¿™ä¸ªæ—¶é—´å°±æ˜¯æ—¥æœŸå¾€åæ¨ä¸€å¤©çš„ç»“æœ 
 	    
 		/**
-		 * util.Date¸ñÊ½»¯³ÉÊä³ö:
+		 * util.Dateæ ¼å¼åŒ–æˆè¾“å‡º:
 		 */
-		SimpleDateFormat simpleDate=new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ hh:mm:ss");
+		SimpleDateFormat simpleDate=new SimpleDateFormat("yyyyå¹´MMæœˆddæ—¥ hh:mm:ss");
 		System.out.println(simpleDate.format(date));
 		/**
-		 * ×Ö·û´®×ª³Éjava.util.Date:
+		 * å­—ç¬¦ä¸²è½¬æˆjava.util.Date:
 		 */
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//×¢£ºHH:mm:ssÊÇ24½øÖÆ£¬hh:mm:ssÊÇ12½øÖÆ
+		//æ³¨ï¼šHH:mm:ssæ˜¯24è¿›åˆ¶ï¼Œhh:mm:ssæ˜¯12è¿›åˆ¶
     	try {
 			Date begDate=sdf.parse("2018-06-20");
 			System.out.println(begDate);
 			//System.out.println(sdf.format(begDate));
 		} catch (Exception e) {
-			System.out.println("ÈÕÆÚ³ö´í");
+			System.out.println("æ—¥æœŸå‡ºé”™");
 			e.printStackTrace();
 		}
     	/**
-    	 * java»ñÈ¡ÄêÔÂÈÕ£º
-    	 * 	1.»ñÈ¡ÄêÔÂÈÕµÄÊ±¼ä´Á£º
-    	 * 		util.dateÓÃsdf¸ñÊ½»¯³ÉÄêÔÂÈÕ×Ö·û´®£¬ÔÙ°Ñ×Ö·û´®×ª³Éutil.Date:
-    	 * 	2.µ¥¶À»ñÈ¡ÄêÔÂÈÕ£¬ÔÚÆ´½Ó
+    	 * javaè·å–å¹´æœˆæ—¥ï¼š
+    	 * 	1.è·å–å¹´æœˆæ—¥çš„æ—¶é—´æˆ³ï¼š
+    	 * 		util.dateç”¨sdfæ ¼å¼åŒ–æˆå¹´æœˆæ—¥å­—ç¬¦ä¸²ï¼Œå†æŠŠå­—ç¬¦ä¸²è½¬æˆutil.Date:
+    	 * 	2.å•ç‹¬è·å–å¹´æœˆæ—¥ï¼Œåœ¨æ‹¼æ¥
     	 *  	
     	 */
-    	Calendar rightCalendar = Calendar.getInstance();//»ñÈ¡µ±Ç°µØÇøµÄÈÕÆÚĞÅÏ¢
-        System.out.println("Äê: " + rightCalendar.get(Calendar.YEAR));  
-        System.out.println("ÔÂ: " + (rightCalendar.get(Calendar.MONTH) + 1));  
-        System.out.println("ÈÕ: " + rightCalendar.get(Calendar.DAY_OF_MONTH));  
-        rightCalendar.get(Calendar.HOUR_OF_DAY);//Ê±
-        rightCalendar.get(Calendar.MINUTE);//·Ö
-        rightCalendar.get(Calendar.SECOND);//Ãë
-        System.out.println("ĞÇÆÚ: " + (rightCalendar.get(Calendar.DAY_OF_WEEK)-1));//Î÷·½ĞÇÆÚ´ÓĞÇÆÚÈÕ¿ªÊ¼¼ÆËã 
-        //calendar.add(Calendar.MONTH, 1);//ÏÂÔÂ½ñÌì
-        rightCalendar.set(calendar.get(Calendar.YEAR), rightCalendar.get(Calendar.MONTH)+1, 1);//°ÑÊ±¼äÎªÏÂ¸öÔÂµÚÒ»Ìì
-        rightCalendar.add(Calendar.DAY_OF_MONTH, -1);//Ê±¼äµ¹ÍËÒ»Ìì
-    	System.out.println("¸ÃÔÂ×îºóÒ»Ìì£º"+rightCalendar.get(Calendar.DAY_OF_MONTH));
+    	Calendar rightCalendar = Calendar.getInstance();//è·å–å½“å‰åœ°åŒºçš„æ—¥æœŸä¿¡æ¯
+        System.out.println("å¹´: " + rightCalendar.get(Calendar.YEAR));  
+        System.out.println("æœˆ: " + (rightCalendar.get(Calendar.MONTH) + 1));  
+        System.out.println("æ—¥: " + rightCalendar.get(Calendar.DAY_OF_MONTH));  
+        rightCalendar.get(Calendar.HOUR_OF_DAY);//æ—¶
+        rightCalendar.get(Calendar.MINUTE);//åˆ†
+        rightCalendar.get(Calendar.SECOND);//ç§’
+        System.out.println("æ˜ŸæœŸ: " + (rightCalendar.get(Calendar.DAY_OF_WEEK)-1));//è¥¿æ–¹æ˜ŸæœŸä»æ˜ŸæœŸæ—¥å¼€å§‹è®¡ç®— 
+        //calendar.add(Calendar.MONTH, 1);//ä¸‹æœˆä»Šå¤©
+        rightCalendar.set(calendar.get(Calendar.YEAR), rightCalendar.get(Calendar.MONTH)+1, 1);//æŠŠæ—¶é—´ä¸ºä¸‹ä¸ªæœˆç¬¬ä¸€å¤©
+        rightCalendar.add(Calendar.DAY_OF_MONTH, -1);//æ—¶é—´å€’é€€ä¸€å¤©
+    	System.out.println("è¯¥æœˆæœ€åä¸€å¤©ï¼š"+rightCalendar.get(Calendar.DAY_OF_MONTH));
     	/**
-    	 * Ê±¼äµÄÒ»Ğ©Ó¦ÓÃ
+    	 * æ—¶é—´çš„ä¸€äº›åº”ç”¨
     	 * https://blog.csdn.net/cynhafa/article/details/8053166
     	 */
 		

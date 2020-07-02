@@ -196,3 +196,9 @@
 		
 		编译器对final域要遵守的两个重排序规则:?
 		
+		
+	native关键字:
+		https://www.cnblogs.com/KingIceMou/p/7239668.html
+		Java平台有个用户和本地C代码进行互操作的API，称为Java Native Interface (Java本地接口)。
+		使用native修饰的函数(方法)，说明这个方法是原生函数。
+		即这个方法是用C/C++语言实现的，且被编译成了DLL，由java负责去调用。
