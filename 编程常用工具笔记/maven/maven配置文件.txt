@@ -1,0 +1,105 @@
+介绍：
+	maven默认有个全局的配置：maven安装目录/conf/settings.xml。
+	可以在里面设置私服仓库地址，本地依赖保存地址等
+	例：
+		./例/settings.xml
+部分配置参数介绍：
+	mirrors：
+		https://blog.csdn.net/liangwenmail/article/details/94555054
+		多个mirror的情况下，默认第一个生效。
+		镜像地址：
+			<!-- 要翻墙 -->
+			  <mirror>
+				 <id>allrepository</id>
+				 <name>allrepository</name>
+				 <url>http://repo1.maven.org/maven2</url>
+				 <mirrorOf>*</mirrorOf>
+			  </mirror>
+		
+		  <mirror>
+			 <id>alimaven</id>
+			 <name>aliyun maven</name>
+			 <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+			 <mirrorOf>central</mirrorOf>
+		  </mirror>
+maven配置：
+	例：
+		./例/
+	maven的本地指定仓库位置：
+		<localRepository>D://he_space/repository</localRepository>
+	maven指定远程仓库位置：
+		https://blog.csdn.net/xiaoyu19910321/article/details/78580583
+		https://blog.csdn.net/sinat_39789638/article/details/77918292
+		//配置镜像，让maven只使用私服获取
+		<mirrors>
+		  <mirror>
+			<id>154-nexus</id>
+			<name>154 nexus</name>
+			<url>http://192.168.0.40:8081/repository/public/</url>
+			<mirrorOf>*</mirrorOf>
+		  </mirror>
+		</mirrors>
+		附：
+			<!-- 要翻墙 -->
+			  <mirror>
+				 <id>allrepository</id>
+				 <name>allrepository</name>
+				 <url>http://repo1.maven.org/maven2</url>
+				 <mirrorOf>*</mirrorOf>
+			  </mirror>
+	
+	
+			  <mirror>
+				 <id>alimaven</id>
+				 <name>aliyun maven</name>
+				 <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+				 <mirrorOf>central</mirrorOf>
+			  </mirror>
+		?
+			多镜像？：那个优先？https://blog.csdn.net/haohaizijhz/article/details/72841489
+	maven操作nexus的权限设置：？
+		配置maven可以连接私服打包上传项目（maven的deploy指令）
+		</servers>
+			<server>
+			  <id>154-nexus</id>
+			  <username>admin</username>
+			  <password>admin123</password>
+			</server>
+			<server>
+			  <id>release</id>
+			  <username>admin</username>
+			  <password>admin123</password>
+			</server>
+
+			<server>
+			  <id>snapshots</id>
+			  <username>admin</username>
+			  <password>admin123</password>
+			</server>
+
+			<server>
+			  <id>zj-snapshots</id>
+			  <username>deployer</username>
+			  <password>rjadmin</password>
+			</server>
+
+			<server>
+			  <id>zj-release</id>
+			  <username>deployer</username>
+			  <password>rjadmin</password>
+			</server>
+		</servers>
+	<!--根据环境参数来调整构建配置的列表。settings.xml中的profile元素是pom.xml中profile元素的裁剪版本。-->
+	<!--如果一个settings中的profile被激活，它的值会覆盖任何其它定义在POM中或者profile.xml中的带有相同id的profile。  -->
+	<profiles>
+		<!--根据环境参数来调整的构件的配置 -->
+		<profile>
+		...
+	    </profile>
+	</profiles>
+	<!--对应的 profile都会被激活。-->
+	<!--如果没有匹配的profile，则什么都不会发生,Maven则会像往常一样运行。例如，env-test是一个activeProfile，则在pom.xml（或者profile.xml）中对应id的profile会被激活。-->
+	<activeProfiles>
+		<activeProfile>env-test</activeProfile>
+	</activeProfiles>
+	

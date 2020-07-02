@@ -1,31 +1,143 @@
 链接：
 	官网：https://maven.apache.org/
-	pom reference：https://maven.apache.org/pom.html
-maven配置文件（settings.xml）：
-	mirrors：
-		https://blog.csdn.net/liangwenmail/article/details/94555054
-		多个mirror的情况下，默认第一个生效。
-		镜像地址：
-			<!-- 要翻墙 -->
-			  <mirror>
-				 <id>allrepository</id>
-				 <name>allrepository</name>
-				 <url>http://repo1.maven.org/maven2</url>
-				 <mirrorOf>*</mirrorOf>
-			  </mirror>
-		
-		  <mirror>
-			 <id>alimaven</id>
-			 <name>aliyun maven</name>
-			 <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-			 <mirrorOf>central</mirrorOf>
-		  </mirror>
-依赖：
+	maven教程：http://www.yiidian.com/maven/maven-life-cycle.html
 	maven依赖查询：
 		https://mvnrepository.com/
-	maven依赖关系图：
-		https://blog.csdn.net/yangxiaobo118/article/details/79890124
-	maven引入本地jar包：
+maven是什么：
+	1.Maven是一款开源的项目管理工具软件。
+	Maven采用了一种被称之为Project Object Model (项目对象模型，简称POM)概念来管理项目，
+	所有的项目配置信息都被定义在一个叫做POM.xml的文件中, 
+	通过该文件Maven可以管理项目的整个声明周期，包括清除、编译、测试、报告、打包、部署等。
+	2.maven不仅是一款优秀的构建工具，而且是一款优秀的依赖管理工具和项目信息管理工具。
+	hcg：
+		maven是一个工具软件，它能帮你管理java项目的打包和依赖等。
+			目前maven仅支持管理java项目。
+		但是你的项目想要使用maven来管理，那么就要符合maven的规范才行，即要提供pom.xml(项目配置文件)，和目录要符合maven要求。
+			maven项目规约:
+				http://www.yiidian.com/maven/maven-standard.html
+
+maven的依赖管理：
+	仓库：
+		介绍：
+			仓库就是存放依赖和插件的地方。
+				Maven在某个统一的位置存储所有项目的共享的构件，这个统一的位置，就称之为仓库。
+			附：
+				maven会根据pom中依赖配置自动从仓库中自动获取jar包，所以你无需手动引入jar包等。
+		仓库分类：
+			本地仓库、第三方仓库(私服)、中央仓库。
+		从仓库获取jar包过程：
+			优先从本地仓库查找，
+			没有的话，如果有私服配置从私服找，
+			没有的话，从中央仓库获取，然后下载到本地仓库
+		本地仓库：
+			Maven会将工程中依赖的构件(Jar包和插件)从远程下载到本机一个目录下管理，每个电脑默认的仓库是在 $user.home/.m2/repository下
+				例：C:\Users\Administrator\.m2\repository
+			附：
+			修改本地库位置：
+				1.新建一个文件夹作为本地仓库（）
+				2.
+					方式1.maven安装目录/conf/setting.xml文件中修改
+					方式2.idea-》setting-》maven中可以覆盖。
+					
+maven引入本地jar包：
 		https://www.cnblogs.com/chywx/p/11563318.html
-注：
-	1.命令正确，但执行失败，提示未找到一类异常，注意maven镜像。
+					
+					
+		第三方仓库：
+			第三方仓库，又称为内部中心仓库，也称为私服。
+			一般是由公司自己设立的，只为本公司内部共享使用。
+			有两个作用：
+				1.存放一些公司内部的包，供公司人员使用。
+				2.作为公用类库镜像缓存，提高jar下载的频率。
+			注：
+				如果想让maven连接私服获取jar包，那么需要配置私服信息。如果没有配置私服，默认不使用。
+			附：
+				使用nexus构建私服：
+					http://www.yiidian.com/maven/maven-dependence.html
+				使用nexus上传下载资源：	
+					...
+		中央仓库：
+			这个公共仓库是由Maven自己维护，里面有大量的常用类库，并包含了世界上大部分流行的开源项目构件。目前是以java为主
+			Maven内置了远程公用仓库：http://repo1.maven.org/maven2
+maven环境安装：
+	https://blog.csdn.net/qq_37497322/article/details/78988378
+	1.安装maven
+	2.修改maven配置文件：（settings.xml）
+		maven默认有个全局的配置：maven安装目录/conf/settings.xml。
+		可以在里面设置私服仓库地址，本地依赖保存地址等
+	附：
+		./maven配置文件.txt
+pom.xml介绍:(项目配置文件)
+	https://maven.apache.org/pom.html
+	附录：
+		idea中的maven依赖关系图：
+			https://blog.csdn.net/yangxiaobo118/article/details/79890124
+	
+
+maven多模块：
+	https://www.cnblogs.com/h--d/p/6001366.html
+	一些较大的项目，通过合理的模块拆分，实现代码的复用，便于维护和管理。
+	要点：
+		父模块pom指明：
+		    <packaging>pom</packaging>
+			<modules>
+				<module>bg_mana_sys-business</module>
+				<module>子模块名</module>
+			</modules>
+		子模块pom指明：
+			<parent>父模块</parent>
+			 <packaging>jar</packaging>一定要jar吗？
+	例：
+　　某一多模块项目结构：
+  　　　　test-hd-parent 　　(父级)
+       　　　　  ---pom.xml
+       　　　　  ---test-hd-api   　　　    (第三方接口层)
+            　　　　　　  ----pom.xml    
+    　　　　　  ---test-hd-foundation     (基础工具层)
+            　　　　　　  ----pom.xml
+       　　　　  ---test-hd-resource　    (资源层) 
+              　　　　　　----pom.xml
+       　　　　  ---test-hd-service  　　   (逻辑业务层)
+            　　　　　　  ----pom.xml
+    　　　　　  ---test-hd-modules  　　 (web层)
+              　　　　　　----pom.xml
+     　　　　 　　  　　---test-hd-www   　　  　　(web模块1)
+                  　　　　　  　　 ----pom.xml
+     　　　　 　　  　　---test-hd-admin 　　   　　(web模块2)
+                  　　　　　  　　 ----pom.xml　　
+
+
+附录：
+	maven web项目结构：
+		pom.xml                 核心配置
+		src/main/java                java源码
+		src/main/resources            java配置
+		src/main/webapp            myeclipse web项目中 WebRoot目录
+			|-- WEB-INF
+			|-- web.xml
+		src/test                    测试
+		target                    maven的输出目录，
+
+	从中央仓库获取包(获取坐标即三个关键属性值)
+	　　	步骤一：百度搜索“maven repository”   https://maven.aliyun.com/mvn/search
+			步骤二：输入关键字查询获得需要内容，确定需要版本
+			步骤三：复制获得的坐标即可
+	eclipseMaven报错：
+		web.xml is missing and <failOnMissingWebXml> is set to true 
+		https://www.cnblogs.com/dongyu666/p/7079414.html
+
+问答：
+	不安装maven，编辑器一样可以使用maven：
+		eclipse自带maven插件，m2e插件默认内嵌一个maven。
+		注：
+			C:\Users\用户名\.m2\，这个就是m2e的文件夹，配置，下载的jar包都在这里如果你没有更改设置的话。
+			maven插件，也可以配置到你本地的maven目录。
+	IDEA等自带maven插件
+		IDEA不是自带maven插件了吗，为什么要自己安装maven呢。
+		内嵌版本一般是特定版本，最好是下载官方最新版本自行配置，这样既可以很方便地使用命令行进行打包编译等其他操作，对于以后的更新也是方便的。
+	尽量不要使用IDE自带的Maven插件，设置成本地的安装路径，这样做的目的是有两点
+	    1）IDE自带的Maven插件一般是最新的，一般不太稳定
+	    2）通常我们都会用到命令行，如果使用IDE自带的Maven插件，两者的版本可能不一致，这样会导致构建的过程有差别
+
+	tomcat运行mavenWeb项目？
+		linux上还要装maven吗？
