@@ -34,12 +34,11 @@ dependencies与dependencyManagement:
 			1.dependency没有注明version时，maven项目依赖会报错误
 				当父工程指定过版本号的情况下可以不显式指定
 				即父工程使用dependencyManagement
-maven-pom标签：
+	？
+		scope= import：
+			https://blog.csdn.net/leoxyk/article/details/79622507
 
-	maven中scope= import：
-		https://blog.csdn.net/leoxyk/article/details/79622507
-
-maven插件：
+插件：
 	maven-source-plugin：
 		https://blog.csdn.net/u014515854/article/details/79696894
 		https://blog.csdn.net/J080624/article/details/78353634
