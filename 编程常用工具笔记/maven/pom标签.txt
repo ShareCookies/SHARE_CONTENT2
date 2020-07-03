@@ -29,20 +29,28 @@ dependencies与dependencyManagement:
 				</dependencyManagement>
 	<dependency>：
 		scope属性：
-			？
+			https://www.cnblogs.com/hzzll/p/6738955.html
+			https://blog.csdn.net/huangweijian93/article/details/79461657
+			在POM 4中，<dependency>中还引入了<scope>，它主要管理依赖的部署。
+			目前<scope>可以使用5个值： 
+				compile，缺省值，适用于所有阶段，会随着项目一起发布。 
+				provided，类似compile，期望JDK、容器或使用者会提供这个依赖。如servlet.jar。 
+				runtime，只在运行时使用，如JDBC驱动，适用运行和测试阶段。 
+				test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。 
+				system，类似provided，需要显式提供包含依赖的jar，Maven不会在Repository中查找它。
+				compile：
+					compile是默认的范围；如果没有提供一个范围，那该依赖的范围就是编译范围。
+					编译范围依赖在所有的classpath 中可用，同时它们也会被打包。
 		附：
 			1.dependency没有注明version时，maven项目依赖会报错误
 				当父工程指定过版本号的情况下可以不显式指定
 				即父工程使用dependencyManagement
-	？
-		scope= import：
-			https://blog.csdn.net/leoxyk/article/details/79622507
-
+				
 插件：
 	maven-source-plugin：
 		https://blog.csdn.net/u014515854/article/details/79696894
 		https://blog.csdn.net/J080624/article/details/78353634
 	maven-release-plugin：！
 		https://blog.csdn.net/shenchaohao12321/article/details/79302791#commentBox
-！！！	
+	！！！	
 	https://www.cnblogs.com/ywjy/p/10587865.html

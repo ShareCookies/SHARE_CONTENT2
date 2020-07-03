@@ -1,5 +1,2 @@
-Maven version：
-	https://www.jb51.net/article/162500.htm
-	
 maven发布源码：
 	https://blog.csdn.net/xixingzhe2/article/details/83012506

@@ -1,0 +1,67 @@
+maven的多模块管理：
+	https://www.cnblogs.com/h--d/p/6001366.html
+	maven能够对一些较大的项目，通过合理的模块拆分，实现代码的复用，便于维护和管理。
+	例：
+		一个项目拆分成5个模块。
+	　　某一多模块项目结构：
+	　　　　test-hd-parent 　　(父级)
+	   　　　　  ---pom.xml
+	   　　　　  ---test-hd-api   　　　    (第三方接口层)
+			　　　　　　  ----pom.xml    
+	　　　　　   ---test-hd-foundation     (基础工具层)
+			　　　　　　  ----pom.xml
+	   　　　　  ---test-hd-resource　    (资源层) 
+			  　　　　　　----pom.xml
+	   　　　　  ---test-hd-service  　　   (逻辑业务层)
+			　　　　　　  ----pom.xml
+	　　　　　   ---test-hd-modules  　　 (web层)
+			  　　　　　　----pom.xml
+	 　　　　 　　  　　---test-hd-www   　　  　　(web模块1)
+				  　　　　　  　　 ----pom.xml
+	 　　　　 　　  　　---test-hd-admin 　　   　　(web模块2)
+				  　　　　　  　　 ----pom.xml　
+		实现要点：
+			父模块pom.xml声明有哪些子模块：
+				<packaging>pom</packaging>
+				<modules>
+					<module>test-hd-api（子模块名）</module>
+					<module>...</module>
+				</modules>
+			子模块pom.xml指明父模块名：
+				<parent>父模块名</parent>
+				<packaging>jar</packaging>
+附：
+	springBoot+maven多模块项目创建：
+		https://blog.csdn.net/baidu_41885330/article/details/81875395
+		https://www.cnblogs.com/owenma/p/8029518.html
+	多模块pom之packaging：
+		https://blog.csdn.net/aazpf/article/details/79650139
+		项目的打包类型：pom、jar、war
+		packaging默认是jar类型
+		
+		父级项目的packaging用pom，
+		子类项目的packaging值只能是war或者jar
+			需要部署的项目，则需要打包成war类型，
+			如果只是内部调用或者是作服务使用，则推荐打包成jar类型。
+		
+	maven多模块打包：
+		https://blog.csdn.net/bicheng4769/article/details/83656981
+		打包命令：
+			clean package spring-boot:repackage -Dmaven.test.skip=true --update-snapshots
+		打包异常：程序包xxx不存在	
+			项目应用的是Spring-boot框架
+			解决方案：
+				https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/html/
+				入口子模块，pom中指明打包插件：
+				<plugin>
+					<!--https://blog.csdn.net/lwj_199011/article/details/54881277-->
+					<!--1.使用了该插件springboot的jar包中 MANIFEST.MF文件里面才会有springboot启动类的信息。-->
+					<!--2.打的jar包里面才会有maven依赖的jar包和spring boot的启动类。-->
+					<!--注：-->
+					<!--1.不加该插件 jar运行报错:no main manifest attribute，就不能独立启动-->
+					<!--spring boot jar包形式加上这个插件，才可以使用Java -jar命令来启动jar包-->
+					<!--2.如果用了spring boot但是不需要独立启动，就不要加这个插件，否则spring boot会因为找不到启动类而导致报错。-->
+					<!--3. 在用idea调试的时候加不加插件都可以启动，看不出来不同，所以必须要独立启动jar包才可以看出来。-->
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>

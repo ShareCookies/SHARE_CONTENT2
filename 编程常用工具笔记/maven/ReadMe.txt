@@ -7,7 +7,7 @@ maven是什么：
 	1.Maven是一款开源的项目管理工具软件。
 	Maven采用了一种被称之为Project Object Model (项目对象模型，简称POM)概念来管理项目，
 	所有的项目配置信息都被定义在一个叫做POM.xml的文件中, 
-	通过该文件Maven可以管理项目的整个声明周期，包括清除、编译、测试、报告、打包、部署等。
+	通过该文件Maven可以管理项目的整个生命周期，包括清除、编译、测试、报告、打包、部署等。
 	2.maven不仅是一款优秀的构建工具，而且是一款优秀的依赖管理工具和项目信息管理工具。
 	hcg：
 		maven是一个工具软件，它能帮你管理java项目的打包和依赖等。
@@ -24,7 +24,18 @@ maven是什么：
 						|-- web.xml
 					src/test                    测试
 					target                    maven的输出目录，
+	注：
+		那么如何构建一个maven项目了，只要你的项目结构符合maven结构规范即可。
+Maven如何管理项目:
+	Maven生命周期
+		Maven的生命周期就是对项目的构建过程进行抽象和统一；
+		包括项目清理，初始化，编译，打包，测试，部署等构建步骤。
+	maven用命令管理项目各生命周期：
+		./maven命令介绍.txt
 maven的依赖管理：
+	介绍：
+		在pom.xml中声明依赖，maven就会自动下载依赖，并引入到当前maven项目。
+		总之声明依赖后，什么都不用管，maven都帮你搞定了。
 	仓库：
 		介绍：
 			仓库就是存放依赖和插件的地方。
@@ -79,6 +90,12 @@ maven的依赖管理：
 	　　			1.https://maven.aliyun.com/mvn/search
 					2.输入关键字查询获得需要内容，确定需要版本
 					3.复制获得的坐标即可,获取坐标即三个关键属性值
+	注：
+		idea的maven工具-》dependences中的依赖未加载成功（有红色波浪线）
+			解决方案：
+			方式1.maven清缓存，重新刷新依赖
+			方式2.看本地仓库中是否存在包，把包删了在重新拉依赖
+			方式3.确认私服中是否有包...
 maven环境安装：
 	https://blog.csdn.net/qq_37497322/article/details/78988378
 	1.安装maven
@@ -90,49 +107,21 @@ maven环境安装：
 pom.xml介绍:(项目配置文件)
 	https://maven.apache.org/pom.html
 	./
-	附录：
+	附：
 		idea中的maven依赖关系图：
 			https://blog.csdn.net/yangxiaobo118/article/details/79890124
 	
 
-maven多模块：
-	https://www.cnblogs.com/h--d/p/6001366.html
-	一些较大的项目，通过合理的模块拆分，实现代码的复用，便于维护和管理。
-	要点：
-		父模块pom指明：
-		    <packaging>pom</packaging>
-			<modules>
-				<module>bg_mana_sys-business</module>
-				<module>子模块名</module>
-			</modules>
-		子模块pom指明：
-			<parent>父模块</parent>
-			 <packaging>jar</packaging>一定要jar吗？
-	例：
-　　某一多模块项目结构：
-  　　　　test-hd-parent 　　(父级)
-       　　　　  ---pom.xml
-       　　　　  ---test-hd-api   　　　    (第三方接口层)
-            　　　　　　  ----pom.xml    
-    　　　　　  ---test-hd-foundation     (基础工具层)
-            　　　　　　  ----pom.xml
-       　　　　  ---test-hd-resource　    (资源层) 
-              　　　　　　----pom.xml
-       　　　　  ---test-hd-service  　　   (逻辑业务层)
-            　　　　　　  ----pom.xml
-    　　　　　  ---test-hd-modules  　　 (web层)
-              　　　　　　----pom.xml
-     　　　　 　　  　　---test-hd-www   　　  　　(web模块1)
-                  　　　　　  　　 ----pom.xml
-     　　　　 　　  　　---test-hd-admin 　　   　　(web模块2)
-                  　　　　　  　　 ----pom.xml　　
+maven多模块管理项目：
+	maven能够对一些较大的项目，通过合理的模块拆分，实现代码的复用，便于维护和管理。
+	./maven多模块管理项目.txt
 
 附：
 	不安装maven，编辑器一样可以使用maven：
 		idea自带默认内嵌一个maven。
 		附：
 			1.
-				C:\Users\用户名\.m2\，这个就是m2e的文件夹，配置，下载的jar包都在这里如果你没有更改设置的话。
+				C:\Users\用户名\.m2\，这个就是默认的m2e的文件夹，里头存放了内嵌的maven配置，下载的jar包都在这里。
 			2.为什么要自己安装maven呢:
 				IDEA不是自带maven插件了吗，为什么要自己安装maven呢。
 				内嵌版本一般是特定版本，最好是下载官方最新版本自行配置，这样既可以很方便地使用命令行进行打包编译等其他操作，对于以后的更新也是方便的。
