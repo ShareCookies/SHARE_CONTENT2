@@ -4,9 +4,8 @@
 	实现方式：
 		方式1：
 			public class Singleton {
-				// 在静态初始化器 (static ioitiatize)中创建单件，
-				//	JVM在加载这个类时马上创建此唯一的单件实例，
-				//	保证了线程安全。
+				// 在静态初始化器 (static ioitiatize)中创建单件，JVM会在加载这个类时马上创建此唯一的单件实例。
+				// 保证了线程安全。
 				private static Singleton uniqueInstance = new Singleton(); //唯一实例
 
 				public static Singleton getInstance(){//全局访问点
@@ -19,7 +18,7 @@
 
 				//利用双重检查加锁，确保只有第一次获取时才会同步。
 				public static Singleton getInstance(){
-					if (uniqueInstance == null){
+					if (uniqueInstance == null){//第一重检查是为了提高效率吧
 						synchronized (Singleton.class){
 							if (uniqueInstance == null){
 								uniqueInstance = new Singleton();
