@@ -3,7 +3,7 @@
  * @date 2020-1-7
  * @description
  */
-public class PizzaStore {
+public abstract class PizzaStore {
     public Pizza orderPizza(String type){
         Pizza pizza;
 
@@ -12,6 +12,7 @@ public class PizzaStore {
         pizza.prepare();
         pizza.cut();
         pizza.box();
+        return pizza;
     }
     protected abstract Pizza createPizza(String type);
 }

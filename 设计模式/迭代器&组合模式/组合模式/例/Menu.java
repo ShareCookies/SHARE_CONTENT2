@@ -37,6 +37,7 @@ public class Menu extends MenuComponent {
     @Override
     public  void  print(){
         //
+		system.out.println("打印出所有信息");
     }
 
 }

@@ -6,13 +6,20 @@ import java.awt.*;
  * @description
  */
 public class Waitress {
-    DinnerMenu dinnerMenu;
+
     //服务员使用迭代器接口来遍历数据
-    void  printMenu(){
+    static void  printMenu(DinnerMenu dinnerMenu){
         Iterator iterator = dinnerMenu.createIterator();
         while (iterator.hasNext()){
-            MenuItem menuItem = (MenuItem)iterator.next();
+            //MenuItem menuItem = (MenuItem)iterator.next();
+            String menuItem = (String)iterator.next();
+            System.out.println(menuItem);
             //...
         }
+    }
+
+    public static void main(String[] args) {
+        String[] menu = {"1","2菜单"};
+        Waitress.printMenu(new DinnerMenu(menu));
     }
 }

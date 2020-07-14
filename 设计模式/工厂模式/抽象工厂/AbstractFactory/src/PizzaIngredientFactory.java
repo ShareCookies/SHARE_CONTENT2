@@ -4,5 +4,7 @@
  * @description
  */
 public interface PizzaIngredientFactory {
-    public Dough createDough();//原料
+    public String createDough();//饼原料
+    public String createCheese();//奶酪原料
+    // ...更多创建原料的方法
 }

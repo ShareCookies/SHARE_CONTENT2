@@ -7,14 +7,16 @@ import java.awt.*;
  */
 //具体的子类实现迭代器接口
 public class DinnerMenuIterator implements Iterator{
-    MenuItem[] items;
+    //MenuItem[] items;
+    String[] items;
     int position = 0;
-    DinnerMenuIterator(MenuItem[] menuItems){
+    DinnerMenuIterator(String[] menuItems){
         this.items = menuItems;
     }
     @Override
     public Object next(){
-        MenuItem menuItem = items[position];
+        //MenuItem menuItem = items[position];
+        String menuItem = items[position];
         position = position + 1;
         return menuItem;
     }
