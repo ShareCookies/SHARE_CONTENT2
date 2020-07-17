@@ -48,17 +48,16 @@ idea编程辅助：
 		View-》Tool Windows-》Structure
 	idea查看jar包中代码：
 		https://blog.csdn.net/qq_39704682/article/details/86610092
-	idea查看maven中jar包依赖关系：
-		https://www.cnblogs.com/xiohao/p/7016730.html
-		https://blog.csdn.net/u010003835/article/details/81634604
+	
 
 	热部署：
+		编译快捷键：Ctrl+Shift+F9
 		https://my.oschina.net/u/4006148/blog/3173833
 		*idea插件实现热部署：
 			https://www.cnblogs.com/flyrock/archive/2019/09/23/11574617.html
 			实时编译：
 				https://blog.csdn.net/qq38397892/article/details/49759207
-				编译快捷键：Ctrl+Shift+F9
+				
 		附：
 			IDEA之SpringBoot自带服务器热部署:
 				https://blog.csdn.net/tree_ifconfig/article/details/79689304#commentBox
@@ -74,11 +73,10 @@ idea编程辅助：
 				tomcat配置-》server-》On frame deactivation-》update class and resources
 			注：
 				热部署即debug下有代码改变就自动重新编译代码
-	idea中操作数据库：
-		https://www.cnblogs.com/Ran-Chen/p/9646187.html
-		https://blog.csdn.net/Colton_Null/article/details/78857855
+	
 	IDEA同一个工程启动多个实例：
 		run/debug configuration -》新增application实例即可。
+	./idea编程辅助功能.txt
 idea设置：
 	idea注释模板:
 			https://blog.csdn.net/sikefeng/article/details/80557265

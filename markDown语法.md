@@ -22,12 +22,13 @@
 1. 有序列表
 2. 有序列表
 
-> 引用1：对部分内容做说明或引用某某的话等。换行：尾部4个空格，然后回车表示换行    
+> 引用1：对部分内容做说明或引用某某的话等。        
 > 第二行段落
 
-> 引用2：（我认为文本说明更合适）    
-    status: 400    
-    exception: "org.springframework.web.bind.MissingServletRequestParameterException"	
+> 引用2：
+	段落，后面的内容未空一行都是该段落内容。（idea中效果不好不用管）
+	status: 400
+		exception:
 
 `代码块1：使用反单引号包裹。通常用于单行少量代码`
 

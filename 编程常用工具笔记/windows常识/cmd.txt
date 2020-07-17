@@ -1,2 +1,4 @@
 cmd命令：
 	清屏 cls
+Windows下，安装Git Bash也可以使用split命令来切割大文件：
+	https://www.cnblogs.com/yulinlewis/p/9575755.html

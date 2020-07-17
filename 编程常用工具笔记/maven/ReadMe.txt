@@ -108,8 +108,7 @@ pom.xml介绍:(项目配置文件)
 	https://maven.apache.org/pom.html
 	./
 	附：
-		idea中的maven依赖关系图：
-			https://blog.csdn.net/yangxiaobo118/article/details/79890124
+		idea中建议使用Maven Helper来查看依赖关系。
 	
 
 maven多模块管理项目：

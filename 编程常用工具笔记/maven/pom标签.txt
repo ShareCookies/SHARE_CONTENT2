@@ -45,7 +45,9 @@ dependencies与dependencyManagement:
 			1.dependency没有注明version时，maven项目依赖会报错误
 				当父工程指定过版本号的情况下可以不显式指定
 				即父工程使用dependencyManagement
-				
+	<exclusion>：
+		用maven管理库依赖，有个好处就是连同库的依赖的全部jar文件一起下载，免去手工添加的麻烦，但同时也带来了同一个jar会被下载了不同版本的问题。
+		好在pom的配置里面允许用<exclusion>来排除一些不需要的依赖。
 插件：
 	maven-source-plugin：
 		https://blog.csdn.net/u014515854/article/details/79696894
