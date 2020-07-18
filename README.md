@@ -14,6 +14,7 @@
     - [集合和数组](https://github.com/yuyumyself/SHARE_CONTENT2/tree/master/java%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/%E9%9B%86%E5%90%88%E5%92%8C%E6%95%B0%E7%BB%84)
 ## [编程工具](https://github.com/yuyumyself/SHARE_CONTENT2/tree/master/%E7%BC%96%E7%A8%8B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E7%AC%94%E8%AE%B0)
 - [maven](https://github.com/yuyumyself/SHARE_CONTENT2/tree/master/%E7%BC%96%E7%A8%8B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E7%AC%94%E8%AE%B0/maven)
+- [IDEA](https://github.com/yuyumyself/SHARE_CONTENT2/tree/master/%E7%BC%96%E7%A8%8B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E7%AC%94%E8%AE%B0/%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7IDE/IDEA)
 ## [设计模式](https://github.com/yuyumyself/SHARE_CONTENT2/tree/master/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F)
 - [策略模式](https://github.com/yuyumyself/SHARE_CONTENT2/tree/master/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F)
 - [观察者模式](https://github.com/yuyumyself/SHARE_CONTENT2/tree/master/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F)
