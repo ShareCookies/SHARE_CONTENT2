@@ -1,13 +1,13 @@
-import org.apache.tomcat.util.log.SystemLogHandler;
+
 
 /**
  * @autor hecaigui
  * @date 2020-1-31
  * @description
  */
-public class NoQuaterState implements State{
+public class NoQuarterState implements State{
     GumballMachine gumballMachine;
-    public NoQuaterState(GumballMachine gumballMachine){
+    public NoQuarterState(GumballMachine gumballMachine){
         this.gumballMachine = gumballMachine;
     }
     @Override

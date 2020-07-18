@@ -10,6 +10,6 @@ public class Coffee extends CaffeineBeverage{
     }
     @Override
     public void addCondiments (){
-        System.out.println("Steeping the coffee");
+        System.out.println("Steeping the sugar");
     }
 }
