@@ -80,6 +80,9 @@
 	注：
 		RSS：指明了当前实际占用了多少内存 。
 		anon-rss值为30636060kBkB.RSS代表“驻留集大小”，即当前在进程中为RAM分配的内存量。
+	查看内存情况：
+		free
+		https://www.cnblogs.com/sunyllove/p/9968219.html
 查看磁盘空间	
 	https://www.runoob.com/w3cnote/linux-view-disk-space.html
 	df -h 

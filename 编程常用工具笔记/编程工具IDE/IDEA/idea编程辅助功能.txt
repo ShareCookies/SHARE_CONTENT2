@@ -1,0 +1,22 @@
+idea查看maven中jar包依赖关系：
+	*maven helper插件：
+		idea 中查看 maven 依赖图只会给你一个复杂到极点的图，基本没有啥价值，所以要安装个插件 maven helper，这个插件用了都说好啊。
+		https://www.cnblogs.com/a8457013/p/9108698.html?tdsourcetag=s_pctim_aiomsg
+	
+	idea的maven依赖图：
+		https://www.cnblogs.com/xiohao/p/7016730.html
+		https://blog.csdn.net/u010003835/article/details/81634604
+		介绍：
+			1.如果有jar包冲突，idea会用红色标明
+				 鼠标点击冲突状态的图标，会有红色虚线标明是跟哪个jar包冲突了，在其上右键Exclude则可以快速的排除依赖。
+		操作：	
+			1.对应的pom文件上右键diagrams可以看到该pom的依赖
+			2.maven工具栏的-》show dependencies 可以看到项目所有的依赖
+	附：
+		<exclusion>：
+			用maven管理库依赖，有个好处就是连同库的依赖的全部jar文件一起下载，免去手工添加的麻烦，但同时也带来了同一个jar会被下载了不同版本的问题。
+			好在pom的配置里面允许用<exclusion>来排除一些不需要的依赖。
+
+idea中操作数据库：
+	https://www.cnblogs.com/Ran-Chen/p/9646187.html
+	https://blog.csdn.net/Colton_Null/article/details/78857855

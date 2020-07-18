@@ -8,7 +8,8 @@ java实现多线程编程的三种方式：
 			创建线程并驱动任务。
 				用new Thread(Runnable target).start()启动一线程，并驱动任务：
 		例：
-			new Thread(new Runnabel(){//实现Runnable接口
+			new Thread(new Runnable(){//实现Runnable接口
+				@Override
 				public void run(){
 					System.err.println("线程");
 				}
