@@ -70,8 +70,12 @@
 	ping:
 		ctrl+c 可以停止ping (好似可以关闭所有程序)
 		ctrl+z可以暂停ping，ctrl+z是把进程放到后台去， 你只需要fg就可以把它弄到前台来！
+	telnet：
+		查看端口是否通
+			window：https://zhidao.baidu.com/question/1372476367770060819.html
 	查看ip：
 		ifconfig -a
+	
 6.查看内存情况：
 	https://www.cnblogs.com/zhuiluoyu/p/6154898.html
 	cat /proc/meminfo http://blog.51cto.com/xujpxm/1961072

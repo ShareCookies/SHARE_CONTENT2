@@ -10,9 +10,22 @@
 	简单理解就是，拷贝引用，为了避免引用值发生改变，例如被外部类的方法修改等，而导致内部类得到的值不一致，于是用final来让该引用不可改变。
 构造函数：
 	https://www.cnblogs.com/zerahmu/p/7662810.html
-	子类被初始化的时候，会在构造函数中先调用父类的构造函数。
-	注：
-		可无需手动调用，java默认使用super();调用父类的无参构造函数。
+	
+	
+	1. 如果一个类未写构造函数，那么java会隐式默认的为你提供一个默认的无参构造方法。
+		例:
+			./例/构造方法/NoParameterConstructorSon.java  goto：1.
+		注：如果你自己有写构造方法（不管是否有参），那么java不会为你隐式提供任何构造方法。
+			例:
+				./例/构造方法/NoParameterConstructorSon.java  goto：1.注：
+	2. 如果子类未在构造函数中显示调用父类的构造函数。那么java会隐式默认的为你在构造函数中使用super();来调用父类的无参构造函数。
+	注1：
+		手动调用父类的有参构造函数，那就不会默认调用super()了。
+		例：
+			./例/构造方法/NoParameterConstructorSon.java  goto： 2.注1：
+	注2：
+		如果父类仅提供有参构造函数，那么java也不会为你隐式调用super(),且编译期就会报错。
+		
 继承：
 	属性继承：
 		class First{static int a=3;}

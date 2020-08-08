@@ -160,6 +160,10 @@
 			例：int n=3;int m=3;用==比较的时候结果是true。
 		2.对于非基本数据类型的变量，可称为引用类型的变量。用==对str1和str2进行第一次比较时，得到的结果是false。
 			例：String str1；str1存储的并不是 “值”本身，而是于其关联的对象在内存中的地址。
+	除法运算：
+		java中的“/”、“%”运算，其中前者为取整，后者取余数。
+		DecimalFormat：
+			https://blog.csdn.net/qq_35573326/article/details/79974366
 关键字：	
 	continue：
 		介绍：

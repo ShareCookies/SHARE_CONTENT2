@@ -30,6 +30,9 @@ IntelliJ IDEA 激活：
 		建议关闭不必要的插件
 	idea解决Command line is to long	
 		https://blog.csdn.net/jerry11112/article/details/94844616
+	Diamond types are not supported at language level '5'：
+		https://blog.csdn.net/dongzhensong/article/details/88799477
+		通过alt+enter的set language level为jdk8也可以解决
 idea编程辅助：
 	常用设置：
 		https://www.cnblogs.com/jajian/p/8108690.html#autoid-0-0-0
@@ -120,6 +123,8 @@ idea快捷键：
 	搜索窗口：
 		https://blog.csdn.net/gnail_oug/article/details/78281354
 		Ctrl+Shift+F
+		注：
+			会和window拼音的中文简繁体切换冲突
 	搜索和替换窗口：
 		Ctrl+Shift+R
 	Ctrl+X    不选中能剪切当前一整行，
