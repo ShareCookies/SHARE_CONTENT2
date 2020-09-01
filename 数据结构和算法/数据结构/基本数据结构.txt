@@ -112,7 +112,7 @@
 		
 				例：
 					./imgs/分支无限制的有根树.png
-		搜索树数据结构：
+		二叉搜索树（搜索树数据结构）：
 			附：
 				二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比。
 					对于有n个结点的一棵完全二叉树来说，这些操作的最坏运行时间为O(lgn)。
@@ -122,17 +122,19 @@
 					第18章将介绍B树，它特别适用于二级(磁盘)存储器上的数据库维护。
 			什么是二叉搜索树:
 				介绍：
-					顾名思义，一棵二叉搜索树是以一棵二叉树来组织的。
-					这样一棵树可以使用一个链表数据结构来表示，其中每个结点就是一个对象。
-					节点元素：除了key和卫星数据之外，每个结点还包含属性left、right 和p，它们分别指向结点的左孩子、右孩子和双亲。
-					根结点：如果某个孩子结点和父结点不存在，则相应属性的值为NIL.根结点是树中唯一-父指针为NIL的结点。
+					顾名思义，一棵二叉搜索树是以一棵二叉树来组织的。（这样一棵树可以使用一个链表数据结构来表示，其中每个结点就是一个对象。）
+					二叉搜索树性质：
+						如果y是x左子树中的一个结点，那么y.key≤x.key。如果y是x右子树中的一个结点，那么y. key≥x. key。
+							附：
+							不同的二叉搜索树可以代表同一组值的集合。
+							大部分搜索树操作的最坏运行时间与树的高度成正比。					
+					节点元素：
+						除了key和卫星数据之外，每个结点还包含属性left、right 和p，它们分别指向结点的左孩子、右孩子和双亲。
+					根结点：
+						如果某个孩子结点和父结点不存在，则相应属性的值为NIL.根结点是树中唯一-父指针为NIL的结点。
 					
 						
 					例：
-						核心概念（性质）：
-							二叉搜索树，对任何结点x,其左子树中的关键字最大不超过x.key,其右子树中的关键字最小不低于x.key。
-								不同的二叉搜索树可以代表同一组值的集合。
-									大部分搜索树操作的最坏运行时间与树的高度成正比。
 						./imgs/二叉搜索树.png
 						(a)一棵包含6个结点、高度为2的二叉搜索树。(b)一 棵包含相同关键字、高度为4的低效二叉搜索树
 
@@ -228,16 +230,16 @@
 							TREE-INSERT(T,z)
 								zParent = NIL
 								x= T.root 
-								while x≠NIL //找到z的父节点
+								while x≠NIL //找到z的父节点（）
 									zParent=x //这里要为深克隆
 									if z.key<x.key
 										x = x.left
 									else x =x. right ;
 								z.p=zParent
 								// z插入树中
-								ify== NIL
+								if y== NIL
 									T.root = z // tree T was empty
-								elseif z.key< zParent. key 
+								else if z.key< zParent.key 
 									zParent.left= z
 								else zParent.right= z
 							1.正如过程TREE SEARCH和ITERATIVE-TREE-SEARCH一样，
@@ -253,16 +255,197 @@
 								3.如果z有两个孩子，那么找z的后继y(一定在z的右子树中)，并让y占据树中z的位置。z的原来右子树部分成为y的新的右子树，并且z的左子树成为y的新的左子树。这种情况稍显麻烦(如下所述)，因为还与y是否为z的右孩子相关。
 									z既有一个左孩子又有一个右孩子。我们要查找z的后继y，将y移出原来的位置进行拼接，并替换树中的z。此处又分为两种情况，y为右孩子和不是右孩子：
 											注：后继y位于z的右子树中并且没有左孩子(见练习12. 2-5)。
-											？12.2-5证明:如果一棵二叉搜索树中的-一个结点有两个孩子，那么它的后继没有左孩子，它的前驱没有右孩子。
+											？12.2-5证明:如果一棵二叉搜索树中的一个结点有两个孩子，那么它的后继没有左孩子，它的前驱没有右孩子。
 										1.如果y是z的右孩子(图12-4(c))，那么用y替换z，并仅留下y的右孩子。
 										2.y位于z的右子树中但并不是z的右孩子(图12-4(d))。在这种情况下，先用y的右孩子替换y，然后再用y替换z。
-							
-		红黑树：
+							例：
+							// RANSPLANT类似红黑树的那个TRANSPLANT
+							// TREE-DELETE过程处理4种情况如下。
+							TREE-DELETE(T,z)
+								if z.left == NIL //第1~2行处理结点z没有左孩子的情况。
+									TRANSPLANT(T,z,z. right) // 把z节点和z右孩子进行树转移
+								else if z. right == NIL //第3~4行处理z有一个左孩子但没有右孩子情况。
+									TRANSPLANT(T,z,z. left) // 把z节点和z左孩子进行树转移
+								else // 第5~12行处理剩下的两种情况，也就是z有两个孩子的情形。
+									y = TREE-MINIMUM(z. right) // 第5行查找结点y,它是z的后继。因为z的右子树非空，这样后继一定是这个子树中具有最小关键字的结点，因此就调用TREE-MINIMUM(z. right)。
+
+							如前所述，y没有左孩子。！将y移出它的原来位置进行拼接，并替换树中的z。
+							如果y是z的右孩子，那么第10~12行用y替换z并成为z的双亲的一个孩子，用z的左孩子替换y的左孩子。
+							如果y不是z的左孩子，第7~9行用y的右孩子替换y并成为y的双亲的-一个孩子，然后将z的右孩子转变为y的右孩子，
+							最后第10~12行用y替换z并成为z的双亲的一个孩子，再用z的左孩子替换为y的左孩子。
+							除了第5行调用TREE-MINIMUM之外，TREE-DELETE的每一行，包括调用
+							TRANSPLANT,都只花费常数时间。因此，在- -棵高度为h的树上，TREE DELETE的运行时
+							间为O(h)。
+									if y.p≠z 
+										TRANSPLANT(T,y,y. right) //7-9
+										y.right = z. right
+										y. right.p= y
+									TRANSPLANT(T,z,y) //10-12
+									y.left = z.left
+									y.lefi.p=y
+									
+		红黑树（平衡二叉搜索树）：
 			前言：
 				一棵高度为h的二叉搜索树，它的动态集合操作时间复杂度均为O(h)。因此，如果搜索树的高度较低时，这些集合操作会执行得较快。然而，如果树的高度较高时，这些集合操作可能并不比在链表上执行得快。（100个节点高度可能就为100了）
 				红黑树(red black tree)是许多“平衡”搜索树中的一一种，可以保证在最坏情况下基本动态集合操作的时间复杂度为O(lgn)。
 			介绍：
-				
+				红黑树是一棵平衡二叉搜索树。
+					它在每个结点上增加了一个存储位来表示结点的颜色，可以是RED或BLACK。
+					通过对任何一条从根到叶子的简单路径上各个结点的颜色进行约束，来达到确保没有一条路径会比其他路径长出2倍，因而是近似于平衡的。
+				红黑树性质：					
+					一棵红黑树是满足下面红黑性质的二叉搜索树:
+						1.每个结点或是红色的，或是黑色的。
+						2.根结点是黑色的。
+						3.每个叶结点(NIL)是黑色的。
+						4.如果一个结点是红色的，则它的两个子结点都是黑色的。
+						5.对每个结点，从该结点到其所有后代叶结点的简单路径上，均包含相同数目的黑色结点。
+				附:
+					节点属性：
+						树中每个结点包含5个属性: color、 key、 left、 right 和p。
+					
+					如果一个结点没有子结点或父结点，则该结点相应指针属性的值为NIL。我们可以把这些NII视为指向二叉搜索树的叶结点(外部结点)的指针，而把带关键字的结点视为树的内部结点。
+
+					黑高：
+						从某个结点x出发(不含该结点)到达一个叶结点的任意一条简单路径上的黑色结点个数称为该结点的黑高(black height),记为b(x)。
+					为什么红黑树比其他树更优：
+						引理：13.1一棵有n个内部结点的红黑树的高度至多为2lg(n+1)。
+						证明：
+							先证明以任一结点 x为根的子树中至少包含2^bh(x) -1个内部结点。
+								注：bh(x)-1为红黑树黑高
+								要证明这点，对x的高度进行归纳。
+									如果x的高度为0，则x必为叶结点(T.nil)，且以x为根结点的子树至少包含2^bh(x) -1=2^0 -1=0个内部结点。
+									对于归纳步骤，考虑一个高度为正值且有两个子结点的内部结点x。每个子结点有黑高bh(x)或bh(x)-1,其分别取决于自身的颜色是红还是黑。由于x子结点的高度比x本身的高度要低，可以利用归纳假设得出每个子结点至少有2^bh(x)-1 -1个内部结点的结论。于是，以x为根的子树至少包含(2^bh(x)-1 -1)+(2^bh(x)-1 -1)+1=2^bh(x) -1个内部结点，因此得证。
+									注：
+										为什么根结点的子树至少包含2^bh(x) -1：
+											因为全是黑，则是节点最少情况。
+											那么3黑高时，每层的节点数为1 2(2^1) 4(2^2),根据高中数学知识（等比数列求和）得出节点总数为2^3-1
+							为完成引理的证明，设h为树的高度。
+							根据性质4,从根到叶结点(不包括根结点)的任何一条简单路径上都至少有一半的结点为黑色。
+								注：因为如果是红那么后面肯定黑。
+							因此，根的黑高至少为h/2;于是有n≥2^h/2 -1
+							把1移到不等式的左边，再对两边取对数，得到lg(n+1)≥h/2，或者h≤2lg(n+1)。
+						总结：由该引理可知，动态集合操作可在高度为h的红黑树上在O(lgn)时间内执行。
+							这些操作在一棵高度为h的二叉搜索树上的运行时间为O(h)(参见第12章)。
+			插入、删除：
+				二叉搜索树的INSERT和DELETE算法并不应用与红黑树,因为它们并不能保证被这些操作修改过的二叉搜索树仍是红黑树。
+				那么如何在时间O(Ign)内支持这两个操作呢，我们将在13. 3节和13.4节中介绍。
+				旋转：
+					指针结构的修改是过通过旋转(ration)来完成的，这是一种能保持二叉搜索树性质的搜索树局部操作。
+					旋转有两种:左旋和右旋。
+						例：
+							./img/旋转.png
+							LEFT-ROTATE(T, x)： 以x与x右节点为支轴，x向下（左）拉。
+							RIGHT-ROTATE(T, y)： 以y与y左节点为支轴，y向下（右）拉。
+				插入：
+					p178
+					RB-INSERT(T, z)
+						zParent = NIL
+						x= T.root 
+						while x≠NIL //找到z的父节点（）
+							zParent=x //这里要为深克隆
+							if z.key<x.key
+								x = x.left
+							else x =x. right ;
+						z.p=zParent
+						// z插入树中
+						if y== NIL
+							T.root = z // tree T was empty
+						else if z.key< zParent.key 
+							zParent.left= z
+						else zParent.right= z
+						z.left = NIL
+						z. right = NIL
+						z. color = RED //将z着为红色。
+						RB-INSERT-FIXUP(T, z) //因为将z着为红色可能违反其中的一-条红黑性质，所以在RB-INSERT的第17行中调用RB INSERT FIXUP(T, z)来保持红黑性质。
+					// 方法主要目的就是判断性质2和4是否成立
+					RB-INSERT-FIXUP(T, z)
+						while z. p. color == RED //如果性质4被破坏 //注意： 只要保证z与z父节点符合性质4，那么这颗树就能符合红黑树。
+							if z.p== z.p.p.left //如果z的父节点为左节点
+								y= z.p.p.right // z的叔父节点
+								if y.color == RED //如果z的叔父节点为红色，则z的父节点重上为黑色 （修正性质4），叔父节点上为黑色，祖父节点上为红色，（然后准备修复性质5），z节点指针上升为祖父节点。
+									z. p. color = BLACK// case 1
+									y. color = BLACK// case 1
+									z. p. p. color = RED// case 1
+									z=z.p.p// case 1
+								else if z == z. p. right //如果z的叔父节点为黑且z为右节点，z节点指针上升为父节点并左旋。
+									Z=z.p// case2
+									LEFT-ROTATE(T, z)//case2.
+								else //如果z的叔父节点为黑且z为左节点，z父节点上为黑色，z祖父节点上为红色，z祖父节点右旋。
+									z. p.color = BLACK// case3
+									z. p. p. color = RED// case 3
+									RIGHT-ROTATE(T, z.p. p)//case3
+							else( same as then clause with“right" and“left" exchanged //同理把子句的所有right改为left即可) 
+						T. root. color = BLACK //如果性质2被破坏，则直接把根上为黑色就对了。
+						附：
+						首先，要确定当结点z被插人并着为红色后，红黑性质中有哪些不能继续保持。
+							仅可能被破坏的就是性质2和性质4，即根结点需要为黑色以及一个红结点不能有红孩子。这两个性质可能被破坏是因为z被着为红色。如果z是根结点，则破坏了性质2;如果z的父结点是红结点，则破坏了性质4。
+								附：如果有任何红黑性质被破坏，则至多只有一条被破坏，或是性质2,或是性质4。如果性，质2被破坏，其原因为z是根结点且是红结点。如果性质4被破坏，其原因为z和z. p都是红结点。
+					耗时：
+						由于一棵有n个结点的红黑树的高度为O(lgn),因此RB-INSERT的第1~16行要花费O(lgn)时间。在RB-INSERT-FIXUP中，仅当情况1发生，然后指针z沿着树上升2层，while循环才会重复执行。所以while循环可能被执行的总次数为O(lgn)。因此，RB-INSERT 总共花费O(lgn)时间。此外，该程序所做的旋转从不超过2次，因为只要执行了情况2或情况3，while循环就结束了。
+
+				删除：
+					p183
+
+					// RB-DELETE与TREE-DELETE类似，只是多了几行伪代码。//多出的几行代码记录结点y的踪迹，y有可能导致红黑性质的破坏。
+					RB-DELETE(T, z)
+						y=z 
+						y original-color = y. color
+						if z.left == T.nil
+							x=zright
+							RB-TRANSPLANT(T, z, z. right)
+						else if z. right == T.nil
+							x = z.left
+							RB- TRANSPLANT(T, z, z. left)
+						else y = TREE-MINIMUM(z. right)
+							y.original- color = y. color
+							x= y.right
+							ify.p==z
+								x.p= y
+							else RB-TRANSPLANT(T, y, y. right)
+								y.right = z. right
+								y.right.p=y
+							RB-TRANSPLANT(T, z, y)
+							y.left = z.left
+							y.lefi.p=y
+							y. color =z.color
+						if y.original-color == BLACK
+							RB-DELETE-FIXUP(T, x) 
+					// RB-DELETE-FIXUP是恢复搜索树的红黑性质。
+					RB-DELETE-FIXUP(T, x)
+						whilex ≠T. root and x. color == BLACK
+							ifx ==x.p. left
+								w=x. p. right
+								if w. color == RED
+									w. color = BLACK// case 1
+									x. p. color = RED// case 1
+									LEFT-ROTATE(T,x. p)// case 1
+									w=x.p.right//case1
+								if w. left. color == BLACK and rw. right. color == BLACK
+									w. color = RED// case2
+									x=x.p// case2
+							else if w. right. color == BLACK
+									w. left. color = BLACK// case3
+									w. color = RED// case3
+									RIGHT-ROTATE(T,w)// case3
+									w= x. p. right// case3
+								w. color =x.p. color// case4
+								x. p. color = BLACK// case 4
+								w. right. color = BLACK// case4
+								LEFT-ROTATE(T, x. p)// case 4
+								x = T.root// case4
+							else (same as then clause with“right" and“left" exchanged)
+						x. color = BLACK
+					
+					//为了在二叉搜索树内移动子树，定义一个子过程TRANSPLANT，它是用另一棵子树替换一棵子树并成为其双亲的孩子结点。
+					//当TRANSPLANT用一棵以v为根的子树来替换一棵以u为根的子树时，结点u的双亲就变为结点v的双亲，并且最后v成为u的双亲的相应孩子。（即用v子树替换掉u子树）
+					RB-TRANSPLANT(T, u, v)
+						if u.p== T.nil //第1~2行处理u是T的树根的情况。（u是树跟，则把树根指向v）
+							T.root=v
+						else if u == u.p. left //如果u是一个左孩子，第3~4行负责u. p. left的更新;（u是其父左节点，则把其父左节点指向v）
+							u.p. left= v
+						else u. p.righl = V //如果u是一个右孩子，第5行更新u. p. right。（u是其父右节点，则把其父右节点指向v）
+						v.p= u.p //第6行对v. p的赋值是无条件执行:（u的父节点赋给v）
+
 
 	散列表：
 		介绍：
@@ -285,7 +468,7 @@
 					当关键字的全域U比较小时，直接寻址是一种简单而有效的技术。
 						假设某应用要用到一个动态集合，其中每个元素都是取自于全域U={0，1，…，m-l}中的一个关键字，这里m不是一个很大的数。
 						另外，假设没有两个元素具有相同的关键字。
-
+				
 			例：
 				./imgs/直接寻址表.png
 		散列表：
