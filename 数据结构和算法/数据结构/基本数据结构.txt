@@ -269,20 +269,18 @@
 								else // 第5~12行处理剩下的两种情况，也就是z有两个孩子的情形。
 									y = TREE-MINIMUM(z. right) // 第5行查找结点y,它是z的后继。因为z的右子树非空，这样后继一定是这个子树中具有最小关键字的结点，因此就调用TREE-MINIMUM(z. right)。
 
-							如前所述，y没有左孩子。！将y移出它的原来位置进行拼接，并替换树中的z。
-							如果y是z的右孩子，那么第10~12行用y替换z并成为z的双亲的一个孩子，用z的左孩子替换y的左孩子。
-							如果y不是z的左孩子，第7~9行用y的右孩子替换y并成为y的双亲的-一个孩子，然后将z的右孩子转变为y的右孩子，
-							最后第10~12行用y替换z并成为z的双亲的一个孩子，再用z的左孩子替换为y的左孩子。
-							除了第5行调用TREE-MINIMUM之外，TREE-DELETE的每一行，包括调用
+									// 附：如前所述，y没有左孩子。！将y移出它的原来位置进行拼接，并替换树中的z即可。
+									if y.p≠z 
+										TRANSPLANT(T,y,y. right) //7-9如果y不是z的左孩子，第7~9行用y的右孩子替换y并成为y的双亲的-一个孩子，然后将z的右孩子转变为y的右孩子，最后第10~12行用y替换z并成为z的双亲的一个孩子，再用z的左孩子替换为y的左孩子。
+										y.right = z. right
+										y.right.p= y
+									TRANSPLANT(T,z,y) //10-12 如果y是z的右孩子，那么第10~12行用y替换z并成为z的双亲的一个孩子，用z的左孩子替换y的左孩子。
+									y.left = z.left
+									y.left.p=y
+							耗时:
+								除了第5行调用TREE-MINIMUM之外，TREE-DELETE的每一行，包括调用
 							TRANSPLANT,都只花费常数时间。因此，在- -棵高度为h的树上，TREE DELETE的运行时
 							间为O(h)。
-									if y.p≠z 
-										TRANSPLANT(T,y,y. right) //7-9
-										y.right = z. right
-										y. right.p= y
-									TRANSPLANT(T,z,y) //10-12
-									y.left = z.left
-									y.lefi.p=y
 									
 		红黑树（平衡二叉搜索树）：
 			前言：
@@ -385,7 +383,15 @@
 
 				删除：
 					p183
-
+					//为了在二叉搜索树内移动子树，定义一个子过程TRANSPLANT，它是用另一棵子树替换一棵子树并成为其双亲的孩子结点。
+					//当TRANSPLANT用一棵以v为根的子树来替换一棵以u为根的子树时，结点u的双亲就变为结点v的双亲，并且最后v成为u的双亲的相应孩子。（即用v子树替换掉u子树）
+					RB-TRANSPLANT(T, u, v)
+						if u.p== T.nil //第1~2行处理u是T的树根的情况。（u是树跟，则把树根指向v）
+							T.root=v
+						else if u == u.p. left //如果u是一个左孩子，第3~4行负责u. p. left的更新;（u是其父左节点，则把其父左节点指向v）
+							u.p. left= v
+						else u. p.righl = V //如果u是一个右孩子，第5行更新u. p. right。（u是其父右节点，则把其父右节点指向v）
+						v.p= u.p //第6行对v. p的赋值是无条件执行:（u的父节点赋给v）
 					// RB-DELETE与TREE-DELETE类似，只是多了几行伪代码。//多出的几行代码记录结点y的踪迹，y有可能导致红黑性质的破坏。
 					RB-DELETE(T, z)
 						y=z 
@@ -436,15 +442,7 @@
 							else (same as then clause with“right" and“left" exchanged)
 						x. color = BLACK
 					
-					//为了在二叉搜索树内移动子树，定义一个子过程TRANSPLANT，它是用另一棵子树替换一棵子树并成为其双亲的孩子结点。
-					//当TRANSPLANT用一棵以v为根的子树来替换一棵以u为根的子树时，结点u的双亲就变为结点v的双亲，并且最后v成为u的双亲的相应孩子。（即用v子树替换掉u子树）
-					RB-TRANSPLANT(T, u, v)
-						if u.p== T.nil //第1~2行处理u是T的树根的情况。（u是树跟，则把树根指向v）
-							T.root=v
-						else if u == u.p. left //如果u是一个左孩子，第3~4行负责u. p. left的更新;（u是其父左节点，则把其父左节点指向v）
-							u.p. left= v
-						else u. p.righl = V //如果u是一个右孩子，第5行更新u. p. right。（u是其父右节点，则把其父右节点指向v）
-						v.p= u.p //第6行对v. p的赋值是无条件执行:（u的父节点赋给v）
+					
 
 
 	散列表：
