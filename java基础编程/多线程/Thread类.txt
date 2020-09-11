@@ -76,7 +76,7 @@ Thread类:
 		.getName():
 			介绍：获取当前线程名字
 			例：Thread.currentThread().getName();//主线程默认名main，创建的线程名默认从Thread-0开始
-		后台线程：
+		后台线程（守护线程）：
 			介绍：
 				后台线程(daemon),指在程序运行的时候在后台提供一种通用服务的线程。
 				注：

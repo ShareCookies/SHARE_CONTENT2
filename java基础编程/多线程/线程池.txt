@@ -6,28 +6,25 @@ https://www.cnblogs.com/fengsehng/p/6048610.html
 	但是如果不加控制，反而会对系统造成负担。
 		大量的线程会占用内存资源并且可能会导致Out of Memory。
 		即便没有这样的情况，大量的线程回收也会给GC带来很大的压力。
-Executor框架
+	为了避免重复的创建线程，线程池的出现让线程可进行复用。
+Executor框架（执行器框架）：
 	Java 5引入了Executor框架，来简化并发编程的操作。
-		通过Executor框架来控制线程的启动、执行和关闭等。
-		Executor框架内部使用的是线程池机制。
-	Executor框架包括：线程池机制，Executor，Executors，ExecutorService，CompletionService等。
-	总结：
-		执行器框架，其核心是：内部维护着一个线程池，这个线程池中维护者一定数量的线程。
-		所以执行器框架能够直接通过方法驱动任务，还是通过线程来着，只是中间省略线程相关步骤。
-	线程池：
-		线程池的出现可以让线程进行复用，避免了重复的创建线程。
-			原理：当有工作来，就会向线程池拿一个线程，当工作完成后，并不是直接关闭线程，而是将这个线程归还给线程池供其他任务使用。
+	Executor框架的内容包括：线程池机制，Executor接口，ExecutorService接口，Executors，CompletionService等。
+	附：
+		执行器框架原理：
+			框架内部维护着一个线程池，这个线程池中维护者一定数量的线程。
+			所以执行器框架能够直接通过方法驱动任务，还是通过线程来着，只是中间省略线程相关步骤。
+		线程池：
+			当有工作来，就会向线程池拿一个线程，当工作完成后，并不是直接关闭线程，而是将这个线程归还给线程池供其他任务使用。
+			线程池的出现可以让线程进行复用，避免了重复的创建线程。
 
 	Executor（接口）：
-		介绍：
-			An object that executes submitted {@link Runnable} tasks. 
-			Executor接口仅拥有execute()方法，该方法用来执行Runnable任务。
-			An {@code Executor} is normally used instead of explicitly creating threads.
-			Executor接口是用来替代线程的。
-			注：
+		介绍：（建议看源码注释来理解。）
+			解耦接口，用户可以仅通过execute()来执行所提交的Runnable任务，使用户从线程的创建等中脱身出来。
+			附：
 				通常Executor的实现类，其内部都实现线程池机制。
 				所以一旦Runnable任务传递到execute()方法，该方法便会自动将一任务放到一个线程上执行。
-				？Callable任务要用Executor的submit(Callable task) 方法来执行。
+
 			附：
 				比较Executor和new Thread()
 				new Thread的弊端如下：
@@ -48,7 +45,10 @@ Executor框架
 				调用了shutdown，且当前已经提交了的任务执行完后，便到达终止状态。
 				hcg：
 					可将对象的运行，进行阶段划分，就是生命周期。
+			
 		方法：
+			submit(Callable task):
+				Callable异步任务可用ExecutorService的submit(Callable task) 方法来执行并跟踪。
 			shutdown()：
 				方法在终止前允许执行以前提交的任务。即线程将在，Executor中的任务完成之后，尽快退出
 			shutdownNow()：
@@ -57,8 +57,9 @@ Executor框架
 			<T> Future<T> submit(Runnable task, T result);
 			...
 	Executors（工厂方法类）：
-		Executors类，提供了一系列工厂方法用于创建线程池。
-			返回的线程池都实现了ExecutorService接口。
+		介绍：
+			Executors类提供了一系列工厂方法用于创建线程池。
+			其工厂方法返回的excutor都实现了ExecutorService接口。
 		Executors提供的四种常见线程池的创建方法：
 			1、public static ExecutorService newFiexedThreadPool(int Threads) 
 				创建固定数目线程的线程池。
@@ -85,5 +86,7 @@ Executor框架
 			keepAliveTime：线程池中的空闲线程所能持续的最长时间。
 			unit：持续时间的单位。
 			workQueue：任务执行前保存任务的队列，仅保存由execute方法提交的Runnable任务。
+		例：
+			./自定义线程池executor.txt
 	注：
 		任何线程池中，现有线程在可能的情况下都会被自动复用。！
