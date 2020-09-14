@@ -1,0 +1,85 @@
+https://blog.csdn.net/a745233700/article/details/80959716
+1、Spring是什么
+	一java开发框架，低侵入式企业级开发框架，常用于web。
+	常用的模块有7大模块，除核心模块外，其余模块可单独时也可结合使用。
+	7大模块:core（ioc），context（applicationContext），aop，dao，orm，web，mvc
+2、Spring 的优点
+	低侵入式：使用spring开发可无需修改代码仅需一些注解接口。
+	提供了较多企业级应用功能：
+		ioc（无需用户来创建对象，避免了繁琐的对象创建，因为有些对象依赖深实例化麻烦等），
+		AOP（可使用户专注于当前业务逻辑，避免代码中还要去关心安全等额外的系统功能），
+		更新快，对于主流框架提供了集成支持。
+3.IoC理解：
+	控制反转：把对象的创建交给容器来管理，容器是通过di（依赖注入）来实现ioc的。
+	spring支持2种DI实现方式：
+		set注入(包括注解)，构造方法注入，工厂注入？
+BeanFactory和ApplicationContext有什么区别：
+	二者都是容器接口，
+	BeanFactory是最基础的容器接口，仅支持注册和获取bean。
+	ApplicationContext接口继承了BeanFactory接口，提供了更多功能（继承MessageSource，因此支持国际化。事件机制。实现类支持耕读的配置文件加载方式等）。
+	装载SingletonBean的时机不同，一个获取时才装载，一个一开始就装载。
+SpringBean的生命周期:
+	容器创建bean
+	注入属性
+	如果实现对应接口则调用对应方法-》baan创建成功存入容器
+	容器销毁时，如果实现销毁接口则调用对应方法。
+解释Spring支持的几种bean的作用域：
+	Singleton单例（默认）
+	请求
+	会话
+	Prototype原型：每次从容器获取bean的时候，都是获取新的bean。
+	它们的意思就是顾名思义。
+Spring的自动装配：
+	bean的属性由spring容器自动装配。（Spring自动满足bean之间的依赖。）
+	常用的装配注解有@Resource默认按byName，@Autowired按byType。
+4.Spring的AOP理解：
+	面向切面编程：
+		能够把一些通用功能（通知）给剥离出来（切面），运行时可以在需要这些功能的地方（连接点和切点），通过代理给注入（织入）进去。
+		原理：aop是通过代理实现的。调用类时，其实是调用的代理类，代理类中先调用通用功能，然后在调用目标方法。
+	实现：
+		1.java实现经典aop代理
+		2.xml将pojo转为切面
+		3.@AspectJ注解实现切面
+		这些其实低层都是java代理，即只支持带对方法级别实现aop
+		4.引入AspectJ来实现切面。
+			能支持到对属性和构造器的拦截
+	通知类型：
+		前置通知（Before）：在目标方法被调用之前调用通知功能；
+		后置通知（After）：在目标方法完成之后调用通知（不论是正常返回还是异常退出）；
+		返回通知（After-returning）：在目标方法成功执行之后调用通知；
+		异常通知（After-throwing）：在目标方法抛出异常后调用通知；
+		环绕通知（Around）：通知包裹了被通知的方法，在被通知的方法调用之前和调用之后执行自定义的行为。环绕通知是最常用的一种通知类型。
+Spring如何处理线程并发问题？
+
+	在一般情况下，只有无状态的Bean才可以在多线程环境下共享，在Spring中，绝大部分Bean都可以声明为singleton作用域，因为Spring对一些Bean中非线程安全状态采用ThreadLocal进行处理，解决线程安全问题。
+
+	ThreadLocal和线程同步机制都是为了解决多线程中相同变量的访问冲突问题。同步机制采用了“时间换空间”的方式，仅提供一份变量，不同的线程在访问前需要获取锁，没获得锁的线程则需要排队。而ThreadLocal采用了“空间换时间”的方式。
+
+	ThreadLocal会为每一个线程提供一个独立的变量副本，从而隔离了多个线程对数据的访问冲突。因为每一个线程都拥有自己的变量副本，从而也就没有必要对该变量进行同步了。ThreadLocal提供了线程安全的共享对象，在编写多线程代码时，可以把不安全的变量封装进ThreadLocal。
+
+	spring MVC中的controller是单例模式，但是是多线程，各个线程之间不影响！
+		https://blog.csdn.net/a363722188/article/details/40739619
+	springBean默认是单例的话，那么DAO层是怎么处理的了？
+5.Spring 框架中都用到了哪些设计模式
+	工厂方法、单例（ioc：BeanFactory、bean），观察者（事件机制），代理模式（aop），模板方法（dao）
+6.spring的事务传播：
+	控制调用另一个有事务的方法如何参与当前事务
+	2种实现方式：
+		编码方式，aop声明方式。
+	aop声明方式：
+		1.由于aop特性要注意事务自调用问题 2.默认只有错误，和运行时异常（非检测异常）才会回滚。3.只能应用于public方法。
+	7个传播机制：
+		propagation_required,required_new,support,not_support,mandotory,never,nested.
+	5个隔离级别：
+		默认，读未提交，读已提交，可重复读，序列化
+7.Spring框架事件：
+	事件监听器会注册具体的事件源，当事件广播器广播具体的事件源后，事件监听器能接到该事件的发布消息，然后处理相关事件。
+
+	Spring 提供了以下5种标准的事件：
+
+	（1）上下文更新事件（ContextRefreshedEvent）：在调用ConfigurableApplicationContext 接口中的refresh()方法时被触发。
+	（2）上下文开始事件（ContextStartedEvent）：当容器调用ConfigurableApplicationContext的Start()方法开始/重新开始容器时触发该事件。
+	（3）上下文停止事件（ContextStoppedEvent）：当容器调用ConfigurableApplicationContext的Stop()方法停止容器时触发该事件。
+	（4）上下文关闭事件（ContextClosedEvent）：当ApplicationContext被关闭时触发该事件。容器被关闭时，其管理的所有单例Bean都被销毁。
+
+	（5）请求处理事件（RequestHandledEvent）：在Web应用中，当一个http请求（request）结束触发该事件。
