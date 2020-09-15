@@ -1,30 +1,51 @@
-解释:
+名词解释:
 	超类(SuperClass) ：
 		被继承的类称为超类(SuperClass)，也叫做父类。
 	类方法:
 		用static修饰，也叫静态方法
 	实例方法:
 		没有用static修饰，也叫非静态方法
-
+知识点：	
+	import的作用：
+		import导包
+	对象的引用传递:
+		./对象的引用传递.txt
+	如何运行java文件:
+		./如何运行java文件.txt
+	转型：
+		https://www.cnblogs.com/xiaoyezideboke/p/10939219.html
+		向上转型：
+			例：
+				父类引用能指向子类对象：
+				Father f1 = new Son();
+		向下转型：
+			例：
+				Father f1 = new Son();
+				Son s1 = (Son)f1;	// 现在f1 还是指向 Son对象				
+			附：
+				子类引用不能指向父类对象的：
+					Father f2 = new Father();
+					Son s2 = (Son)f2;       // 出错，子类引用不能指向父类对象
 形参为何要为final:?
 	简单理解就是，拷贝引用，为了避免引用值发生改变，例如被外部类的方法修改等，而导致内部类得到的值不一致，于是用final来让该引用不可改变。
-构造函数：
-	https://www.cnblogs.com/zerahmu/p/7662810.html
-	
-	
-	1. 如果一个类未写构造函数，那么java会隐式默认的为你提供一个默认的无参构造方法。
-		例:
-			./例/构造方法/NoParameterConstructorSon.java  goto：1.
-		注：如果你自己有写构造方法（不管是否有参），那么java不会为你隐式提供任何构造方法。
+类的构成：
+	代码块：
+		./java代码块.txt
+	构造函数：
+		https://www.cnblogs.com/zerahmu/p/7662810.html
+		1. 如果一个类未写构造函数，那么java会隐式默认的为你提供一个默认的无参构造方法。
 			例:
-				./例/构造方法/NoParameterConstructorSon.java  goto：1.注：
-	2. 如果子类未在构造函数中显示调用父类的构造函数。那么java会隐式默认的为你在构造函数中使用super();来调用父类的无参构造函数。
-	注1：
-		手动调用父类的有参构造函数，那就不会默认调用super()了。
-		例：
-			./例/构造方法/NoParameterConstructorSon.java  goto： 2.注1：
-	注2：
-		如果父类仅提供有参构造函数，那么java也不会为你隐式调用super(),且编译期就会报错。
+				./例/构造方法/NoParameterConstructorSon.java  goto：1.
+			注：如果你自己有写构造方法（不管是否有参），那么java不会为你隐式提供任何构造方法。
+				例:
+					./例/构造方法/NoParameterConstructorSon.java  goto：1.注：
+		2. 如果子类未在构造函数中显示调用父类的构造函数。那么java会隐式默认的为你在构造函数中使用super();来调用父类的无参构造函数。
+		注1：
+			手动调用父类的有参构造函数，那就不会默认调用super()了。
+			例：
+				./例/构造方法/NoParameterConstructorSon.java  goto： 2.注1：
+		注2：
+			如果父类仅提供有参构造函数，那么java也不会为你隐式调用super(),且编译期就会报错。
 		
 继承：
 	属性继承：
@@ -47,3 +68,105 @@
 	（2）抽象类不能直接实例化，需要依靠子类采用向上转型的方式处理； 
 	（3）抽象类必须有子类，使用extends继承，一个子类只能继承一个抽象类； 
 	（4）子类（如果不是抽象类）则必须覆写抽象类之中的全部抽象方法（如果子类没有实现父类的抽象方法，则必须将子类也定义为为abstract类。）；
+内部类：
+	https://blog.csdn.net/zhao_miao/article/details/83245816
+	介绍：
+		所谓内部类就是在一个类内部进行其他类结构的嵌套操作。
+		Java中内部类主要分为成员内部类、静态内部类、方法内部类、匿名内部类
+		内部类的优缺点
+			内部类的优点:
+				内部类与外部类可以方便的访问彼此的私有域（包括私有方法、私有属性）。
+				内部类是另外一种封装，对外部的其他类隐藏。
+				内部类可以突破java的单继承局限。（使用内部类实现多继承）
+					例：...
+			内部类的缺点:
+				结构复杂。
+	内部类的实例化：
+		1.在外部类外部 创建非静态内部类:
+			语法：外部类.内部类 内部类对象 = new 外部类().new 内部类();
+			例： Outer.Inner in = new Outer().new Inner();
+
+		2 在外部类外部 创建静态内部类
+			语法： 外部类.内部类 内部类对象 = new 外部类.内部类();
+			例： Outer.Inner in = new Outer.Inner();
+
+		3 在外部类内部创建内部类语法
+			在外部类内部创建内部类，就像普通对象一样直接创建.
+			例Inner in = new Inner();
+	成员内部类：
+		成员内部类内部不允许存在任何static变量或方法。
+		成员内部类是依附外部类的，只有创建了外部类才能创建内部类。
+		例：
+			class Outer {
+				private String name = "test";
+				public  static int age =20;
+				class Inner{
+					public static int num =10; //因为static，无法编译通过
+					public void fun(){
+						System.out.println(age);
+					}
+				}
+			}
+	静态内部类：
+		使用static修饰的内部类我们称之为静态内部类。
+		静态内部类和非静态内部类之间存在一个最大的区别，非静态内部类在编译完成之后会隐含的保存着一个引用，该引用是指向创建它的外围类，但是静态类没有。没有这个引用就意味着：
+			1.静态内部类的创建不需要依赖外部类可以直接创建。
+			2.静态内部类不可以使用任何外部类的非static类（包括属性和方法）。
+		例：
+			class Outer {
+				public String name = "test";
+				private static int age =20;
+				static class Inner{
+					public void fun(){
+						System.out.println(name);//该处报错。Non-static field 'name' cannot be referenced from a static context
+						System.out.println(age);
+					}
+				}
+			}
+	方法内部类：
+		方法内部类顾名思义就是定义在方法里的类。
+		
+		方法内部类不允许使用访问权限修饰符（public、private、protected均不允许）。
+		2. 方法内部类对外部完全隐藏，除了创建这个类的方法可以访问它以外，其他地方均不能访问。
+		方法内部类如果想要使用方法形参，该形参必须使用final声明（JDK8形参变为隐式final声明）
+		例：
+			class Outer{
+				private int num =5;
+				//普通方法
+				public void dispaly(int temp){
+					//方法内部类即嵌套在方法里面
+					class Inner{
+						public void fun(){
+							System.out.println(num);
+							temp++;
+							System.out.println(temp);
+						}
+					}
+					//方法内部类在方法里面创建
+					new Inner().fun();
+				}
+			}
+	匿名内部类:
+		https://www.cnblogs.com/chenssy/p/3390871.html
+		介绍:		
+			匿名内部类就是一个没有名字的方法内部类，因此特点和方法与方法内部类一致，除此之外，还有自己的特点：
+				1.匿名内部类必须继承一个抽象类或者实现一个接口。
+					注:
+						匿名内部类也仅能只继承一个父类或者实现一个接口。
+				2.匿名内部类没有类名，因此没有构造方法。
+					注:但可用构造代码块来替代。构造代码块:./java代码块.txt
+			
+		例:
+			new 父类构造器(参数列表)|实现接口（）{
+				//匿名内部类的类体部分
+			}
+		附:
+			匿名内部类编译：
+				匿名内部类被编译后也会.class文件，但会带上$
+				例：
+					https://blog.csdn.net/reuxfhc/article/details/81590997
+	附：
+	多个外部类：
+		一个.java文件有同级类
+		https://blog.csdn.net/q5706503/article/details/84349692
+		https://blog.csdn.net/qq_15037231/article/details/80086099
