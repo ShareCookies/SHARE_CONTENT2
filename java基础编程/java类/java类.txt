@@ -123,6 +123,9 @@
 					}
 				}
 			}
+		附：
+			为什么只有内部类可以用static修饰？
+				https://www.cnblogs.com/kungfupanda/p/7239414.html
 	方法内部类：
 		方法内部类顾名思义就是定义在方法里的类。
 		

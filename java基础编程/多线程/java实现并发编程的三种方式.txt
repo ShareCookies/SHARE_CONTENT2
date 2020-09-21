@@ -65,6 +65,11 @@ java实现多线程编程的三种方式：
 并发编程问题之资源共享：!
 	./共享资源.txt
 注：
+	给线程任务传参的3种方式：
+		https://blog.csdn.net/marvel_cheng/article/details/51992025
+		1.构造器
+		2.getset
+		3.回调函数传参？
 	线程池：
 		./线程池.txt
 	程序结束：
