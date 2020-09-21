@@ -33,6 +33,20 @@ IntelliJ IDEA 激活：
 	Diamond types are not supported at language level '5'：
 		https://blog.csdn.net/dongzhensong/article/details/88799477
 		通过alt+enter的set language level为jdk8也可以解决
+	文件经过idea编辑后导致git冲突：
+		导致大量冲突：
+			1.可能是格式化导致
+			https://blog.csdn.net/Atimynyc/article/details/83089919
+			https://blog.csdn.net/zhuyunbo_/article/details/105472022?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.add_param_isCf&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.add_param_isCf
+		导致所有冲突：
+			1.可能是编码导致。
+			例：同样是utf-8，但windows后unix版的换行就不一致。
+				Windows的换行符实际是两个字节，\CR\LF
+				而unix的换行符只需要一个\CR.
+				解决方案：
+					对应文件编码设置：打开文件后右下角可以进行文件的编码和换行风格设置。
+					附：
+						全体编码设置：https://blog.csdn.net/xfx_1994/article/details/103579870
 idea编程辅助：
 	常用设置：
 		https://www.cnblogs.com/jajian/p/8108690.html#autoid-0-0-0

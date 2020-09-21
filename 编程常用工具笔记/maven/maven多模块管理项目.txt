@@ -47,6 +47,7 @@ maven的多模块管理：
 	maven多模块打包：
 		https://blog.csdn.net/bicheng4769/article/details/83656981
 		打包命令：
+			要在有插件的那个子模块目录下执行改命令
 			clean package spring-boot:repackage -Dmaven.test.skip=true --update-snapshots
 		打包异常：程序包xxx不存在	
 			项目应用的是Spring-boot框架

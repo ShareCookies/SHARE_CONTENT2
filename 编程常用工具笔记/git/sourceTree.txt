@@ -54,6 +54,9 @@ sourceTree操作介绍：
 		方式2：
 			重置到某个节点（强行合并），然后强制提交。！
 			http://www.360doc.com/content/18/0227/17/8772388_732927594.shtml
+			1.gitlab开启强制推送：setting-》仓库-》Protected Branches-》unprotected
+			2.sourceTree中开启强制推送
+			3.强推
 	检出：
 		以该节点开始，创建一个head分支？
 	重置提交，提交回滚两操作意思：

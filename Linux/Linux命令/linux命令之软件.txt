@@ -19,7 +19,8 @@ lsof -i:6051 -t|xargs kill -9
 		crontab命令参数：
 			-l 列出当前计时器的设置
 			-r 删除计时器的设置
-
+	命令行浏览器：
+		https://blog.csdn.net/qq_35346390/article/details/76066326
 
 软件：	
 	守护进程：
