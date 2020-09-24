@@ -1,4 +1,14 @@
 https://zhuanlan.zhihu.com/p/151438895
 https://www.zhihu.com/question/48323453
 https://www.zhihu.com/question/338211916
- 
+
+面试案例
+	https://www.jianshu.com/p/63debf421068
+	https://www.jianshu.com/p/0dca054c1986
+
+	说说项目中你遇到的最大的一个问题，怎么解决的？
+		文件读写异常慢，导致内存溢出
+	redis*，mq，mysql，算法*，并发*，微服务*，原理*
+	
+	
+	

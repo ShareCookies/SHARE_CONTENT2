@@ -1,0 +1,31 @@
+
+	/**
+     * 静态方法测试： 静态方法可以被多线程同时调用，然后同时运行
+     * @author hecaigui
+     * @date 2020-7-21
+     * @param args
+     * @return
+     */
+    public static void staticMethodTest(String[] args) {
+        ExecutorService exec= Executors.newFixedThreadPool(5);
+        for (int i = 0; i < 5; i++) {
+            exec.execute(new Runnable(){
+                @Override
+                public void run(){
+                    ThreadPoolUtilsDemo.staticMethodCanCalledByThreadHowMuchOnSameTime();
+                }
+            });
+        }
+        exec.shutdown();
+    }
+    // https://www.cnblogs.com/-ROCKS/p/6108490.html 静态方法并发问题
+    // 静态方法可以被多线程同时调用，然后同时运行
+    // 变量共享问题了？
+    // 内存回收问题了？
+    public static void  staticMethodCanCalledByThreadHowMuchOnSameTime(){
+        System.err.println(Thread.currentThread().getName());
+        while(true){
+
+        }
+        //System.err.println(Thread.currentThread().getName()+"over");
+    }

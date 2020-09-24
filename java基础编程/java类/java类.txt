@@ -26,6 +26,9 @@
 				子类引用不能指向父类对象的：
 					Father f2 = new Father();
 					Son s2 = (Son)f2;       // 出错，子类引用不能指向父类对象
+	finalize：
+		Object类中定义的方法，这个方法是由垃圾收集器在销毁对象时调用的，通过重写finalize()方法可以整理系统资源或者执行其他清理工作。
+		finalize并不一定会执行。
 形参为何要为final:?
 	简单理解就是，拷贝引用，为了避免引用值发生改变，例如被外部类的方法修改等，而导致内部类得到的值不一致，于是用final来让该引用不可改变。
 类的构成：
@@ -46,21 +49,30 @@
 				./例/构造方法/NoParameterConstructorSon.java  goto： 2.注1：
 		注2：
 			如果父类仅提供有参构造函数，那么java也不会为你隐式调用super(),且编译期就会报错。
-		
-继承：
-	属性继承：
-		class First{static int a=3;}
-		final class Second extends First{
-			void method(){
-			System.out.println(a);
-			}
-		}
-		1.System.out.println(a);语句会先去找Second类有没有a变量，没有会在去找它继承的First类的a变量。
-			？
-				所以如果4写成System.out.println(First.a);会提高解析速度吗
-				那么Second对象在内存中存在时它是直接包含了First的属性，还是包含了First属性的链接？
-		2.静态属性也可被子类继承。
-			附：访问静态属性，最好直接直接使用类名，但使用this也是可以的，只是不推荐，容易在阅读代码过程中产生混淆。
+	附：
+		继承：
+			创建对象时构造器的调用顺序是：先初始化静态成员，然后调用父类构造器，再初始化非静态成员，最后调用自身构造器。
+			属性继承：
+				class First{static int a=3;}
+				final class Second extends First{
+					void method(){
+					System.out.println(a);
+					}
+				}
+				1.System.out.println(a);语句会先去找Second类有没有a变量，没有会在去找它继承的First类的a变量。
+					？
+						所以如果4写成System.out.println(First.a);会提高解析速度吗
+						那么Second对象在内存中存在时它是直接包含了First的属性，还是包含了First属性的链接？
+				2.静态属性也可被子类继承。
+					附：访问静态属性，最好直接直接使用类名，但使用this也是可以的，只是不推荐，容易在阅读代码过程中产生混淆。
+			
+		重载：
+			重载发生在一个类中，同名的方法如果有不同的参数列表（参数类型不同、参数个数不同或者二者都不同）则视为重载；
+				重载对返回类型没有特殊的要求。
+		重写：
+			重写发生在子类与父类之间，重写要求子类被重写方法与父类被重写方法有相同的返回类型，比父类被重写方法更好访问，不能比父类被重写方法声明更多的异常（里氏代换原则）。
+			即：更宽的访问级别、相同的返回类型.。
+	
 
 抽象类：
 1.：抽象类的使用原则如下： 
@@ -72,16 +84,20 @@
 	https://blog.csdn.net/zhao_miao/article/details/83245816
 	介绍：
 		所谓内部类就是在一个类内部进行其他类结构的嵌套操作。
+		内部类是一个相对独立的个体class文件，与外部类没有关系!
 		Java中内部类主要分为成员内部类、静态内部类、方法内部类、匿名内部类
 		内部类的优缺点
 			内部类的优点:
 				内部类与外部类可以方便的访问彼此的私有域（包括私有方法、私有属性）。
+					为什么了？是因为内部类隐式持有OuterClass.this
+					那外部类如何访问内部类隐私了...
 				内部类是另外一种封装，对外部的其他类隐藏。
 				内部类可以突破java的单继承局限。（使用内部类实现多继承）
 					例：...
 			内部类的缺点:
 				结构复杂。
 	内部类的实例化：
+		对于非静态的内部类，内部类的创建依赖外部类的实例对象，在没有外部类实例之前是无法创建内部类的。
 		1.在外部类外部 创建非静态内部类:
 			语法：外部类.内部类 内部类对象 = new 外部类().new 内部类();
 			例： Outer.Inner in = new Outer().new Inner();
@@ -149,7 +165,7 @@
 					new Inner().fun();
 				}
 			}
-	匿名内部类:
+	匿名内部类（Anonymous Inner Class）:
 		https://www.cnblogs.com/chenssy/p/3390871.html
 		介绍:		
 			匿名内部类就是一个没有名字的方法内部类，因此特点和方法与方法内部类一致，除此之外，还有自己的特点：
@@ -168,8 +184,10 @@
 				匿名内部类被编译后也会.class文件，但会带上$
 				例：
 					https://blog.csdn.net/reuxfhc/article/details/81590997
-	附：
-	多个外部类：
-		一个.java文件有同级类
-		https://blog.csdn.net/q5706503/article/details/84349692
-		https://blog.csdn.net/qq_15037231/article/details/80086099
+	
+多个外部类：
+	一个.java源文件可以有多个外部类。
+	但一个源文件中最多只能有一个公开类（public class）而且文件名必须和公开类的类名完全保持一致。
+	https://blog.csdn.net/q5706503/article/details/84349692
+	https://blog.csdn.net/qq_15037231/article/details/80086099
+	主要意义，作用？
