@@ -1,30 +1,36 @@
 https://www.cnblogs.com/superfj/p/7544971.html
 https://blog.csdn.net/weixin_40304387/article/details/80508236
 https://www.cnblogs.com/fengsehng/p/6048610.html
-前言：
-	多线程的异步执行方式，虽然能够最大限度发挥多核计算机的计算能力。
-	但是如果不加控制，反而会对系统造成负担。
-		大量的线程会占用内存资源并且可能会导致Out of Memory。
-		即便没有这样的情况，大量的线程回收也会给GC带来很大的压力。
-	为了避免重复的创建线程，线程池的出现让线程可进行复用。
-Executor框架（执行器框架）：
+介绍：
+	为什么要有线程池：
+		多线程的异步执行方式，虽然能够最大限度发挥多核计算机的计算能力。但是如果不加控制，反而会对系统造成负担。
+			大量的线程会占用内存资源并且可能会导致Out of Memory。
+		线程的创建本身也耗费资源。
+			大量的线程回收也会给GC带来很大的压力。
+	什么是线程池：
+		线程池的出现让线程可进行复用。
+			线程池顾名思义就是事先创建若干个可执行的线程放入一个池（容器）中，需要的时候从池中获取线程不用自行创建，使用完毕不需要销毁线程而是放回池中，从而减少创建和销毁线程对象的开销。
+	
+Executor框架（执行器框架，我称为线程池框架）：
 	Java 5引入了Executor框架，来简化并发编程的操作。
-	Executor框架的内容包括：线程池机制，Executor接口，ExecutorService接口，Executors，CompletionService等。
-	附：
-		执行器框架原理：
-			框架内部维护着一个线程池，这个线程池中维护者一定数量的线程。
-			所以执行器框架能够直接通过方法驱动任务，还是通过线程来着，只是中间省略线程相关步骤。
-		线程池：
-			当有工作来，就会向线程池拿一个线程，当工作完成后，并不是直接关闭线程，而是将这个线程归还给线程池供其他任务使用。
-			线程池的出现可以让线程进行复用，避免了重复的创建线程。
-
+	Executor框架的内容包括：
+		线程池规范接口：
+			Executor接口
+		Executor框架提供的线程池实现类：（通过该类可以创建线程池）
+			ThreadPoolExecutor类
+		线程池工具类：
+			Executors，工厂方法类，通过该类可以快速创建线程池。
+		等
+	
 	Executor（接口）：
 		介绍：（建议看源码注释来理解。）
-			解耦接口，用户可以仅通过execute()来执行所提交的Runnable任务，使用户从线程的创建等中脱身出来。
+			线程池规范接口（解耦接口）。
+			让用户可以仅通过execute(Runnable command)就可让线程池执行所提交的Runnable任务，
+			使用户从线程的创建、线程池的复杂调用（使用）等中脱身出来。
 			附：
 				通常Executor的实现类，其内部都实现线程池机制。
 				所以一旦Runnable任务传递到execute()方法，该方法便会自动将一任务放到一个线程上执行。
-
+				goto：ThreadPoolExecutor
 			附：
 				比较Executor和new Thread()
 				new Thread的弊端如下：
@@ -58,8 +64,8 @@ Executor框架（执行器框架）：
 			...
 	Executors（工厂方法类）：
 		介绍：
-			Executors类提供了一系列工厂方法用于创建线程池。
-			其工厂方法返回的excutor都实现了ExecutorService接口。
+			Executors静态工厂方法类提供了一系列工厂方法用于快速创建线程池，
+			内部其实还是使用了ThreadPoolExecutor来创建线程池。
 		Executors提供的四种常见线程池的创建方法：
 			1、public static ExecutorService newFiexedThreadPool(int Threads) 
 				创建固定数目线程的线程池。
@@ -78,8 +84,10 @@ Executor框架（执行器框架）：
 			阿里巴巴开发手册：
 				【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 
 				说明：Executors 返回的线程池对象的弊端如下： 1）FixedThreadPool 和 SingleThreadPool: 允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。 2）CachedThreadPool 和 ScheduledThreadPool: 允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
-	自定义线程池：
-		通过ThreadPoolExecutor类可以快速创建自定义的线程池。
+	ThreadPoolExecutor：（ExecutorService的实现类）
+		介绍：
+			Executor接口的实现类，通过该类可以快速的创建一个线程池。
+			用户可以通过类的execute(Runnable command)就可让线程池执行所提交的Runnable任务。
 		构造方法参数介绍：
 			corePoolSize：线程池中所保存的核心线程数，包括空闲线程。
 			maximumPoolSize：池中允许的最大线程数。
@@ -87,11 +95,22 @@ Executor框架（执行器框架）：
 			unit：持续时间的单位。
 			workQueue：任务执行前保存任务的队列，仅保存由execute方法提交的Runnable任务。
 		例：
-			./案例/线程池/自定义线程池executor.txt
-	注：
-		任何线程池中，现有线程在可能的情况下都会被自动复用。！
-		ThreadPoolExecutor是什么了？
-			https://www.cnblogs.com/ants/p/11343657.html
+			自定义线程池：
+				通过ThreadPoolExecutor类可以快速创建自定义的线程池。
+				
+				例：
+					./案例/线程池/自定义线程池executor.txt
+		附：
+			1.任何线程池中，现有线程在可能的情况下都会被自动复用。
+			2.阿里为什么不允许使用Executors：
+				https://www.cnblogs.com/ants/p/11343657.html
+				1.当线程中有问题出现时，用自定义的线程池可以便于根据线程名查找异常在哪，而Executors创建的线程池不行。
+				2.Executors创建的线程池都各有各的限制和问题
+		
+			执行器框架原理：
+				ThreadPoolExecutor实现了一个线程池。
+				其内部维护着一个容器存放线程（BlockingQueue<Runnable> workQueue）。
+				用户可通过execute(Runnable)等方法让线程池中的一个线程执行任务。
 附：
 为什么使用线程池：
 	线程池的作用是重用已有线程，
@@ -104,4 +123,4 @@ Executor框架（执行器框架）：
 		// 注2：如何这个方法会并发了，那么你不久一次性要创建多个线程了，要考虑到这个情况。
 		// 所以推荐，在类属性上等就创建好线程池
 	}
-线程池与@Async相比？
+线程池与@Async相比！
