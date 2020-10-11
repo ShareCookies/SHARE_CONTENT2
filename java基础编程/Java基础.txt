@@ -212,11 +212,57 @@
 		赋值运算符
 关键字：
 	修饰符：
-		public,private,protected,default(不写package)
-		default：默认对于同一个包中的其他类相当于公开（public），对于不是同一个包中的其他类相当于私有（private）。
-		protected（受保护）：对子类相当于公开，对不是同一包中的没有父子关系的类相当于私有。
+		private,protected,public,package(默认级别，即什么访问修饰符都不写)。
+		private：
+			介绍：
+				私有的
+			调用：
+				被private关键字私有的成员之后,就只能在本类当中进行访问了。
+				附：
+					1.私有成员，即使通过对象（引用）打点调用，和类名打点（针对静态）调用，都是不行。
+					例：
+						以下私有成员的调用编译无法通过
+						AccessModifier t = new AccessModifier();
+						t.privateMethod();
+						AccessModifier.staticPrivateMethod();
+			继承：		
+				在继承中，私有成员禁止被继承！
+					答：应该是有继承的，只是子类也无法访问父类私有成员。			
+		protected：
+			介绍：
+				受保护， protected修饰符与是否同包和子类有关。
+			调用：
+				对子类相当于公开。
+				对同包中类相当于公开。对非同包中（且五父子关系的类）相当于私有。
+				例：
+					
+
+			继承：
+				受保护成员允许被继承，且调用
+	　　public：
+			介绍：
+				公开的
+			调用：
+				调用方式无限制
+			继承：
+				公有成员允许被继承，且调用
+		default：
+			介绍：
+				默认级别，即什么访问修饰符都不写。
+				默认级别对于同一个包中的其他类相当于公开（public），对于不是同一个包中的其他类相当于私有（private）。
+			调用：
+				仅分同包与非同包
+			继承：
+				仅分同包与非同包
 		附：
-			类修饰符：Java中，外部类的修饰符只能是public或默认，类的成员（包括内部类）的修饰符可以是以上四种。
+			1.访问修饰符级别总结：
+						类内部		本包	子类	外部包
+				public 		V		V		V		V
+				protected 	V		V		V		X
+				default		V		V		X		X
+				private		V		X		X		X
+
+			2.类修饰符：Java中，外部类的修饰符只能是public或默认，类的成员（包括内部类）的修饰符可以是以上四种。
 	switch：
 		在Java 5以前，switch(expr)中，expr只能是byte、short、int、char，或者其对应的封装类。
 		从Java 5开始，Java中引入了枚举类型，expr也可以是enum类型。

@@ -24,6 +24,10 @@
 				public  static  final String  school="哈哈哈";
 				public  abstract  void  test();
 			}
+		3.interface里是无法定义属性的：
+			因为接口就是用来定义接口（指方法）的。
+			接口里定义的是静态属性，不能算对象的，是属于类的（大家共有的）。
+
 接口注意事项：
 	1.接口特性：
 		1.一个类只能extend（继承）一个类，但能implements（实现）多个接口。

@@ -59,7 +59,13 @@ maven的依赖管理：
 					方式2.idea-》setting-》maven中可以覆盖。
 			maven引入本地jar包：
 				https://www.cnblogs.com/chywx/p/11563318.html
-					
+				<dependency>
+					<groupId>...</groupId>
+					<artifactId>...</artifactId>
+					<version>1.0-SNAPSHOT</version>
+					<scope>system</scope>
+					<systemPath>${basedir}/src/main/resources/lib/....jar</systemPath>
+				</dependency>				
 		第三方仓库：
 			第三方仓库，又称为内部中心仓库，也称为私服。
 			一般是由公司自己设立的，只为本公司内部共享使用。

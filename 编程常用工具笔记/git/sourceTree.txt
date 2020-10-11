@@ -68,3 +68,7 @@ sourceTree操作介绍：
 	hcg：
 		把当前节点的修改给考出来。
 	https://blog.csdn.net/njnujuly/article/details/83186179
+source tree 支持cherry-pick吗：
+	https://blog.csdn.net/qq_15037231/article/details/81504575?utm_medium=distribute.pc_relevant.none-task-blog-baidulandingword-1&spm=1001.2101.3001.4242
+	https://community.atlassian.com/t5/Sourcetree-questions/Cherry-pick-multi-commits-but-the-cherry-pick-optionis-disabled/qaq-p/859356
+	

@@ -6,3 +6,15 @@ https://www.jianshu.com/p/912357993486
 https://blog.csdn.net/zhuyanlin09/article/details/94408694
 https://www.cnblogs.com/luoa/p/10839731.html
 https://www.jianshu.com/p/45d75aeb3b01
+
+
+B树
+	B树：
+		B树是为磁盘或其他直接存取的辅助存储设备而设计的一种平衡搜索树。
+		B树与红黑树的不同之处在于B树的结点可以有很多孩子，从数个到数千个。
+		B树类似于红黑树，就是每棵含有n个结点的B树的高度为O(lgn)。因此，我们也可以使用B树在时间O(lgn)内完成一些动态集合的操作。
+
+为什么针对磁盘设计的数据结构不同于针对随机访问的主存所设计的数据结构。
+	
+
+	B+树：
