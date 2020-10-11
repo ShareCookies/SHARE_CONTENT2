@@ -44,7 +44,7 @@ Executor框架（执行器框架，我称为线程池框架）：
 	ExecutorService（接口，继承了Executor接口）：
 		介绍：
 			ExecutorService一个比Executor使用更广泛的子类接口，提供了生命周期管理的方法，以及可跟踪一个或多个异步任务执行状况的方法。
-			ExecutorService的生命周期包括三种状态：
+			ExecutorService的生命周期包括三种状态：？
 				运行、关闭、终止。
 				创建后便进入运行状态。
 				当调用了shutdown（）方法时，便进入关闭状态。

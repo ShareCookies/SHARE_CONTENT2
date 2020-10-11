@@ -1,0 +1,86 @@
+https://blog.csdn.net/whut2010hj/article/details/81413887
+原理：
+	在Thread类中有个ThreadLocalMap
+		/* ThreadLocal values pertaining to this thread. This map is maintained by the InheritableThreadLocal class. */
+		threadLocals属于当前线程，该map被ThreadLocal持有。	
+		ThreadLocal.ThreadLocalMap threadLocals = null;
+			这个map类的键值对是 
+				Entry(ThreadLocal<?> k, Object v)
+			这个map在每个Thread里存了ThreadLocal对象和某个其他共享资源对象。
+	ThreadLocal类有两个重要方法 set 和 get：
+		get就是获取这个ThreadLocal变量在当前类的值：
+
+			/**
+			 * Returns the value in the current thread's copy of this
+			 * thread-local variable.  If the variable has no value for the
+			 * current thread, it is first initialized to the value returned
+			 * by an invocation of the {@link #initialValue} method.
+			 *
+			 * @return the current thread's value of this thread-local
+			 */
+			返回当前线程的threadLocal变量。
+				可以看到这个方法先要获取当前线程的map，然后在 map 里面找 this ThreadLocal 变量对应的值。
+				如果这个对象没有值就调用setInitialValue()
+			
+			public T get() {
+				Thread t = Thread.currentThread();
+				ThreadLocalMap map = getMap(t);
+				if (map != null) {
+					ThreadLocalMap.Entry e = map.getEntry(this);
+					if (e != null) {
+						@SuppressWarnings("unchecked")
+						T result = (T)e.value;？
+						return result;
+					}
+				}
+				return setInitialValue();
+			}
+	set就是为当前线程的threadLocalMap设置一个指定值（共享值）
+		/**
+		 * Sets the current thread's copy of this thread-local variable
+		 * to the specified value.  Most subclasses will have no need to
+		 * override this method, relying solely on the {@link #initialValue}
+		 * method to set the values of thread-locals.
+		 *
+		 * @param value the value to be stored in the current thread's copy of
+		 *        this thread-local.
+		 */
+		public void set(T value) {
+			Thread t = Thread.currentThread();
+			ThreadLocalMap map = getMap(t);
+			if (map != null)
+				map.set(this, value);
+			else
+				createMap(t, value);
+		}
+例：
+	public class ThreadLocalTest {
+		private static ThreadLocal<Apple> appleThreadLocal
+			= new ThreadLocal<>();
+		public static void main(String[] args) throws Exception{
+			class RunApple implements Runnable{
+				private final int id;
+				RunApple(int id){
+					this.id = id;
+				}
+				@Override
+				public void run(){
+					while(!Thread.currentThread().isInterrupted()){
+						appleThreadLocal.set(new Apple(id));
+						Thread.yield();
+						System.out.println(this);
+					}
+				}
+				@Override
+				public String toString(){
+					return "#" + id + ":" + appleThreadLocal.get().getAppleID();//只能拿到一个共享值，能拿到别的吗？
+				}
+			}
+			ExecutorService exec = Executors.newCachedThreadPool();
+			for(int i=0;i<5;i++){
+				exec.execute(new RunApple(i));
+			}
+			TimeUnit.SECONDS.sleep(1);
+			exec.shutdownNow();
+		}
+	}
