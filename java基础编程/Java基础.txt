@@ -329,3 +329,9 @@
 		Java平台有个用户和本地C代码进行互操作的API，称为Java Native Interface (Java本地接口)。
 		使用native修饰的函数(方法)，说明这个方法是原生函数。
 		即这个方法是用C/C++语言实现的，且被编译成了DLL，由java负责去调用。
+附：
+	输入：
+		https://www.cnblogs.com/zhengchenhui/p/6008618.html
+	cmd运行class：
+		com.test
+		那么当前目录下要有目录 com/test.class
