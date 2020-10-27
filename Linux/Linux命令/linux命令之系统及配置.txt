@@ -75,6 +75,17 @@
 			window：https://zhidao.baidu.com/question/1372476367770060819.html
 	查看ip：
 		ifconfig -a
+	路由跟踪：
+		traceroute
+		cmd下：tracert
+	附：
+		不同网段是否能通得看交换机等策略。
+		例：
+			公司不同网段是通的吗 192. 168. 213.* ，192.168.211.*
+			局域网内部我们都是通的。
+			你ping一下网关就知道了。ping 192. 168. 213.254
+			ping 网关能通，但ping ip不同，说明他自己做了安全加固，例开启防火墙。
+
 性能：	
 	linux服务器性能查看：
 		linux 性能瓶颈排查：
@@ -123,6 +134,11 @@
 		df -h 
 			显示内容参数说明：
 				Filesystem文件系统	Size分区大小	Used已使用容量	Avail还可以使用的容量	Use%已用百分比	Mounted on挂载点
+		附：
+			df -lh ： 查看磁盘空间分布情况
+			du -sh * ：查看各个目录文件大小
+			查看看目录属于哪个磁盘分区：https://www.cnblogs.com/fanblogs/p/12970223.html
+
 	查看io:
 		iostat -d -k 1
 	iostat使用：	

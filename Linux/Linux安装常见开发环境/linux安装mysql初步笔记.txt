@@ -1,97 +1,110 @@
 https://www.jianshu.com/p/276d59cbc529
-mysqlÄ¬ÈÏÅäÖÃ£º
+mysqlé»˜è®¤é…ç½®ï¼š
 	vi /etc/my.cnf 
 	
 	[mysqld]
 	datadir=/myspace/developEnvironment/mysql8/data
 	basedir=/myspace/developEnvironment/mysql8
-	#mysql´íÎóÈÕÖ¾Â·¾¶
+	#mysqlé”™è¯¯æ—¥å¿—è·¯å¾„
 	log-error =  /usr/local/mysql/log/mysql.err 
 	port = 3306
 	sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 	symbolic-links=0
 	max_connections=400
 	innodb_file_per_table=1
-	#±íÃû´óĞ¡ÊÇ·ñÃ÷¸Ğ
+	#è¡¨åå¤§å°æ˜¯å¦æ˜æ„Ÿ
 	lower_case_table_names=0
 	#socket=/var/lib/mysql/mysql.sock
 	symbolic-links=0
 	[mysqld_safe]
 	log-error=/var/log/mariadb/mariadb.log 
 	pid-file=/var/run/mariadb/mariadb.pid
-	# mysql·şÎñÆô¶¯ÈÕÖ¾
+	# mysqlæœåŠ¡å¯åŠ¨æ—¥å¿—
 	!includedir /etc/my.cnf.d
 	[mysql.server]
 	user=mysql
 	basedir=/myspace/developEnvironment/mysql8
-mysqlÊÇ·ñÔËĞĞ£º
+mysqlæ˜¯å¦è¿è¡Œï¼š
 	ps -ef|grep mysql
 
 
 
-×¢£º/usr/local/src/mysql-5.6.39-linux-glibc2.12-x86_64 µØÖ·
-1.ÏÂÔØÔ´Âë°ü£º
-	µØÖ·.https://www.mysql.com/downloads/
-	Ñ¡Ôñcommunity  server
-	µã»÷DOWLOAD
-	Ñ¡Ôñ°æ±¾£¬Èç5.6°æ±¾
-	µã»÷ÏÂÔØmysql-5.6.39-linux-glibc2.12-x86_64.tar.gz
-	Ñ¡Ôñno thanks
-2.°²×°mysql£º
+æ³¨ï¼š/usr/local/src/mysql-5.6.39-linux-glibc2.12-x86_64 åœ°å€
+1.ä¸‹è½½æºç åŒ…ï¼š
+	åœ°å€.https://www.mysql.com/downloads/
+	é€‰æ‹©community  server
+	ç‚¹å‡»DOWLOAD
+	é€‰æ‹©ç‰ˆæœ¬ï¼Œå¦‚5.6ç‰ˆæœ¬
+	ç‚¹å‡»ä¸‹è½½mysql-5.6.39-linux-glibc2.12-x86_64.tar.gz
+	é€‰æ‹©no thanks
+2.å®‰è£…mysqlï¼š
 	https://www.jianshu.com/p/276d59cbc529
 		1.
 		2.
-		3.¼ì²émysqlÓÃ»§×éºÍÓÃ»§ÊÇ·ñ´æÔÚ£¬Èç¹ûÃ»ÓĞ£¬Ôò´´½¨
+		3.æ£€æŸ¥mysqlç”¨æˆ·ç»„å’Œç”¨æˆ·æ˜¯å¦å­˜åœ¨ï¼Œå¦‚æœæ²¡æœ‰ï¼Œåˆ™åˆ›å»º
 			cat /etc/group | grep mysql
 			cat /etc/passwd |grep mysql
-			groupadd mysql Ìí¼ÓmysqlÓÃ»§×é
-			useradd -r -g mysql mysql  Ìí¼ÓmysqlÓÃ»§£¬²¢·ÖÅäµ½mysql×é  
-		4.´Ó¹ÙÍøÏÂÔØÊÇÓÃÓÚLinuxµÄMysql°²×°°ü
+			groupadd mysql æ·»åŠ mysqlç”¨æˆ·ç»„
+			useradd -r -g mysql mysql  æ·»åŠ mysqlç”¨æˆ·ï¼Œå¹¶åˆ†é…åˆ°mysqlç»„  
+		4.ä»å®˜ç½‘ä¸‹è½½æ˜¯ç”¨äºLinuxçš„Mysqlå®‰è£…åŒ…
 			wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.24-linux-glibc2.12-x86_64.tar.gz
 		
-		tar -xvzf mysql-5.6.39-linux-glibc2.12-x86_64.tar.gz 	½âÑ¹ÎÄ¼ş
-		mv mysql-5.6.39-linux-glibc2.12-x86_64 /usr/local/src	¼ôÇĞµ½Ö¸¶¨Î»ÖÃ
+		tar -xvzf mysql-5.6.39-linux-glibc2.12-x86_64.tar.gz 	è§£å‹æ–‡ä»¶
+		mv mysql-5.6.39-linux-glibc2.12-x86_64 /usr/local/src	å‰ªåˆ‡åˆ°æŒ‡å®šä½ç½®
 		
-		mkdir µØÖ·/data	mysql½âÑ¹Ä¿Â¼ÏÂ´´½¨ÎÄ¼ş¼Ğ
-		chown -R mysql:mysql µØÖ·		ĞŞ¸ÄmysqlÄ¿Â¼ËùÊôÓÃ»§ºÍÓÃ»§×é
-		chmod -R 755 µØÖ·  ĞŞ¸ÄmysqlÄ¿Â¼È¨ÏŞ
+		mkdir åœ°å€/data	mysqlè§£å‹ç›®å½•ä¸‹åˆ›å»ºæ–‡ä»¶å¤¹
+		chown -R mysql:mysql åœ°å€		ä¿®æ”¹mysqlç›®å½•æ‰€å±ç”¨æˆ·å’Œç”¨æˆ·ç»„
+		chmod -R 755 åœ°å€  ä¿®æ”¹mysqlç›®å½•æƒé™
 		
-		±àÒë°²×°²¢³õÊ¼»¯mysql,Îñ±Ø¼Ç×¡³õÊ¼»¯Êä³öÈÕÖ¾Ä©Î²µÄÃÜÂë£¨Êı¾İ¿â¹ÜÀíÔ±ÁÙÊ±ÃÜÂë£©
+		ç¼–è¯‘å®‰è£…å¹¶åˆå§‹åŒ–mysql,åŠ¡å¿…è®°ä½åˆå§‹åŒ–è¾“å‡ºæ—¥å¿—æœ«å°¾çš„å¯†ç ï¼ˆæ•°æ®åº“ç®¡ç†å‘˜ä¸´æ—¶å¯†ç ï¼‰
 			# cd /usr/local/mysql/bin
 			# ./mysqld --initialize --user=mysql --datadir=/usr/local/mysql/data --basedir=/usr/local/mysql
-		6¡¢±à¼­ÅäÖÃÎÄ¼şmy.cnf£¬Ìí¼ÓÅäÖÃÈçÏÂ
-		Æô¶¯mysql·şÎñÆ÷
+		6ã€ç¼–è¾‘é…ç½®æ–‡ä»¶my.cnfï¼Œæ·»åŠ é…ç½®å¦‚ä¸‹
+		å¯åŠ¨mysqlæœåŠ¡å™¨
 			# /usr/local/mysql/support-files/mysql.server start
 		
-3.´íÎó½â¾ö£º
-	3.0£º
+3.é”™è¯¯è§£å†³ï¼š
+	3.0ï¼š
 	FATAL ERROR: please install the following Perl modules before executing ./scripts/mysql_install_db:
 	Data::Dumper
-	½â¾ö·½·¨ £º°²×°autoconf¿â
-	ÃüÁî£ºyum -y install autoconf 
-	3.1£º
+	è§£å†³æ–¹æ³• ï¼šå®‰è£…autoconfåº“
+	å‘½ä»¤ï¼šyum -y install autoconf 
+	3.1ï¼š
 	FATAL ERROR: Neither host 'localhost.localdomain' nor 'localhost' could be looked up with ./bin/resolveip
 	Please configure the 'hostname' command to return a correct hostname.
 	If you want to solve this at a later stage, restart this script with the --force option
-	½â¾ö·½·¨ £º1.ÔÚhostsÎÄ¼şÖĞÅäÖÃ127.0.0.1Ö÷»ú£¬Àı ÔÚ/etc/hostsÖĞÊäÈëÒÔÏÂÄÚÈİ£º127.0.0.1localhost.localdomain localhost
-		2.Èç¹ûhostsÎÄ¼şÎŞÎó£¬Ö´ĞĞmysql³õÊ¼»¯½Å±¾»¹±¨ÈçÉÏ´íÎó£¬²é¿´ÊÇ²»ÊÇÈí¼ş°æ±¾µÄÎÊÌâ¡£
-	3.2£º
+	è§£å†³æ–¹æ³• ï¼š1.åœ¨hostsæ–‡ä»¶ä¸­é…ç½®127.0.0.1ä¸»æœºï¼Œä¾‹ åœ¨/etc/hostsä¸­è¾“å…¥ä»¥ä¸‹å†…å®¹ï¼š127.0.0.1localhost.localdomain localhost
+		2.å¦‚æœhostsæ–‡ä»¶æ— è¯¯ï¼Œæ‰§è¡Œmysqlåˆå§‹åŒ–è„šæœ¬è¿˜æŠ¥å¦‚ä¸Šé”™è¯¯ï¼ŒæŸ¥çœ‹æ˜¯ä¸æ˜¯è½¯ä»¶ç‰ˆæœ¬çš„é—®é¢˜ã€‚
+	3.2ï¼š
 	Starting MySQL * Couldn't find MySQL server (/usr/bin/mysqld_safe)
-	½â¾ö·½·¨ £ºÕÒ²»µ½Mysql serverÁË£¬²é¿´my.cnfÅäÖÃ£¬²é¿´ÊÇ·ñÓĞbasedir
-		Ã»ÓĞµÄ»°ÔÚÀïÍ·Ìí¼Óbasedir=µØÖ·
-		/etc/mysql/my.cnfÕâÊÇ±ğÈËµÄÂ·¾¶£¬ÎÒµÄÊÇ/etc/my.cnf£¡£¡£¡
-		etcÄ¿Â¼ÔÚLINUXÀïºÜÖØÒªÅ¶£¬ÀïÃæ×°µÄ¶¼ÊÇĞ©ÔÓÆßÔÓ°ËµÄÅäÖÃÎÄ¼ş
+	è§£å†³æ–¹æ³• ï¼šæ‰¾ä¸åˆ°Mysql serveräº†ï¼ŒæŸ¥çœ‹my.cnfé…ç½®ï¼ŒæŸ¥çœ‹æ˜¯å¦æœ‰basedir
+		æ²¡æœ‰çš„è¯åœ¨é‡Œå¤´æ·»åŠ basedir=åœ°å€
+		/etc/mysql/my.cnfè¿™æ˜¯åˆ«äººçš„è·¯å¾„ï¼Œæˆ‘çš„æ˜¯/etc/my.cnfï¼ï¼ï¼
+		etcç›®å½•åœ¨LINUXé‡Œå¾ˆé‡è¦å“¦ï¼Œé‡Œé¢è£…çš„éƒ½æ˜¯äº›æ‚ä¸ƒæ‚å…«çš„é…ç½®æ–‡ä»¶
 
-	3.3£º
+	3.3ï¼š
 	Starting MySQL * The server quit without updating PID file (/var/lib/mysql/ubuntu.pid).
-	¿ÉÄÜÊÇÖ®Ç°µÄ°æ±¾Ã»ÓĞÉ¾³ıÍêÈ«£¬É¾³ıÍêÈ«£¬½â¾öÎÊÌâ¡£
-	Ã»Óöµ½£¡£¡£¡
-	3.4£º
+	å¯èƒ½æ˜¯ä¹‹å‰çš„ç‰ˆæœ¬æ²¡æœ‰åˆ é™¤å®Œå…¨ï¼Œåˆ é™¤å®Œå…¨ï¼Œè§£å†³é—®é¢˜ã€‚
+	æ²¡é‡åˆ°ï¼ï¼ï¼
+	3.4ï¼š
 	Failed to start mysqld.service: Unit not found
-	³öÏÖµØµã£ºÔÚÆô¶¯mysql·şÎñÊ±³öÏÖ
-	½â¾ö·½·¨£º2.0×îºó4²½£¬Ö´ĞĞÍêmysqlÒ²¾ÍÔËĞĞÁË£¿£¿£¿
-	²Î¿¼×Ô£ºhttps://www.cnblogs.com/lushengle/p/7607953.html	
+	å‡ºç°åœ°ç‚¹ï¼šåœ¨å¯åŠ¨mysqlæœåŠ¡æ—¶å‡ºç°
+	è§£å†³æ–¹æ³•ï¼š2.0æœ€å4æ­¥ï¼Œæ‰§è¡Œå®Œmysqlä¹Ÿå°±è¿è¡Œäº†ï¼Ÿï¼Ÿï¼Ÿ
+	å‚è€ƒè‡ªï¼šhttps://www.cnblogs.com/lushengle/p/7607953.html	
 		http://blog.csdn.net/ezitai/article/details/52085141
-4.²é¿´mysql°²×°£º
+4.æŸ¥çœ‹mysqlå®‰è£…ï¼š
 	 whereis mysql
-	²Î¿¼×Ô£ºhttp://blog.csdn.net/qq_35624642/article/details/53538566
+	å‚è€ƒè‡ªï¼šhttp://blog.csdn.net/qq_35624642/article/details/53538566
+é™„ï¼š
+	mysqlï¼Œmysqldï¼Œmysqld_safeï¼Œmysqld
+	mysql æ˜¯ä¸ªå‘½ä»¤è¡Œç¨‹åºï¼›
+	mysqld æ˜¯æœåŠ¡ã€‚
+	é™„ï¼š
+		linux ç³»ç»Ÿé‡Œä¸€èˆ¬çš„æœåŠ¡éƒ½æ˜¯ä»¥ d ç»“å°¾çš„ï¼Œæ¯”å¦‚ httpdï¼Œvsftpd ç­‰ç­‰ã€‚
+		d çš„å…¨æ‹¼åº”è¯¥æ˜¯ daemonï¼Œä¹Ÿå°±æ˜¯å®ˆæŠ¤ç¨‹åºçš„æ„æ€ï¼Œå¸¸é©»äºåå°ã€‚
+	mysqld_safeï¼š	
+		Mysql_safeå¯åŠ¨åï¼Œå…³é—­æ¯”è¾ƒéº»çƒ¦ï¼Œå‘½ä»¤æ˜¯mysqladmin -uroot -p123 shutdown
+		https://www.cnblogs.com/is-possible/p/12666858.html
+		https://www.cnblogs.com/benwu/articles/9061345.html
+		https://blog.csdn.net/hotdust/article/details/78205265
+
