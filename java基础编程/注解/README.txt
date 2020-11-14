@@ -3,8 +3,8 @@
 Java注解@(annotation):
 	介绍:
 		注解是一系列元数据，它提供数据用来解释程序代码，但是注解并非代码本身的一部分。注解对于代码的运行效果没有直接影响。
-		hcg：
-			注解就是为java代码提供更多的解释说明。
+			hcg：
+				注解就是为java代码提供更多的解释说明。
 		注解有许多用处，主要如下：
 			提供信息给编译器： 编译器可以利用注解来探测错误和警告信息
 			编译阶段时的处理： 软件工具可以用来利用注解信息来生成代码、Html文档或者做其它相应处理。
@@ -169,6 +169,8 @@ Java注解@(annotation):
 				System.out.println("id:"+testAnnotation.id());
 	注：
 		一个注解要在运行时被成功提取，那么 @Retention(RetentionPolicy.RUNTIME) 是必须的。
+案例：
+	./例/annotation
 Java 中预置的注解：
 	Java 语言本身已经提供了几个现成的注解。
 	@Deprecated
