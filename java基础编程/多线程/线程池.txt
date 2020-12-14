@@ -124,3 +124,12 @@ Executor框架（执行器框架，我称为线程池框架）：
 		// 所以推荐，在类属性上等就创建好线程池
 	}
 线程池与@Async相比！
+局部创建的线程池不手动关闭会内存泄露：
+	例：https://www.cnblogs.com/it-deepinmind/p/13072054.html
+	1. 一个线程的run方法执行完毕这个线程就会被自动销毁的。
+		https://bbs.csdn.net/topics/370206774
+	2. Java线程池是如何实现线程复用的？
+		https://blog.csdn.net/weixin_48509270/article/details/106795567
+	附：
+		jvm查看线程数量？
+		https://blog.csdn.net/u010271462/article/details/70171553?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5.control
