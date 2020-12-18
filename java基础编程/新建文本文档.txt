@@ -7,39 +7,7 @@
 		transient
 		volatile  
 			
-			
-Serializable接口（序列化接口）：！！！
-https://blog.csdn.net/leixingbang1989/article/details/50556966
-历史：
-jvm中引用数据类型存在于栈中，而new创建出的对象存在于堆中。如果电脑断电那么存在于内存中的对象就会丢失。
-那么有没有方法将对象保存到磁盘(对象持久化存储)或通过网络传输到远处的其他地方呢？
-答案是可以，但要求类实现Serializable接口。
-原因是，jvm不仅需要考虑将对象存储到硬盘等其他介质，还需要考虑将其读取(反序列化)出来。
-序列化就是起到告诉JVM,这个对象是由哪个类创建的。
-将对象存盘部分原理：
-Serializable接口，将类与一个称为serialVersionUID的变量关联起来，
-这个serialVersionUID就是在反序列化中用来确定由哪个类来加载这个对象。
-注：
-	1.持久化的数据均为存在于堆中的数据，static类型的数据存在于方法区中，不能被持久化。
-	如果想不持久化某个成员变量，则需要在成员变量加上关键字transient。
-	2.如果不指定serialVersionUID，那么serialVersionUID值是和类中的成员变量相关联的。
-	即保存到磁盘中的类不能用记事本打开手动修改成员变量，
-	不然就不能读取到jvm中。
-序列化接口作用：
-允许将对象保存到磁盘中。
-自定义serialVersionUID：
-	介绍：
-		指定serialVersionUID的数值，使得其不再与类的成员变量相关联。
-	实现：
-		实现序列话接口的同时创建一个serialVersionUID变量。
-		private static final long serialVersionUID = -5182532647273106745L;  
-	注：
-		1.serialVersionUID不是决定由哪个类加载硬盘文件中的唯一因素，类的包名、类的名称都有关联。
-		如果不一致，也会出现类型转化错误。原因是类的包名，类名已经被写入了文件当中。
-		即只有指定的类才能从磁盘中读取该对象（某个实现了序列化接口并存盘的对象）。
-注:
-1.Serializable当参数类型:
-即往该方法传递参数时，只要该参数是实现了Serializable接口的类对象就行。
+
 Java<>:
 http://www.importnew.com/24029.html
 介绍:<>这叫范型，或者泛型！在集合中频繁出现，主要用来规定你这个集合中出现的数据类型！

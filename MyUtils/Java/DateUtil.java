@@ -70,6 +70,10 @@ public class DateUtil {
     	 */
     	Calendar rightCalendar = Calendar.getInstance();//获取当前地区的日期信息
         System.out.println("年: " + rightCalendar.get(Calendar.YEAR));  
+		/**
+			1. 比真实月份少一个月
+			2. 8月返回8 ，10月返回 10
+		*/
         System.out.println("月: " + (rightCalendar.get(Calendar.MONTH) + 1));  
         System.out.println("日: " + rightCalendar.get(Calendar.DAY_OF_MONTH));  
         rightCalendar.get(Calendar.HOUR_OF_DAY);//时

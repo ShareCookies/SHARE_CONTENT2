@@ -85,7 +85,12 @@
 			局域网内部我们都是通的。
 			你ping一下网关就知道了。ping 192. 168. 213.254
 			ping 网关能通，但ping ip不同，说明他自己做了安全加固，例开启防火墙。
-
+	域名地址映射：
+		https://www.cnblogs.com/isme-zjh/p/11553165.html
+		vi etc/hosts
+		hosts文件格式
+			ip地址   主机名/域名   （主机别名）
+			例：127.0.0.1 www.baidu.com
 性能：	
 	linux服务器性能查看：
 		linux 性能瓶颈排查：
@@ -141,8 +146,18 @@
 
 	查看io:
 		iostat -d -k 1
-	iostat使用：	
-		http://www.51testing.com/html/93/316693-246484.html
+		iostat使用：	
+			http://www.51testing.com/html/93/316693-246484.html
+	资源限制：
+		https://www.runoob.com/linux/linux-comm-ulimit.html
+		https://blog.csdn.net/skiwnc/article/details/84100095
+		ulimit为shell内建指令，可用于控制shell程序的资源。
+		参数：
+			-a 　显示目前资源限制的设定。
+			-n <文件数目> 　指定同一时间最多可开启的文件数。
+			-u <程序数目> 　用户最多可开启的程序数目。
+			...
+
 文件链接：
 	ln命令用于为一个文件创建链接,
 	链接分为软链接(类似于windows系统中的快捷方式)

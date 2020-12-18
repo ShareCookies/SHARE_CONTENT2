@@ -21,7 +21,7 @@ lsof -i:6051 -t|xargs kill -9
 			-r 删除计时器的设置
 	命令行浏览器：
 		https://blog.csdn.net/qq_35346390/article/details/76066326
-
+		curl 
 软件：	
 	守护进程：
 		守护进程（Daemon Process），即Daemon进程是 Linux 中的后台服务进程。

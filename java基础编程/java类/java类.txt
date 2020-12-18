@@ -14,6 +14,7 @@
 		./如何运行java文件.txt
 	转型：
 		https://www.cnblogs.com/xiaoyezideboke/p/10939219.html
+		Java 转型问题其实并不复杂，只要记住一句话：父类引用指向子类对象。
 		向上转型：
 			例：
 				父类引用能指向子类对象：

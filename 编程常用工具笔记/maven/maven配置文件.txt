@@ -4,6 +4,8 @@
 	例：
 		./例/settings.xml
 maven配置：
+	指定仓库位置：
+		<localRepository>D://he_space/repository</localRepository>
 	nexus权限验证：
 		配置私服的账号密码。
 		与mirror的id对应
@@ -14,8 +16,6 @@ maven配置：
 			  <password>admin123</password>
 			</server>
 		</servers>
-	指定仓库位置：
-		<localRepository>D://he_space/repository</localRepository>
 	指定远程仓库位置：
 		https://blog.csdn.net/sinat_39789638/article/details/77918292
 		mirrors镜像意思就是私服地址。
@@ -39,6 +39,7 @@ maven配置：
 
 
 	profiles
+		https://www.cnblogs.com/wxgblogs/p/6696229.html
 		环境参数profile：
 			不同的环境参数对应不同的构件配置
 			<profiles>

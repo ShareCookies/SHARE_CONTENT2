@@ -155,6 +155,15 @@ JS系统对象：
 				同样可以把当前窗口对象的方法当作函数来使用，
 				如只写 alert()，而不必写 Window.alert()。
 				http://www.w3school.com.cn/jsref/dom_obj_window.asp
+	Location 对象
+		https://www.w3school.com.cn/jsref/dom_obj_location.asp
+		Location 对象包含有关当前 URL 的信息。
+		Location 对象是 Window 对象的一个部分，可通过 window.location 属性来访问。
+		例：
+			修改url参数，移除url参数：
+			https://www.cnblogs.com/wenming205/p/7620133.html
+			获取url参数：
+			https://www.cnblogs.com/jiekk/archive/2011/06/28/2092444.html
 	Document：
 		全称：
 			HTML DOM Document 对象

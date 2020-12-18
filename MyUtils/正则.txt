@@ -39,10 +39,18 @@ https://juejin.im/post/5d245d4151882555300feb77#heading-1
 		String test = "123Java456";
 
 		Matcher matcher = pattern.matcher(test);
-		matcher.find();
+		boolean result = matcher.find();//对字符串进行匹配，返回true，false
 		System.out.println(matcher.start());//返回3
 		System.out.println(matcher.end());//返回7
 		System.out.println(matcher.group());//返回Java
+		
+		遍历：
+			String words = "helD2lo java，helD8lo php";
+			Pattern pattern = Pattern.compile("D[0-9]");
+			Matcher matcher = pattern.matcher(words);
+			while (matcher.find()){
+				System.out.println(matcher.group());//D2  D8
+			}
 js：
 	https://www.cnblogs.com/moqiutao/p/6513628.html
 	例：
