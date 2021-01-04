@@ -32,11 +32,72 @@ java实现多线程编程的三种方式：
 			./案例/Callable/CallaleDemo.java
 		附：
 			Future：
-			方法：
-				isDone()：
-					isDone()方法可以用来检查分配的任务是否已经被处理了
-				get()：	
-					接收线程运算后的结果
+				方法：
+					isDone()：
+						isDone()方法可以用来检查分配的任务是否已经被处理了
+					get()：	
+						接收线程运算后的结果
+			异步任务返回结果原理：
+				Callable接口
+					* A task that returns a result and may throw an exception.
+					* <p>The {@code Callable} interface is similar to {@link java.lang.Runnable}, in that both are designed for classes whose
+					* instances are potentially executed by another thread.  A {@code Runnable}, however, does not return a result and cannot throw a checked exception.
+					就是一个功能性接口，用来表明实现了这个接口的类就是个任务，任务这个概念类似与Runnable，只是Callable任务运行完后会返回结果.
+				FutureTask类：
+					FutureTask是 RunnableFuture<V>接口的实现类.
+						RunnableFuture：
+							RunnableFuture接口继承了Runnable，Future<V>接口。
+							Runnable：
+								就是个功能性描述接口，用来表明实现了这个接口的类就是个任务。
+							Future<V>：
+								 * A {@code Future} represents the result of an asynchronous computation. 
+								 * Methods are provided to check if the computation is complete, to wait for its completion, and to retrieve the result of the computation.
+								 Future代表了异步运算结果。（实现类存放了异步结果）
+								 Future提供了些对异步运算的操作方法。
+					* A cancellable asynchronous computation.  This class provides a base implementation of {@link Future}, with methods to start and cancel
+					* a computation, query to see if the computation is complete, and
+					* retrieve the result of the computation. 
+					FutureTask是 Future接口的基本实现类，提供了开始、查询等操作callable任务结果的方法。
+				附：
+					为什么要先用FutureTask封装Callable接口：
+						因为FutureTask才有实现runnable接口，才能交给thread执行。
+						场景：
+							FutureTask<String> result = new FutureTask<String>(td);
+							new Thread(result).start();
+							...
+							String sum = result.get();
+					thread为什么可以执行futurTask方法：
+						public void run() {
+							...
+							Callable<V> c = callable;
+							...
+							result = c.call();
+						}
+						这个run是runnable的，futurTask就是执行了run，然后又调了callable的call方法。
+					Callable，FutureTask关系：
+						Callable填写用户的业务任务代码，然后返回结果。
+						FutureTask（Future），用来运行Callable任务和提供了操作callable任务结果的方法。
+					接收线程运算后的结果:
+						String sum = result.get();//在所有的线程没有执行完成之后这里是不会执行的
+						result.get()实现：
+							public V get(long timeout, TimeUnit unit){
+								...
+								int s = state;
+								if (s <= COMPLETING &&
+									(s = awaitDone(true, unit.toNanos(timeout))) <= COMPLETING)
+									throw new TimeoutException(); //这里用了阻塞(或者轮询)的方式得到任务的结果。
+								return report(s);
+							}
+		附2：
+			CompletableFuture：？
+				completableFuture是JDK1.8新引入的类。
+				CompletableFuture类实现了CompletionStage和Future接口。
+					Future是Java 5添加的类，用来描述一个异步计算的结果，但是获取一个结果时方法较少,要么通过轮询isDone，确认完成后，调用get()获取值，要么调用get()设置一个超时时间。但是这个get()方法会阻塞住调用线程，这种阻塞的方式显然和我们的异步编程的初衷相违背。
+				为了解决这个问题，JDK吸收了guava的设计思想，加入了Future的诸多扩展功能形成了CompletableFuture。
+				CompletionStage是一个接口，从命名上看得知是一个完成的阶段，它里面的方法也标明是在某个运行阶段得到了结果之后要做的事情。
+				https://www.jianshu.com/p/6f3ee90ab7d3
+				？
+					CompletionStage还是在一个线程完成的吧，只是可以在完成不同的阶段完成后做想做的事。
 	方式3.继承Thread，并重写run()方法:
 		介绍：
 			直接继承Thread，重写run方法来编写任务，最后启动线程来驱动任务。
@@ -62,7 +123,7 @@ java实现多线程编程的三种方式：
 				我认为这句话可以证明,线程是用来驱动任务的
 				The <code>Runnable</code> interface should be implemented by any
 				class whose instances are intended to be executed by a thread.
-并发编程问题之资源共享：!
+并发编程问题之资源共享：
 	./共享资源.txt
 注：
 	给线程任务传参的3种方式：
@@ -72,12 +133,7 @@ java实现多线程编程的三种方式：
 		3.回调函数传参？
 	线程池：
 		./线程池.txt
-	程序结束：
-		1.对Java程序来说，一个进程只要还有一个前台线程在运行，那么进程就不会结束。
-		如果一个进程只有后台线程运行，那么该进程就会结束。
-			注：一个线程未进入死亡状态，垃圾回收器是无法清除它。
-	线程的生命周期:
-		./线程相关内容.txt goto:线程的生命周期
+
 	线程的调度:
 		./线程相关内容.txt goto:线程的调度
 	Thread类方法介绍：

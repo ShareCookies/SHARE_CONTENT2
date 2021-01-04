@@ -1,0 +1,117 @@
+ConcurrentLinkedQueue:
+	ConcurrentLinkedQueue是一个基于链接节点的无界线程安全队列，是一个适用于高并发场景下的线程安全队列，通过无锁的方式，实现了高并发状态下的高性能.
+	它是如何支持并发线程安全的：
+		https://blog.csdn.net/qq_38293564/article/details/80798310
+		它是通过cas操作的原子性，+ cas乐观锁思想 来实现并发安全的。
+		ConcurrentLinkedQueue 的非阻塞算法实现可概括为下面 5 点：
+			1.使用 CAS 原子指令来处理对数据的并发访问，这是非阻塞算法得以实现的基础。
+			2.head/tail 并非总是指向队列的头 / 尾节点，也就是说允许队列处于不一致状态。 这个特性把入队 / 出队时，原本需要一起原子化执行的两个步骤分离开来，从而缩小了入队 / 出队时需要原子化更新值的范围到唯一变量。这是非阻塞算法得以实现的关键。
+			3.由于队列有时会处于不一致状态。为此，ConcurrentLinkedQueue 使用三个不变式来维护非阻塞算法的正确性。
+			4.以批处理方式来更新 head/tail，从整体上减少入队 / 出队操作的开销。
+			5.为了有利于垃圾收集，队列使用特有的 head 更新机制；为了确保从已删除节点向后遍历，可到达所有的非删除节点，队列使用了特有的向后推进策略。
+	附：
+		该队列不允许null元素。
+		
+	附：
+		Java中的Unsafe
+			https://www.jianshu.com/p/db8dce09232d
+			Java中的Unsafe类为我们提供了类似C++手动管理内存等能力。
+			Unsafe中提供了int,long和Object的CAS操作。
+		CAS操作
+			https://www.jianshu.com/p/d4551df6e6b8
+			java悲观乐观锁
+				悲观锁: 	
+					假定会发生并发冲突，即共享资源会被某个线程更改。所以当某个线程获取共享资源时，会阻止别的线程获取共享资源。
+					也称独占锁或者互斥锁，例如java中的synchronized同步锁。
+				乐观锁: 
+					假设不会发生并发冲突,只有在最后更新共享资源的时候会判断一下在此期间有没有别的线程修改了这个共享资源。如果发生冲突就重试，直到没有冲突，更新成功。
+					CAS就是一种乐观锁实现方式。
+				悲观锁会阻塞其他线程。乐观锁不会阻塞其他线程，如果发生冲突，采用死循环的方式一直重试，直到更新成功。
+			CAS，Compare and Swap
+				CAS的思想很简单：三个参数，一个当前内存值V、旧的预期值A、即将更新的值B，当且仅当预期值A和内存值V相同时，将内存值修改为B并返回true，否则什么都不做，并返回false。
+				JVM中的CAS操作正是利用了提到的处理器提供的CMPXCHG指令实现的；循环CAS实现的基本思路就是循环进行CAS操作直到成功为止；
+				先来看看CAS在atomic类中的应用：
+					public final native boolean compareAndSwapObject
+					   (Object obj, long valueOffset, Object expect, Object update);
+					public final native boolean compareAndSwapInt
+					   (Object obj, long valueOffset, int expect, int update);
+					public final native boolean compareAndSwapLong
+					  (Object obj, long valueOffset, long expect, long update);
+						此方法是Java的native方法，并不由Java语言实现。
+						方法的作用是，读取传入对象o在内存中偏移量为offset位置的值与期望值expected作比较。
+						相等就把update值赋值给offset位置的值。方法返回true。
+						不相等，就取消赋值，方法返回false。
+						这也是CAS的思想，比较并交换。用于保证并发时的无锁并发的安全性。
+	入队操作：
+		boolean casNext(Node<E> cmp, Node<E> val) {
+			return UNSAFE.compareAndSwapObject(this, nextOffset, cmp, val);
+		}
+		private boolean casTail(Node<E> cmp, Node<E> val) {
+			return UNSAFE.compareAndSwapObject(this, tailOffset, cmp, val);
+		}
+		/**
+		 * Inserts the specified element at the tail of this queue.//插入元素到队列的尾部
+		 * As the queue is unbounded, this method will never return {@code false}.
+		 *
+		 * @return {@code true} (as specified by {@link Queue#offer})
+		 * @throws NullPointerException if the specified element is null
+		 */
+		public boolean offer(E e) {
+			checkNotNull(e);
+			final Node<E> newNode = new Node<E>(e);
+
+			for (Node<E> t = tail, p = t;;) {//p，t指向尾节点，无限循环
+				Node<E> q = p.next;//q指向尾节点下个指针
+				if (q == null) {//如果q（尾节点下个指针）为null则其就是尾节点
+					// p is last node
+					// 设置p节点的下一个节点为新节点，设置成功则casNext返回true；否则返回false
+						//如果下一个节点是null则可成功插入e新节点
+					//如果失败说明有其他线程更新过尾节点，到else那步把p在置为尾节点
+					if (p.casNext(null, newNode)) {
+						// Successful CAS is the linearization point
+						// for e to become an element of this queue,
+						// and for newNode to become "live".
+						// 如果p != t，则将入队节点设置成tail节点
+						// 更新失败了也没关系，因为失败了表示有其他线程成功更新了tail节点
+							// 进行到上一步，尾部节点下个指针被更新了，那么其实只有当前线程能进行casTail了，别的会因为cas不成功一直在循环才对
+							// 我想不到会有失败的场景？为什么失败了也没关系了？
+						if (p != t) // hop two nodes at a time
+							casTail(t, newNode);  // Failure is OK.
+						return true;
+					}
+					// Lost CAS race to another thread; re-read next
+				}
+				else if (p == q)
+					// We have fallen off list.  If tail is unchanged, it
+					// will also be off-list, in which case we need to
+					// jump to head, from which all live nodes are always
+					// reachable.  Else the new tail is a better bet.
+					p = (t != (t = tail)) ? t : head;
+				else
+					// Check for tail updates after two hops.
+					p = (p != t && t != (t = tail)) ? t : q;
+					//当p t 指针不同且t 不为尾节点 则p赋为t
+						//为什么要有这种判断
+					//否则p指向q（尾节点下个指针）
+			}
+		}
+		附：
+			public static void main(String[] args) {
+				Object tail = new Object();
+				Object t = tail;
+				Object p = t;
+				t = new Object();
+				System.out.println(t);
+				System.out.println(p);
+				System.out.println(tail);
+			}
+			public static void main(String[] args) {
+				Object t = new Object();
+				Object tail = new Object();
+				//http://www.java8.com/thread-5964-1-1.html
+				System.out.println(t != (t = tail));//t 值已经入栈，t又被重新赋值，相当于t与tail比较
+				System.out.println(t != (t = tail));//此时就是tail和tail比较了
+			}
+
+方法：
+	该队列不允许null元素。

@@ -83,22 +83,4 @@ Thread类:
 		.getName():
 			介绍：获取当前线程名字
 			例：Thread.currentThread().getName();//主线程默认名main，创建的线程名默认从Thread-0开始
-		后台线程（守护线程）：
-			介绍：
-				在Java中有两类线程：用户线程 (User Thread)、守护线程 (Daemon Thread)。
-				后台线程(daemon),指程序运行的时候在后台提供一种通用服务的线程。
-				守护线程依赖于创建它的线程，而用户线程则不依赖。
-				例：
-					如果在main线程中创建了一个守护线程，当main方法运行完毕之后，守护线程也会随着消亡。
-					而用户线程则不会，用户线程会一直运行直到其运行完毕。
-			实现：
-				在一个线程对象启动之前（即start()之前）,
-				调用该对象的setDaemon（true）方法即可把一个线程设置为后台线程。
-			例：
-				./案例/Daemon/
-				Thread daemon=new Thread(new Task());
-				daemon.setDaemon(true);//must call before start()
-				daemon.start();
-			注：
-				1.后台线程创建的任何线程都将自动设置为后台线程。
-				2.后台线程在不执行finally的情况下就会终止其run()方法。！			
+	
