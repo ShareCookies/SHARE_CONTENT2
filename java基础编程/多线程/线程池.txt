@@ -11,10 +11,10 @@ https://www.cnblogs.com/fengsehng/p/6048610.html
 		线程池的出现让线程可进行复用。
 			线程池顾名思义就是事先创建若干个可执行的线程放入一个池（容器）中，需要的时候从池中获取线程不用自行创建，使用完毕不需要销毁线程而是放回池中，从而减少创建和销毁线程对象的开销。
 	
-Executor框架（执行器框架，我称为线程池框架）：
+Executor框架：（执行器(者)框架）
 	Java 5引入了Executor框架，来简化并发编程的操作。
 	Executor框架的内容包括：
-		线程池规范接口：
+		规范接口：
 			Executor接口
 		Executor框架提供的线程池实现类：（通过该类可以创建线程池）
 			ThreadPoolExecutor类
@@ -22,10 +22,10 @@ Executor框架（执行器框架，我称为线程池框架）：
 			Executors，工厂方法类，通过该类可以快速创建线程池。
 		等
 	
-	Executor（接口）：
-		介绍：（建议看源码注释来理解。）
-			线程池规范接口（解耦接口）。
-			让用户可以仅通过execute(Runnable command)就可让线程池执行所提交的Runnable任务，
+	Executor（规范接口）：
+		介绍：
+			规范接口，我称其为任务执行器(者)。
+			让用户可以仅通过该接口实现类的execute(Runnable command)就可执行所提交的Runnable任务，
 			使用户从线程的创建、线程池的复杂调用（使用）等中脱身出来。
 			附：
 				通常Executor的实现类，其内部都实现线程池机制。
@@ -41,65 +41,81 @@ Executor框架（执行器框架，我称为线程池框架）：
 					a. 重用存在的线程，减少对象创建、消亡的开销，性能佳。
 					b. 可有效控制最大并发线程数，提高系统资源的使用率，同时避免过多资源竞争，避免堵塞。
 					c. 提供定时执行、定期执行、单线程、并发数控制等功能。
-	ExecutorService（接口，继承了Executor接口）：
+			附：	
+				配合源码注释来理解。	
+				An object that executes submitted {@link Runnable} tasks. 
+					This interface provides a way of decoupling task submission from the mechanics of how each task will be run, including details of thread use, scheduling, etc.  
+				An {@code Executor} is normally used instead of explicitly creating threads. 
+					For example, rather than invoking {@code new Thread(new(RunnableTask())).start()} for each of a set of tasks, you might use:
+				执行器是用来执行Runnable任务的，通常用它来替代线程(的创建)。
+					执行器接口将任务从运行、线程的创建使用等中解耦出来，使用户可以直接通过执行器来执行任务，而不用管其余细节。
+	ExecutorService（更详细的规范接口，继承自Executor接口）：
 		介绍：
-			ExecutorService一个比Executor使用更广泛的子类接口，提供了生命周期管理的方法，以及可跟踪一个或多个异步任务执行状况的方法。
-			ExecutorService的生命周期包括三种状态：？
-				运行、关闭、终止。
-				创建后便进入运行状态。
-				当调用了shutdown（）方法时，便进入关闭状态。
-				调用了shutdown，且当前已经提交了的任务执行完后，便到达终止状态。
-				hcg：
-					可将对象的运行，进行阶段划分，就是生命周期。
+			ExecutorService一个比Executor使用更广泛的子类接口，
+			其提供了生命周期管理的方法，以及可跟踪一个或多个异步任务执行状况的方法。
 			
-		方法：
-			submit(Callable task):
-				Callable异步任务可用ExecutorService的submit(Callable task) 方法来执行并跟踪。
-			shutdown()：
-				方法在终止前允许执行以前提交的任务。即线程将在，Executor中的任务完成之后，尽快退出
-			shutdownNow()：
-				方法阻止等待任务启动并试图停止当前正在执行的任务。
-			<T> Future<T> submit(Callable<T> task);
-			<T> Future<T> submit(Runnable task, T result);
-			...
-	Executors（工厂方法类）：
-		介绍：
-			Executors静态工厂方法类提供了一系列工厂方法用于快速创建线程池，
-			内部其实还是使用了ThreadPoolExecutor来创建线程池。
-		Executors提供的四种常见线程池的创建方法：
-			1、public static ExecutorService newFiexedThreadPool(int Threads) 
-				创建固定数目线程的线程池。
-			2、public static ExecutorService newCachedThreadPool()：
-				创建一个可缓存的线程池，调用execute 将重用以前构造的线程（如果线程可用）。如果没有可用的线程，则创建一个新线程并添加到池中。终止并从缓存中移除那些已有 60 秒钟未被使用的线程。
-			3、public static ExecutorService newSingleThreadExecutor()：
-				创建一个单线程化的Executor。
-			4、public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
-				创建一个支持定时及周期性的任务执行的线程池，多数情况下可用来替代Timer类。
-			例：
-				ExecutorService exe= Executors.newFixedThreadPool(10);//创建一个拥有10个线程的线程池。
-				exe.execute(new Task());
-			例2：
-				./案例/线程池/
-		附：
-			阿里巴巴开发手册：
-				【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 
-				说明：Executors 返回的线程池对象的弊端如下： 1）FixedThreadPool 和 SingleThreadPool: 允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。 2）CachedThreadPool 和 ScheduledThreadPool: 允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
+			附：
+				An {@link Executor} that provides methods to manage termination and methods that can produce a {@link Future} for tracking progress of one or more asynchronous tasks.
+				 *
+				 * <p>An {@code ExecutorService} can be shut down, which will cause it to reject new tasks.  
+					 Two different methods are provided for shutting down an {@code ExecutorService}. 
+					 1. The {@link #shutdown} method will allow previously submitted tasks to execute before terminating, 
+					 2. while the {@link #shutdownNow} method prevents waiting tasks from starting and attempts to stop currently executing tasks.
+				 * Upon termination, an executor has no tasks actively executing, no tasks awaiting execution, and no new tasks can be submitted.  
+				 An unused {@code ExecutorService} should be shut down to allow reclamation of its resources.			
+			附：
+				...
+				https://blog.csdn.net/u010412719/article/details/52132601?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
+				线程是有多种执行状态的，同样管理线程的线程池也有多种状态。
+				线程池的生命周期不只有：RUNNING、SHUTDOWN、STOP/TERMINATED四种状态，还有一个TIDYING状态。
+					？STOP/TERMINATED、TIDYING
+				ExecutorService提供的管理线程池生命周期方法：
+					shutdown()：
+						方法在终止前允许执行以前提交的任务。即线程将在，Executor中的任务完成之后，尽快退出
+					shutdownNow()：
+						方法阻止等待任务启动并试图停止当前正在执行的任务。
+			附：
+				执行异步任务方法：
+				<T> Future<T> submit(Callable<T> task);
+					Callable异步任务可用ExecutorService的submit(Callable task) 方法来执行并跟踪。
+				<T> Future<T> submit(Runnable task, T result);
+				...
 	ThreadPoolExecutor：（ExecutorService的实现类）
 		介绍：
-			Executor接口的实现类，通过该类可以快速的创建一个线程池。
-			用户可以通过类的execute(Runnable command)就可让线程池执行所提交的Runnable任务。
+			ExecutorService的实现类，其内部实现了线程池机制。
+			所以用户可以通过改类的execute(Runnable command)等就可让线程池执行所提交的Runnable任务，该方法便会自动将任务放到一个线程上执行。
+			
 		构造方法参数介绍：
-			corePoolSize：线程池中所保存的核心线程数，包括空闲线程。
-			maximumPoolSize：池中允许的最大线程数。
-			keepAliveTime：线程池中的空闲线程所能持续的最长时间。
-			unit：持续时间的单位。
-			workQueue：任务执行前保存任务的队列，仅保存由execute方法提交的Runnable任务。
+			corePoolSize:核心线程数。
+				默认情况下核心线程会一直存活，即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为true。
+			maximumPoolSize:线程池所能容纳的最大线程数。
+				超过这个数的线程将被阻塞。当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效。
+			keepAliveTime:非核心线程的闲置超时时间，超过这个时间就会被回收。
+			unit:指定keepAliveTime的单位，如TimeUnit.SECONDS。
+				当将allowCoreThreadTimeOut设置为true时对corePoolSize生效。
+			workQueue:线程池中的任务队列.
+				常用的有三种队列，SynchronousQueue,LinkedBlockingDeque,ArrayBlockingQueue。
+			threadFactory:线程工厂，提供创建新线程的功能。ThreadFactory是一个接口，只有一个方法
+			RejectedExecutionHandler：任务拒绝策略
+				 <dt>Rejected tasks</dt>
+				 1. <dd>New tasks submitted in method {@link #execute(Runnable)} will be <em>rejected</em> when the Executor has been shut down, and also when the Executor uses finite bounds for both maximum threads and work queue capacity, and is saturated.  
+				 2. In either case, the {@code execute} method invokes the {@link RejectedExecutionHandler#rejectedExecution(Runnable, ThreadPoolExecutor)} method of its {@link RejectedExecutionHandler}.  
+				 3. Four predefined handler policies are provided:		
+					AbortPolicy:
+						为java线程池默认的阻塞策略，不执行此任务，而且直接抛出一个运行时异常，切记ThreadPoolExecutor.execute需要try catch，否则程序会直接退出.
+					DiscardPolicy:
+						直接抛弃，任务不执行，空方法
+					DiscardOldestPolicy:
+						从队列里面抛弃head的一个任务，并再次execute此task。
+					CallerRunsPolicy:
+						在调用execute的线程里面执行此command，会阻塞入
+					用户自定义拒绝策略:
+						实现RejectedExecutionHandler，并自己定义策略模式				 
 		例：
 			自定义线程池：
-				通过ThreadPoolExecutor类可以快速创建自定义的线程池。
-				
-				例：
-					./案例/线程池/自定义线程池executor.txt
+			通过ThreadPoolExecutor类可以快速创建(自定义的线程池)执行器。
+			例：
+				./案例/线程池/自定义线程池executor.txt
 		附：
 			1.任何线程池中，现有线程在可能的情况下都会被自动复用。
 			2.阿里为什么不允许使用Executors：
@@ -109,8 +125,35 @@ Executor框架（执行器框架，我称为线程池框架）：
 		
 			执行器框架原理：
 				ThreadPoolExecutor实现了一个线程池。
-				其内部维护着一个容器存放线程（BlockingQueue<Runnable> workQueue）。
+				其内部维护着一个容器存放线程private final HashSet<Worker> workers。
 				用户可通过execute(Runnable)等方法让线程池中的一个线程执行任务。
+	Executors（执行器工厂方法类）：
+		介绍：
+			Executors静态工厂方法类提供了一系列工厂方法用于快速创建(线程池)执行器，
+			内部其实还是使用了ThreadPoolExecutor来创建(线程池)执行器。
+		Executors提供的四种常见线程池的创建方法：
+			1、public static ExecutorService newFiexedThreadPool(int Threads) 
+				创建固定数目线程的线程池。
+				可控制线程最大并发数，超出的线程会在队列中等待。
+			2、public static ExecutorService newCachedThreadPool()：
+				创建一个可缓存的线程池。
+				线程没有任务要执行时，便处于空闲状态，处于空闲状态的线程并不会被立即销毁（会被缓存住），只有当空闲时间超出一段时间(默认为60s)后，线程池才会销毁该线程（相当于清除过时的缓存）。
+				新任务到达后，线程池首先会让被缓存住的线程（空闲状态）去执行任务，如果没有可用线程（无空闲线程），便会创建新的线程。
+				适用场景：处理任务速度 > 提交任务速度,耗时少的任务(避免无限新增线程)	
+	
+			3、public static ExecutorService newSingleThreadExecutor()：
+				创建一个单线程化的Executor。
+			4、public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)
+				创建一个定长线程池，支持定时及周期性任务执行，多数情况下可用来替代Timer类。
+			例：
+				ExecutorService exe= Executors.newFixedThreadPool(10);//创建一个拥有10个线程的线程池。
+				exe.execute(new Task());
+			例2：
+				./案例/线程池/
+		附：
+			阿里巴巴开发手册：
+				【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 
+				说明：Executors 返回的线程池对象的弊端如下： 1）FixedThreadPool 和 SingleThreadPool: 允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。 2）CachedThreadPool 和 ScheduledThreadPool: 允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
 附：
 为什么使用线程池：
 	线程池的作用是重用已有线程，
