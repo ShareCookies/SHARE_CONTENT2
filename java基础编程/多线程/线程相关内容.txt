@@ -88,9 +88,9 @@
 									即方法的调用者必须要有能获取对象锁的能力。
 						Thread.join()：
 							...
-					附：
-						LockSupport提供了park和unpark进行线程的挂起和恢复操作：
-							https://blog.csdn.net/opensure/article/details/53349698?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
+						park和unpark：
+							LockSupport提供了park和unpark进行线程的挂起和恢复操作：
+								https://blog.csdn.net/opensure/article/details/53349698?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
 					附：
 						在较早的代码中,也可能会看到用suspend()和resume()来阻塞和唤醒线程,但是在现代Java中这些方法被废止了(因为可能导致死锁)。
 						stop()方法也已经被废止了，因为它不释放线程获得的锁，

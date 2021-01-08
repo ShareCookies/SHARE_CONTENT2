@@ -15,8 +15,14 @@ ConcurrentLinkedQueue:
 	附：
 		Java中的Unsafe
 			https://www.jianshu.com/p/db8dce09232d
-			Java中的Unsafe类为我们提供了类似C++手动管理内存等能力。
-			Unsafe中提供了int,long和Object的CAS操作。
+			1. Java中的Unsafe类为我们提供了类似C++手动管理内存等能力，类中提供的3个本地方法allocateMemory、reallocateMemory、freeMemory分别用于分配内存，扩充内存和释放内存，与C语言中的3个方法对应。
+			2. 可以定位对象某字段的内存位置，也可以修改对象的字段值，即使它是私有的；
+			3. ！
+			挂起与恢复:将一个线程进行挂起是通过park方法实现的，调用 park后，线程将一直阻塞直到超时或者中断等条件出现。unpark可以终止一个挂起的线程，使其恢复正常。
+			整个并发框架中对线程的挂起操作被封装在 LockSupport类中，LockSupport类中有各种版本park方法，但最终都调用了Unsafe.park()方法。
+
+			4. 
+				Unsafe中提供了int,long和Object的CAS操作。
 		CAS操作
 			https://www.jianshu.com/p/d4551df6e6b8
 			java悲观乐观锁
@@ -28,7 +34,8 @@ ConcurrentLinkedQueue:
 					CAS就是一种乐观锁实现方式。
 				悲观锁会阻塞其他线程。乐观锁不会阻塞其他线程，如果发生冲突，采用死循环的方式一直重试，直到更新成功。
 			CAS，Compare and Swap
-				CAS的思想很简单：三个参数，一个当前内存值V、旧的预期值A、即将更新的值B，当且仅当预期值A和内存值V相同时，将内存值修改为B并返回true，否则什么都不做，并返回false。
+				CAS是乐观锁技术，当多个线程尝试使用CAS同时更新同一个变量时，只有其中一个线程能更新变量的值，而其它线程都失败，失败的线程并不会被挂起，而是被告知这次竞争中失败，并可以再次尝试。
+				CAS操作有3个参数，三个参数，一个当前内存值V、旧的预期值A、即将更新的值B，当且仅当预期值A和内存值V相同时，将内存值修改为B并返回true，否则什么都不做，并返回false。
 				JVM中的CAS操作正是利用了提到的处理器提供的CMPXCHG指令实现的；循环CAS实现的基本思路就是循环进行CAS操作直到成功为止；
 				先来看看CAS在atomic类中的应用：
 					public final native boolean compareAndSwapObject
