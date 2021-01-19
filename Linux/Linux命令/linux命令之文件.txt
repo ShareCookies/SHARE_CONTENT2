@@ -11,9 +11,12 @@
 			wget(选项)(参数)   参数就是下载地址
 
 	2.权限：
+		https://www.cnblogs.com/sxdcgaq8080/p/7498906.html
 		chmod,chown命令都是用来设置权限,chmod是用来设置文件夹和文件权限的,chown是用来设置用户组的。
 		chmod +x shadowsocks.sh	//chmod命令用来变更文件或目录的权限。
 		例：chmod 777 ./test.sh
+		查看权限：
+			ls -l xxx.xxx 查看的是xxx文件之中的文件权限
 	3.路径：
 		1.各符号代表的路径：
 			1.：./	当前文件夹	可以运行当前文件夹下一文件
@@ -168,3 +171,5 @@
 	8.文本内容搜索:
 		grep全称：Global Regular Expression Print
 		grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹配的行打印出来。
+	lsof（lists openfiles）：
+		https://www.jianshu.com/p/a3aa6b01b2e1

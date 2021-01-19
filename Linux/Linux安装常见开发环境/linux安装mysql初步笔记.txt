@@ -107,4 +107,5 @@ mysql是否运行：
 		https://www.cnblogs.com/is-possible/p/12666858.html
 		https://www.cnblogs.com/benwu/articles/9061345.html
 		https://blog.csdn.net/hotdust/article/details/78205265
-
+	yum安装mysql:
+		https://www.pianshen.com/article/1883810119/

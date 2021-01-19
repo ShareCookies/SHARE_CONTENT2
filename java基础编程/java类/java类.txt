@@ -207,3 +207,42 @@
 	https://blog.csdn.net/q5706503/article/details/84349692
 	https://blog.csdn.net/qq_15037231/article/details/80086099
 	主要意义，作用？
+Object类：
+	所有类的父类。
+	equals():
+		//equals默认比较的是对象地址，但可以被重写。
+		例：String的equals比较的是值本身。
+		
+		public boolean equals(Object obj) {
+			return (this == obj);
+		}
+		1.重写equals建议重写hashCode？为什么不能用原先的hashCode了
+			 * Note that it is generally necessary to override the {@code hashCode}
+			 * method whenever this method is overridden, so as to maintain the
+			 * general contract for the {@code hashCode} method, which states
+			 * that equal objects must have equal hash codes.
+		2.
+		Java对于eqauls方法和hashCode方法是这样规定的：(1)如果两个对象相同（equals方法返回true），那么它们的hashCode值一定要相同；(2)如果两个对象的hashCode相同，它们并不一定相同。
+					遵守equals规定即：equals方法比hashcode方法精度高，hashcode不同一定是不同对象
+		当然，你未必要按照要求去做，但是如果你违背了上述原则就会发现在使用容器时，相同的对象可以出现在Set集合中，同时增加新元素的效率会大大下降（对于使用哈希存储的系统，如果哈希码频繁的冲突将会造成存取性能急剧下降）。
+	hashCode():
+		public native int hashCode();
+		附：！
+			 * The general contract of {@code hashCode} is:
+			 * <ul>
+			 * <li>Whenever it is invoked on the same object more than once during
+			 *     an execution of a Java application, the {@code hashCode} method
+			 *     must consistently return the same integer, provided no information
+			 *     used in {@code equals} comparisons on the object is modified.
+			 *     This integer need not remain consistent from one execution of an
+			 *     application to another execution of the same application.
+			 * <li>If two objects are equal according to the {@code equals(Object)}
+			 *     method, then calling the {@code hashCode} method on each of
+			 *     the two objects must produce the same integer result.
+			 * <li>It is <em>not</em> required that if two objects are unequal
+			 *     according to the {@link java.lang.Object#equals(java.lang.Object)}
+			 *     method, then calling the {@code hashCode} method on each of the
+			 *     two objects must produce distinct integer results.  However, the
+			 *     programmer should be aware that producing distinct integer results
+			 *     for unequal objects may improve the performance of hash tables.
+			 * </ul>

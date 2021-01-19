@@ -50,7 +50,12 @@ JVM:
 				例：
 					String str = new String("hello");
 					上面的语句中变量str放在栈上，用new创建出来的字符串对象放在堆上，而"hello"这个字面量是放在方法区的。
-
+			？
+				https://blog.csdn.net/tomcat6666712/article/details/88795322?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-8.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-8.control
+				字面量
+					String a = "abc";//abc就是Java字面量
+				符号引用
+				直接引用
 	程序计数器
 		线程私有,线程之间不相互影响,独立存取;
 		线程私有是不会发生gc.并且他们是随线程生随线程灭。
@@ -118,6 +123,8 @@ GC：（Garbage Collector 垃圾收集）
 			-XX:TargetSurvivorRatio：设置幸存区的目标使用率
 	？
 		（不太理解，activity都要被结束了，那么activity里头的引用对象不是应该也要被终结吗？为啥还要null下了）http://blog.csdn.net/dongsheng186/article/details/46563831	
+
+
 
 
 25、Java 中会存在内存泄漏吗，请简单描述。

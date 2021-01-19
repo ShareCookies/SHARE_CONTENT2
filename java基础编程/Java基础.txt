@@ -113,6 +113,23 @@
 			2.8种包装类（引用类reference type）与8种基础数据类型之间能自动进行拆箱和装箱。
 				注：尽量不要用基本类型变量来赋值包装类型。
 				int a = .getNum();// num（interger） 是 null的话，拆箱时类型转成INT是会报null异常的。
+				
+				String：
+
+					String直接赋值和使用new的区别：
+						https://blog.csdn.net/OREO_GO/article/details/51397903
+						String str1 = “ABC”;可能创建一个或者不创建对象
+							看方法区常量池是否有对应的字面量
+						String str2 = new String(“ABC”);至少创建一个对象，也可能两个。
+							看方法区常量池是否有对应的字面量
+					String和StringBuilder、StringBuffer的区别：
+						Java平台提供了两种类型的字符串：String和StringBuffer/StringBuilder，它们可以储存和操作字符串。
+						1. 其中String是只读字符串，也就意味着String引用的字符串内容是不能被改变的。
+						2. 而StringBuffer/StringBuilder类表示的字符串对象可以直接进行修改。
+							StringBuilder是Java 5中引入的，它和StringBuffer的方法完全相同，区别在于它是在单线程环境下使用的，因为它的所有方面都没有被synchronized修饰，因此它的效率也比StringBuffer要高。
+					intern()：
+						...
+					String 类是final类，不可以被继承。	
 			
 	全局方法，常量：
 		1.用public static 修饰的方法或变量相当于全局变量或方法。
@@ -203,10 +220,16 @@
 		移位运算符
 		关系运算符	
 			==:
-				1.对于基础变量，直接存储的是“值”，因此在用关系操作符==来进行比较时，比较的就是 “值” 本身。
+				关系操作符==进行比较时有两种情况：引用变量，基本变量。
+				2.对于非基本数据类型的变量，可称为引用类型的变量。比较的是对象在内存中的地址
+					因为引用变量存储的是对象的引用(内存中的地址)
+					例：
+						String str1；str1存储的并不是 “值”本身，而是于其关联的对象在内存中的地址。
+						用==对str1和str2进行第一次比较时，得到的结果是false。
+				1.对于基础变量，比较的就是 “值” 本身。
+					因为对于8种基本数据类型的变量，变量直接存储的是“值”，
 					例：int n=3;int m=3;用==比较的时候结果是true。
-				2.对于非基本数据类型的变量，可称为引用类型的变量。用==对str1和str2进行第一次比较时，得到的结果是false。
-					例：String str1；str1存储的并不是 “值”本身，而是于其关联的对象在内存中的地址。
+					
 		逻辑运算符	
 		三目运算符	
 		赋值运算符

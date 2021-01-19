@@ -38,12 +38,16 @@ Linux程序:
 		--后面一般跟长的完整名字 如 chkconfig --add
 		-后面一般跟简写大多数是一个字母，如 ls -l
 帮助文档:
-	man、info、help,cheat!!!
+	man、info、help,cheat 
 	man：（manual）
 		man 命令显示系统的手册页,在/usr/share/man下，如果系统没有文档，是不会显示这些帮助信息的。
 		比help要详细。它可以用来查看命令，函数，
+		例：
+			man ls
 	help:
 		命令--help 选项，用来显示工具的一些信息，用法
+		例：
+			ls --help
 	info:
 		包括一些关于Linux Shell，工具，GNU项目开发程序说明文档,不但显示一些选项，还会有一些范例
 		注:一般man用的比较多，比help细，比info简单

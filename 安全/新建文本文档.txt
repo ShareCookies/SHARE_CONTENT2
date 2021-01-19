@@ -1,2 +1,22 @@
 https://www.jianshu.com/p/5c424ec40378
 https://www.jianshu.com/p/6bc23153156b
+https://mp.weixin.qq.com/s/yCQ19rzq5T1qm_pasVYX6g
+https://mp.weixin.qq.com/s?__biz=MzIzMTQ4NzE2Ng==&mid=2247484209&idx=1&sn=c98fcd434a0caea12b3593d88c430cf5&chksm=e8a220e0dfd5a9f66b65ceb48acda0747414b3d229ef1130442375f32b6603fe2c136120c663&mpshare=1&scene=23&srcid=0817d1mZXdeZSadfodzaFNqb&sharer_sharetime=1597658991362&sharer_shareid=1edbf9618689e93a6430dfd0085b6242#rd
+https://blog.csdn.net/weixin_43650289/article/details/109244790?utm_source=app
+https://mp.weixin.qq.com/s?__biz=MjM5OTk4MDE2MA==&mid=2655136430&idx=3&sn=7ae9ff96abdbdcfbe5c558f972e0e00a&chksm=bc85b7418bf23e5796e31d63608db6e648d9a3fc1c96b4ef80b8eb2baa841898656a1ed319ab&mpshare=1&scene=23&srcid=&sharer_sharetime=1587714070669&sharer_shareid=81836ddddfaac3728b485c88483b39a4#rd
+https://mp.weixin.qq.com/s/RilULkQH2grm4h9Sp5SZrA
+子域名探测方法大全
+	http://mp.weixin.qq.com/s?__biz=Mzg4MTU1MjE5Mg==&mid=2247486121&idx=1&sn=9517fecede9eef614460a72cacdb753b&chksm=cf657486f812fd9095e4b4f56881762ac0471b93d43dc8813d8ce68e735c72da031d5f8f1af1&mpshare=1&scene=23&srcid=1221x6G2zVjoi7UanrlMHtKu&sharer_sharetime=1608536561154&sharer_shareid=6de9d374db60a887887ac15bb79fede7#rd
+缓冲区溢出之攻击
+	https://blog.csdn.net/weixin_43650289/article/details/110005655?utm_source=app
+HTTP请求走私漏洞：
+	https://mp.weixin.qq.com/s/XIQKOXWuKrSccxeDA2gOPw	
+工具：
+	http://whatweb.bugscaner.com/look/
+	kali
+	流量分析基础到实战
+		https://mp.weixin.qq.com/s?__biz=MzI2ODU2MjM0OA==&mid=2247484937&idx=1&sn=a563cc25d02fdb0f98a4b59e81a40570&chksm=eaecfccadd9b75dc9a37c5f4f293bbf402c1a28b483d0ac70fb3c7f45309fc754194495aaafb&mpshare=1&scene=23&srcid=&sharer_sharetime=1588984524980&sharer_shareid=813a3d32a4373b1bc43903ea95380c08#rd
+网站：
+	http://wooyun.2xss.cc/bugs.php
+	
+	

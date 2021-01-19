@@ -1,3 +1,146 @@
+1、线程与进程
+	进程：
+		一个运行在内存中的程序，叫做进程。
+	线程：
+		java采用线程机制来实现并发。
+		线程机制：
+			1.线程机制是在单一进程中创建多个线程来执行任务。
+				一个任务中由一个线程来驱动执行。
+			java程序是从主线程开始运行的。
+				即java程序是从main()开始的，main()被分配了个线程，称为主线程。
+				在主线程中可创建线程，称为子线程。
+		附：
+			线程是jvm的最小调度单元
+			进程由线程+内存数据存储空间构成，线程由极小的栈空间+...组成，线程间共享进程的存储空间(堆等)。
+	附：
+		系统的最小调度单元是进程还是线程看具体系统实现。
+			在引入线程的操作系统中，通常都是把进程作为分配资源的基本单位，而把线程作为独立运行和独立调度的基本单位
+2、 守护线程
+	在Java中有两类线程：用户线程 (User Thread)、守护线程 (Daemon Thread)。
+	只要当前JVM实例中尚存在任何一个用户线程没有结束，守护线程就全部工作；只有当最后用户线程结束时，守护线程随着JVM一同结束工作。
+3、java thread状态
+	NEW 状态是指线程刚创建, 尚未启动
+	RUNNABLE 状态是线程正在正常运行中, 当然可能会有某种耗时计算/IO等待的操作/CPU时间片切换等, 这个状态下发生的等待一般是其他系统资源, 而不是锁, Sleep等
+	BLOCKED 这个状态下, 是在多个线程有同步操作的场景, 比如正在等待另一个线程的synchronized 块的执行释放, 也就是这里是线程在等待进入临界区
+	WAITING 这个状态下是指线程拥有了某个锁之后, 调用了他的wait方法, 等待其他线程/锁拥有者调用 notify / notifyAll 一遍该线程可以继续下一步操作, 这里要区分 BLOCKED 和 WATING 的区别, 一个是在临界点外面等待进入, 一个是在理解点里面wait等待别人notify, 线程调用了join方法 join了另外的线程的时候, 也会进入WAITING状态, 等待被他join的线程执行结束
+	TIMED_WAITING 这个状态就是有限的(时间限制)的WAITING, 一般出现在调用wait(long), join(long)等情况下, 另外一个线程sleep后, 也会进入TIMED_WAITING状态
+	TERMINATED 这个状态下表示 该线程的run方法已经执行完毕了, 基本上就等于死亡了(当时如果线程被持久持有, 可能不会被回收)
+4、请说出与线程同步以及线程调度相关的方法。
+	wait()：使一个线程处于等待（阻塞）状态，并且释放所持有的对象的锁；
+	sleep()：使一个正在运行的线程处于睡眠状态，是一个静态方法，调用此方法要处理InterruptedException异常；
+	notify()：唤醒一个处于等待状态的线程，当然在调用此方法的时候，并不能确切的唤醒某一个等待状态的线程，而是由JVM确定唤醒哪个线程，而且与优先级无关；
+	notityAll()：唤醒所有处于等待状态的线程，该方法并不是将对象的锁给所有线程，而是让它们竞争，只有获得锁的线程才能进入就绪状态；
+5、进程调度算法
+实时系统：FIFO(First Input First Output，先进先出算法)，SJF(Shortest Job First，最短作业优先算法)，SRTF(Shortest Remaining Time First，最短剩余时间优先算法）。
+交互式系统：RR(Round Robin，时间片轮转算法)，HPF(Highest Priority First，最高优先级算法)，多级队列，最短进程优先，保证调度，彩票调度，公平分享调度。
+
+6、wait()和sleep()的区别
+sleep来自Thread类，和wait来自Object类
+调用sleep()方法的过程中，线程不会释放对象锁。而 调用 wait 方法线程会释放对象锁
+sleep睡眠后不出让系统资源，wait让出系统资源其他线程可以占用CPU
+sleep(milliseconds)需要指定一个睡眠时间，时间一到会自动唤醒
+7、ThreadLocal,以及死锁分析
+hreadLocal为每个线程维护一个本地变量。
+采用空间换时间，它用于线程间的数据隔离，为每一个使用该变量的线程提供一个副本，每个线程都可以独立地改变自己的副本，而不会和其他线程的副本冲突。
+ThreadLocal类中维护一个Map，用于存储每一个线程的变量副本，Map中元素的键为线程对象，而值为对应线程的变量副本。
+彻底理解ThreadLocal
+8、Synchronized 与Lock
+ReentrantLock 拥有Synchronized相同的并发性和内存语义，此外还多了 锁投票，定时锁等候和中断锁等候
+线程A和B都要获取对象O的锁定，假设A获取了对象O锁，B将等待A释放对O的锁定，
+如果使用 synchronized ，如果A不释放，B将一直等下去，不能被中断
+如果 使用ReentrantLock，如果A不释放，可以使B在等待了足够长的时间以后，中断等待，而干别的事情
+
+ReentrantLock获取锁定与三种方式：
+a) lock(), 如果获取了锁立即返回，如果别的线程持有锁，当前线程则一直处于休眠状态，直到获取锁
+b) tryLock(), 如果获取了锁立即返回true，如果别的线程正持有锁，立即返回false；
+c)tryLock(long timeout,TimeUnit unit)， 如果获取了锁定立即返回true，如果别的线程正持有锁，会等待参数给定的时间，在等待的过程中，如果获取了锁定，就返回true，如果等待超时，返回false；
+d) lockInterruptibly:如果获取了锁定立即返回，如果没有获取锁定，当前线程处于休眠状态，直到或者锁定，或者当前线程被别的线程中断
+
+总体的结论先摆出来：
+
+synchronized：
+在资源竞争不是很激烈的情况下，偶尔会有同步的情形下，synchronized是很合适的。原因在于，编译程序通常会尽可能的进行优化synchronized，另外可读性非常好，不管用没用过5.0多线程包的程序员都能理解。
+ReentrantLock:
+ReentrantLock提供了多样化的同步，比如有时间限制的同步，可以被Interrupt的同步（synchronized的同步是不能Interrupt的）等。在资源竞争不激烈的情形下，性能稍微比synchronized差点点。但是当同步非常激烈的时候，synchronized的性能一下子能下降好几十倍。而ReentrantLock确还能维持常态。
+9、Volatile和Synchronized
+Volatile和Synchronized四个不同点：
+
+粒度不同，前者针对变量 ，后者锁对象和类
+syn阻塞，volatile线程不阻塞
+syn保证三大特性，volatile不保证原子性
+syn编译器优化，volatile不优化
+要使 volatile 变量提供理想的线程安全，必须同时满足下面两个条件：
+对变量的写操作不依赖于当前值。
+该变量没有包含在具有其他变量的不变式中。
+10、CAS
+CAS是乐观锁技术，当多个线程尝试使用CAS同时更新同一个变量时，只有其中一个线程能更新变量的值，而其它线程都失败，失败的线程并不会被挂起，而是被告知这次竞争中失败，并可以再次尝试。CAS有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。
+11、Java中Unsafe类详解
+通过Unsafe类可以分配内存，可以释放内存；类中提供的3个本地方法allocateMemory、reallocateMemory、freeMemory分别用于分配内存，扩充内存和释放内存，与C语言中的3个方法对应。
+可以定位对象某字段的内存位置，也可以修改对象的字段值，即使它是私有的；
+挂起与恢复:将一个线程进行挂起是通过park方法实现的，调用 park后，线程将一直阻塞直到超时或者中断等条件出现。unpark可以终止一个挂起的线程，使其恢复正常。整个并发框架中对线程的挂起操作被封装在 LockSupport类中，LockSupport类中有各种版本pack方法，但最终都调用了Unsafe.park()方法。
+cas
+12、线程池
+线程池的作用：
+在程序启动的时候就创建若干线程来响应处理，它们被称为线程池，里面的线程叫工作线程
+第一：降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
+第二：提高响应速度。当任务到达时，任务可以不需要等到线程创建就能立即执行。
+第三：提高线程的可管理性。
+常用线程池：ExecutorService 是主要的实现类，其中常用的有
+Executors.newSingleT
+hreadPool(),newFixedThreadPool(),newcachedTheadPool(),newScheduledThreadPool()。
+13、ThreadPoolExecutor
+	ExecutorService的实现类，其内部实现了线程池机制。
+	所以用户可以通过改类的execute(Runnable command)等就可让线程池执行所提交的Runnable任务，该方法便会自动将任务放到一个线程上执行。
+
+构造方法参数说明
+corePoolSize:核心线程数，默认情况下核心线程会一直存活，即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为true。
+maximumPoolSize:线程池所能容纳的最大线程数。超过这个数的线程将被阻塞。当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效。
+keepAliveTime:非核心线程的闲置超时时间，超过这个时间就会被回收。
+unit:指定keepAliveTime的单位，如TimeUnit.SECONDS。当将allowCoreThreadTimeOut设置为true时对corePoolSize生效。
+workQueue:线程池中的任务队列.
+常用的有三种队列，SynchronousQueue,LinkedBlockingDeque,ArrayBlockingQueue。
+
+threadFactory:线程工厂，提供创建新线程的功能。ThreadFactory是一个接口，只有一个方法
+
+原理
+如果当前池大小 poolSize 小于 corePoolSize ，则创建新线程执行任务。
+如果当前池大小 poolSize 大于 corePoolSize ，且等待队列未满，则进入等待队列
+如果当前池大小 poolSize 大于 corePoolSize 且小于 maximumPoolSize ，且等待队列已满，则创建新线程执行任务。
+如果当前池大小 poolSize 大于 corePoolSize 且大于 maximumPoolSize ，且等待队列已满，则调用拒绝策略来处理该任务。
+线程池里的每个线程执行完任务后不会立刻退出，而是会去检查下等待队列里是否还有线程任务需要执行，如果在 keepAliveTime 里等不到新的任务了，那么线程就会退出。
+13、Executor拒绝策略
+AbortPolicy:为java线程池默认的阻塞策略，不执行此任务，而且直接抛出一个运行时异常，切记ThreadPoolExecutor.execute需要try
+catch，否则程序会直接退出.
+DiscardPolicy:直接抛弃，任务不执行，空方法
+DiscardOldestPolicy:从队列里面抛弃head的一个任务，并再次execute 此task。
+CallerRunsPolicy:在调用execute的线程里面执行此command，会阻塞入
+用户自定义拒绝策略:实现RejectedExecutionHandler，并自己定义策略模式
+14、CachedThreadPool 、 FixedThreadPool、SingleThreadPool
+newSingleThreadExecutor :创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务， 保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行
+适用场景：任务少 ，并且不需要并发执行
+newCachedThreadPool :创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程.
+线程没有任务要执行时，便处于空闲状态，处于空闲状态的线程并不会被立即销毁（会被缓存住），只有当空闲时间超出一段时间(默认为60s)后，线程池才会销毁该线程（相当于清除过时的缓存）。新任务到达后，线程池首先会让被缓存住的线程（空闲状态）去执行任务，如果没有可用线程（无空闲线程），便会创建新的线程。
+适用场景：处理任务速度 > 提交任务速度,耗时少的任务(避免无限新增线程)
+newFixedThreadPool :创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。
+newScheduledThreadPool:创建一个定长线程池，支持定时及周期性任务执行
+15、CopyOnWriteArrayList
+	CopyOnWriteArrayList : 写时加锁，当添加一个元素的时候，将原来的容器进行copy，复制出一个新的容器，然后在新的容器里面写，写完之后再将原容器的引用指向新的容器，而读的时候是读旧容器的数据，所以可以进行并发的读，但这是一种弱一致性的策略。
+	使用场景：CopyOnWriteArrayList适合使用在读操作远远大于写操作的场景里，比如缓存。
+24、进程间的通信方式
+管道( pipe)：
+	管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系通常是指父子进程关系。
+有名管道 (named pipe) ： 
+	有名管道也是半双工的通信方式，但是它允许无亲缘关系进程间的通信。
+信号量( semophore ) ： 	
+	信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。
+消息队列( message queue ) ： 
+	消息队列是由消息的链表，存放在内核中并由消息队列标识符标识。消息队列克服了信号传递信息少、管道只能承载无格式字节流以及缓冲区大小受限等缺点。
+信号 ( sinal ) ： 
+	信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。
+共享内存( shared memory ) ：
+	共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号量，配合使用，来实现进程间的同步和通信。
+套接字( socket ) ：
+	套解口也是一种进程间通信机制，与其他通信机制不同的是，它可用于不同机器间的进程通信。
 Synchronized和JDK中的锁的区别吗：
 	内置锁能够解决大部分需要同步的场景，只有在需要额外灵活性是才需要考虑显式锁，比如可定时、可中断、多等待队列等特性。
 	显式锁虽然灵活，但是需要显式的申请和释放，并且释放一定要放到finally块中，否则可能会因为异常导致锁永远无法释放！这是显式锁最明显的缺点。
