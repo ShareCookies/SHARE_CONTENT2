@@ -1,6 +1,7 @@
 http://ifeve.com/java-nio-all/
 https://www.jianshu.com/p/362b365e1bcc
 https://www.jianshu.com/p/052035037297
+https://github.com/CyC2018/CS-Notes/blob/master/notes/Java%20IO.md
 NIO:
 	前言（诞生起因）：
 		java 传统的I/O系统具有以下特点.
@@ -16,29 +17,43 @@ NIO:
 	NIO介绍：
 		java.nio全称java non-blocking IO，JDK 1.4及以上版本里提供的新api（New IO） 。
 		IO和NIO的区别：
-				原有的 IO 是面向流的、阻塞的，NIO 则是面向块的、非阻塞的。
+			原有的 IO 是面向流的、阻塞的，NIO 则是面向块的、非阻塞的。
 
+			附：
 			如何理解NIO是面向块的、非阻塞的：
-				面向块的：
-					NIO是天生就面向缓冲区的。
-					数据将被读取到一个它稍后处理的缓冲区。
-						是读一个块的数据（一定量数据为一个块）到缓存区吧！
-					甚至可在缓冲区中前后移动，增加了处理过程中的灵活性。
-				非阻塞的：
-					JavaNIO是非阻塞模式的。
-					非阻塞读：
-						一个线程请求从某通道读取数据时，它仅能得到目前可用的数据，如果目前没有数据可用时，就什么都不会获取到，不会保持线程阻塞，所以直至数据变的可以读取之前，该线程可以继续做其他的事情。
-							非阻塞读，会一直等到当前能读的数据读完吗？
-							IO读不到数据会阻塞？那什么情况是读不到了？
-					非阻塞写：
-						一个线程请求写入一些数据到某通道，可不需要等待它完全写入，线程可以去做别的事情。
-							非阻塞写意思是，开启了写后，我可以去干别的事吗？
-					
-					附：
-						即NIO是可以做到用一个线程来处理多个操作的。
-						假设有10000个请求过来,根据实际情况，可以分配50或者100个线程来处理。
-						不像之前的阻塞IO那样，非得分配10000个。		
+				流与块
+					面向流的 IO 一次处理一个字节数据：一个输入流产生一个字节数据，一个输出流消费一个字节数据。
+					面向块的 NIO 一次处理一个数据块，按块处理数据比按流处理数据要快得多。
+						例：
+							/* 为缓冲区分配 1024 个字节 */
+							ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+							一个数据块就是一个缓存区大小吧。
+							附：
+								
+								private static int readIntoNativeBuffer(FileDescriptor var0, ByteBuffer var1, long var2, NativeDispatcher var4) throws IOException {
+									int var5 = var1.position();
+									int var6 = var1.limit();
+									...
+									var9 = var4.read(var0, ((DirectBuffer)var1).address() + (long)var5, var7);//read就是native了
+									...
+								}
+								
 
+				非阻塞的：
+					NIO通过Selector是可以做到用一个线程来处理多个操作的。
+					假设有10000个请求过来,根据实际情况，可以分配50或者100个线程来处理。
+					不像之前的阻塞IO那样，非得分配10000个。
+		
+		附：
+			I/O 包和 NIO 已经很好地集成了，即java.io.* 已经以 NIO 为基础重新实现了，所以现在它可以利用 NIO 的一些特性。例如，java.io.* 包中的一些类包含以块的形式读写数据的方法，这使得即使在面向流的系统中，处理速度也会更快。！	
+		附：
+			流、通道区别：
+				流：
+					流是一种抽象概念，把对io设备的操作抽象为流（操作的具体实现细节用户无需管因为别人已经帮你写好了），用户可以仅通过流就操作io设备.
+				通道：
+					我觉的通道也是种抽象概念，通道表示到实体IO的开放连接,通过Channel.read(Buffer)可以把实体数据读到缓存区中，通过Channel.write(Buffer)可以把缓存区数据读到实体IO中.
+				总结:
+					流与通道相比就是缺失了缓存区这个必要概念，通道一定要读到缓存区中，而流可以直接读到引用对象中。
 		附：
 			？为所有的原始类型（boolean类型除外）提供缓存支持的数据容器，使用它可以提供非阻塞式的高伸缩性网络。
 			？HTTP2.0使用了多路复用的技术，做到同一个连接并发处理多个请求，而且并发请求的数量比HTTP1.1大了好几个数量级。
@@ -154,22 +169,24 @@ NIO核心API：
 	Selector选择器:
 		http://ifeve.com/selectors/
 		介绍：
-			通过Selector能够管理多个 Channel。
-			Selector组件能够检测（知晓）一到多个通道是否为诸如读写事件做好准备的组件。
-			Selector允许单线程处理多个 Channel。
-		使用Selector管理Channel:
-			要使用Selector，得向Selector注册Channel。然后调用它的select()方法，这个方法会一直阻塞到某个注册的通道有事件就绪。一旦这个方法返回，线程就可以处理这些事件，事件的例子有如新连接进来，数据接收等。
+			NIO 常常被叫做非阻塞 IO，主要是因为 NIO 在网络通信中的非阻塞特性被广泛使用。
+			NIO 实现了 IO 多路复用中的 Reactor 模型，一个线程 Thread 使用一个选择器 Selector 通过轮询的方式去监听多个通道 Channel 上的事件，从而让一个线程就可以处理多个事件。
 
+			通过配置监听的通道 Channel 为非阻塞，那么当 Channel 上的 IO 事件还未到达时，就不会进入阻塞状态一直等待，而是继续轮询其它 Channel，找到 IO 事件已经到达的 Channel 执行。
+			总结：
+				通过Selector能够管理多个 Channel。
+		使用Selector管理Channel:
 			./使用Selector管理Channel.txt
+			注：
+				只有套接字 Channel 才能配置为非阻塞，而 FileChannel 不能，因为 FileChannel 配置非阻塞也没有意义。	
 		附：
 			使用Selector好处：
-				仅用单个线程来处理多个Channels的好处是，只需要更少的线程来处理通道。
-				对于操作系统来说，线程之间上下文切换的开销很大，而且每个线程都要占用系统的一些资源（如内存）。因此，使用的线程越少越好。
-
-				但是，现代的操作系统和CPU在多任务方面表现的越来越好，所以多线程的开销随着时间的推移，变得越来越小了。实际上，如果一个CPU有多个内核，不使用多任务可能是在浪费CPU能力。
-案例：
-	Socket服务端和客户端案例：
-		有问题
-		https://blog.csdn.net/u010889616/article/details/80686236
+				因为创建和切换线程的开销很大，因此使用一个线程来处理多个事件而不是一个线程处理一个事件，对于 IO 密集型的应用具有很好地性能。
+				
+例：
+	磁盘操作：
+		./例/file.java
+	网络操作
+		Socket服务端和客户端案例：
 		./例/ServerAndClientOfSocket/
 		
