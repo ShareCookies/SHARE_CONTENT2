@@ -20,6 +20,8 @@
 	相关命令： 
 		修改文件的拥有者：
 			利用 chown 将指定文件的拥有者改为指定的用户或组。
+			例：
+				chmod -R 755 地址
 		管理用户（user）的工具或命令：
 			useradd ：添加用户
 		管理用户组（group）的工具或命令：
@@ -37,7 +39,6 @@
 	lsof -i:8000 查看端口占用情况
 	2.查看端口：
 	netstat -anp
-	
 		https://blog.csdn.net/wll_1017/article/details/47333883
 		查看指定端口是否被占用：
 		netstat -anp |grep 6058
@@ -54,7 +55,6 @@
 		防火墙会从上至下的顺序来读取配置的策略规则，
 		在找到匹配项后就立即结束匹配工作并去执行匹配项中定义的行为（即放行或阻止）。
 		如果在读取完所有的策略规则之后没有匹配项，就去执行默认的策略。
-		
 		firewalld与iptables：
 			https://blog.csdn.net/weixin_40658000/article/details/78708375
 			iptables与firewalld都不是真正的防火墙，它们都只是一个服务，用来定义防火墙策略。
@@ -64,7 +64,6 @@
 					systemctl stop firewalld.service #停止firewall
 					systemctl disable firewalld.service #禁止firewall开机启动
 					firewall-cmd --state #查看默认防火墙状态（关闭后显示notrunning，开启后显示running）
-					
 		附：
 			两个都开启了？
 	ping:
@@ -96,7 +95,6 @@
 		linux 性能瓶颈排查：
 			https://blog.csdn.net/xiongyouqiang/article/details/79364323?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.add_param_isCf&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.add_param_isCf
 			https://blog.csdn.net/achenyuan/article/details/78974729
-		
 		Linux的系统状况
 			https://www.cnblogs.com/zhoug2020/p/6336453.html
 			top命令经常用来监控Linux的系统状况，比如cpu、内存。
@@ -106,7 +104,6 @@
 					https://zhuanlan.zhihu.com/p/75975041
 					https://blog.csdn.net/duzilonglove/article/details/80111753
 					如何评估性能需求中合理的Load Average：
-
 						一般来说，Load Average是与机器内核数有关的。
 						以一个单核的机器为例，load=0.5表示CPU还有一半的资源可以处理其他的线程请求，load=1表示CPU所有的资源都在处理请求，没有剩余的资源可以利用了，而load=2则表示CPU已经超负荷运作，另外还有一倍的线程正在等待处理。所以，对于单核机器来说，理想状态下，Load Average要小于1。同理，对于双核处理器来说，Load Average要小于2。
 						结论是：多核处理器中，你的Load Average不应该高于处理器核心的总数量。
@@ -119,10 +116,7 @@
 					hi（hardware irq）：硬中断消耗时间
 					si（software irq）：软中断消耗时间
 					st（steal time）：虚拟机偷取时间
-
 					以上解释的这些参数的值加起来是100%。
-
-
 	查看内存情况：
 		https://www.cnblogs.com/zhuiluoyu/p/6154898.html
 		cat /proc/meminfo http://blog.51cto.com/xujpxm/1961072
@@ -143,7 +137,8 @@
 			df -lh ： 查看磁盘空间分布情况
 			du -sh * ：查看各个目录文件大小
 			查看看目录属于哪个磁盘分区：https://www.cnblogs.com/fanblogs/p/12970223.html
-
+				# df -h /test/ 
+				//没有挂载磁盘的目录，显示在系统盘
 	查看io:
 		iostat -d -k 1
 		iostat使用：	
@@ -157,7 +152,6 @@
 			-n <文件数目> 　指定同一时间最多可开启的文件数。
 			-u <程序数目> 　用户最多可开启的程序数目。
 			...
-
 文件链接：
 	ln命令用于为一个文件创建链接,
 	链接分为软链接(类似于windows系统中的快捷方式)
@@ -165,7 +159,67 @@
 	命令默认使用硬链接。
 service服务：
 	https://blog.csdn.net/fly_captain/article/details/82894014
-	服务本质就是运行在后台的进程，因此我们又称为守护进程。
-	服务管理指令
-       service    服务名 [start | stop | restart | reload | status]
-	   例：查看当前防火墙的状况 service firewalld  status
+	https://blog.csdn.net/charles_neil/article/details/78448326?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control
+	介绍：
+		服务是可通过服务工具进行管理的程序。我们可以使用服务工具来管理服务，对服务启停，设置自动启动等。
+			服务本质就是运行在后台的进程，即服务属于后台进程的一种。
+		当然规定服务的启动一般说的都是计算机启动时，所以这就离不开init system。 系统的第一个进程是init system，所有的其它进程都是它的子进程，init system 规定了开机应该如何(何时)启动各种进程，当然其中就包括各种服务。
+			主要的init system有以下几个
+				System V
+					Debian 6 and earlier
+					Ubuntu 9.04 and earlier
+					CentOS 5 and earlier
+				Upstart
+					Ubuntu 9.10 to 14.10, including Ubuntu 14.04
+					CentOS 6
+				systemd
+					Debian 7 and 8
+					Ubuntu 15.04 and newer
+					CentOS 7
+					介绍：
+						systemd是Linux系统最新的初始化系统(init),作用是提高系统的启动速度，尽可能启动较少的进程，尽可能更多进程并发启动。
+						systemd对应的进程管理命令是systemctl。
+					附：
+						systemctl
+							$ systemctl stop apache  #关闭apache服务
+							$ systemctl disable apache #设置开机不启动
+			命令总结
+				systemctl 管理systemd
+				initctl 管理upstart
+				service 管理upstart和SysV
+				管理他们在/etc/init/ 和/etc/init.d/ 下的脚本
+				update-rc.d SysV
+				invoke-rc.d SysV
+				chkconfig SysV
+	服务管理指令：
+		https://blog.csdn.net/charles_neil/article/details/78448326?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control
+		2.systemctl命令
+			1)
+			融合service和chkconfig的功能于一体
+				systemctl命令兼容了service，即systemctl也会去/etc/init.d目录下，查看，执行相关程序
+			例：
+				systemctl redis start
+				systemctl redis stop
+				# 开机自启动
+				systemctl enable redis
+		1.service命令
+			命令：
+				service 服务名 [start | stop | restart | reload | status]
+			service命令其实是去/etc/init.d目录下，去执行相关程序
+			例：
+				# service命令启动redis脚本
+				service redis start
+				# 直接启动redis脚本(其中脚本需要我们自己编写)
+				/etc/init.d/redis start	
+		chkconfig命令用法
+			chkconfig是管理系统服务(service)的命令行工具。
+			chkconfig可以更新(启动或停止)和查询系统服务(service)运行级信息。更简单一点，chkconfig是一个用于维护/etc/rc[0-6].d目录的命令行工具。
+			例：
+			设置service开机是否启动：
+				chkconfig name on/off/reset
+		程序注册为Linux系统服务？
+磁盘分区
+	https://blog.csdn.net/qq_30604989/article/details/81163270?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-3.control
+	原理
+		1）Linux无论有几个分区，分给哪一目录使用，归根结底只有一个根目录，一个独立且唯一的文件结构，Linux中每个分区都是用来组成整个文件系统的一部分。
+		2）Linux中采用了一种叫 “载入” 的处理方法，它的整个文件系统中包含了一整套的文件和目录，且将一个分区和一个目录联系起来。这时要载入的一个分区将使它的存储空间在一个目录下获得。
