@@ -1,0 +1,11 @@
+应用枚举实现了策略模式。
+例：
+	//根据需要导出对应字段内容。后续有新增导出字段，只要新增枚举类型就好了。
+	// 应用了策略模式实现改需求。根据不同的需求，同一个方法能表现出不同的行为
+	for (int j = 0; j < exportFields.size(); j++){
+		UrgerExportFields urgerExportFields = UrgerExportFields.valueOf(exportFields.get(j));
+		urgerExportFields.setDocOpinionMng(docOpinionMng);
+		HSSFCell field1=dataRow.createCell(j);
+		field1.setCellValue(urgerExportFields.getExcelExportContentFromUrger(urger));
+		field1.setCellStyle(contentStyle);
+	}

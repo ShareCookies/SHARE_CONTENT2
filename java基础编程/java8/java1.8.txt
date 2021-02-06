@@ -1,0 +1,51 @@
+
+Lambda表达式
+Stream
+Stream 流
+	什么是 Stream 流:
+
+		简单来说，我们可以使用 java.util.Stream 对一个包含一个或多个元素的集合做各种操作。
+		这些操作可能是 中间操作 亦或是 终端操作。 终端操作会返回一个结果，而中间操作会返回一个 Stream 流。
+
+		注：
+			需要注意的是，你只能对实现了 java.util.Collection 接口的类做流的操作。
+				即Map 不支持 Stream 流。
+
+			Stream 流支持同步执行，也支持并发执行。
+	流操作：
+		中间操作：map 转换
+			中间操作 Map 能够帮助我们将 List 中的每一个元素做功能处理。
+			例如下面的示例，通过 map 我们将每一个 string 转成大写：
+
+			stringCollection
+				.stream()
+				.map(String::toUpperCase)
+				.sorted((a, b) -> b.compareTo(a))
+				.forEach(System.out::println);
+
+			// "DDD2", "DDD1", "CCC", "BBB3", "BBB2", "AAA2", "AAA1"
+			另外，我们还可以做对象之间的转换，业务中比较常用的是将 DO（数据库对象） 转换成 BO（业务对象） 。
+		终端操作：filter 过滤
+			例：
+			首先，我们创建一个 List 集合：
+			List<String> stringCollection = new ArrayList<>();
+			stringCollection.add("ddd2");
+			stringCollection.add("aaa2");
+			stringCollection.add("bbb1");
+			stringCollection.add("aaa1");
+			stringCollection.add("bbb3");
+			stringCollection.add("ccc");
+			stringCollection.add("bbb2");
+			stringCollection.add("ddd1");
+			Filter 的入参是一个 Predicate, 上面已经说到，Predicate 是一个断言的中间操作，它能够帮我们筛选出我们需要的集合元素。它的返参同样 是一个 Stream 流，我们可以通过 foreach 终端操作，来打印被筛选的元素：
+
+			stringCollection
+				.stream()
+				.filter((s) -> s.startsWith("a"))
+				.forEach(System.out::println);
+
+			// "aaa2", "aaa1"
+	附：
+		？Map<Long, User> maps = userList.stream().collect(Collectors.toMap(User::getId, Function.identity(), (key1, key2) -> key2));
+			map的值不是对象，而是对象的某个属性
+				Map<Long, String> maps = userList.stream().collect(Collectors.toMap(User::getId, User::getAge, (key1, key2) -> key2));

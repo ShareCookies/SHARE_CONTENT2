@@ -267,4 +267,6 @@
 		对于常规编程来说，它们很少会派上用场，但是在涉及性能调优时，它们就大有用武之地了。				
 	volatile和ThreadLocal？
 		https://www.cnblogs.com/zhangblearn/p/9826753.html
-
+	CountDownLatch
+		CountDownLatch 是一个同步工具类，它允许一个或多个线程一直等待，直到其他线程执行完后再执行。
+		

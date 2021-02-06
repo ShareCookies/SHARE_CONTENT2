@@ -1,6 +1,15 @@
 JVM:
 	HotSpot VM:
 		https://www.cnblogs.com/charlesblc/p/5993804.html
+	jvm监控工具：(jvisualvm)
+		jdk自带监控程序jvisualvm在JDK_HOME/bin下。
+		jvisualvm远程监控
+			配置
+				需要进行远程jvm查看时，需要在启动项目中配置以下内容。
+
+				-Djava.rmi.server.hostname=... -Dcom.sun.management.jmxremote.port=8080 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
+			连接
+				在打开的工具中输入上一步骤中配置的hostname及port进行连接。			
 1.JVM内存
 	https://www.cnblogs.com/dolphin0520/p/3613043.html
 	Java程序是交由JVM执行的，所以Java内存区域就是指JVM内存区域。

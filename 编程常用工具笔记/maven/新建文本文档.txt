@@ -11,3 +11,6 @@
             <url>http://192.168.0.40:8081/repository/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+	
+？
+	maven项目子项目依赖父项目，版本号无法继承

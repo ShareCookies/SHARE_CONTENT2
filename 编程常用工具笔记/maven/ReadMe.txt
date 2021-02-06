@@ -96,12 +96,6 @@ maven的依赖管理：
 	　　			1.https://maven.aliyun.com/mvn/search
 					2.输入关键字查询获得需要内容，确定需要版本
 					3.复制获得的坐标即可,获取坐标即三个关键属性值
-	注：
-		idea的maven工具-》dependences中的依赖未加载成功（有红色波浪线）
-			解决方案：
-			方式1.maven清缓存，重新刷新依赖
-			方式2.看本地仓库中是否存在包，把包删了在重新拉依赖
-			方式3.确认私服中是否有包...
 maven环境安装：
 	https://blog.csdn.net/qq_37497322/article/details/78988378
 	1.安装maven

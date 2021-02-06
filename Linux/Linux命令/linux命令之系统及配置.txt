@@ -90,7 +90,7 @@
 		hosts文件格式
 			ip地址   主机名/域名   （主机别名）
 			例：127.0.0.1 www.baidu.com
-性能：	
+性能：?
 	linux服务器性能查看：
 		linux 性能瓶颈排查：
 			https://blog.csdn.net/xiongyouqiang/article/details/79364323?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.add_param_isCf&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.add_param_isCf
@@ -128,17 +128,7 @@
 		查看内存情况：
 			free
 			https://www.cnblogs.com/sunyllove/p/9968219.html
-	查看磁盘空间	
-		https://www.runoob.com/w3cnote/linux-view-disk-space.html
-		df -h 
-			显示内容参数说明：
-				Filesystem文件系统	Size分区大小	Used已使用容量	Avail还可以使用的容量	Use%已用百分比	Mounted on挂载点
-		附：
-			df -lh ： 查看磁盘空间分布情况
-			du -sh * ：查看各个目录文件大小
-			查看看目录属于哪个磁盘分区：https://www.cnblogs.com/fanblogs/p/12970223.html
-				# df -h /test/ 
-				//没有挂载磁盘的目录，显示在系统盘
+	
 	查看io:
 		iostat -d -k 1
 		iostat使用：	
@@ -146,11 +136,11 @@
 	资源限制：
 		https://www.runoob.com/linux/linux-comm-ulimit.html
 		https://blog.csdn.net/skiwnc/article/details/84100095
-		ulimit为shell内建指令，可用于控制shell程序的资源。
-		参数：
-			-a 　显示目前资源限制的设定。
-			-n <文件数目> 　指定同一时间最多可开启的文件数。
-			-u <程序数目> 　用户最多可开启的程序数目。
+		例：
+			ulimit -a 查看系统用户所有限制值：
+				结果：
+				open files (-n) 65535 #一个进程可打开的最大文件数.
+		修改资源限制值：
 			...
 文件链接：
 	ln命令用于为一个文件创建链接,
@@ -223,3 +213,47 @@ service服务：
 	原理
 		1）Linux无论有几个分区，分给哪一目录使用，归根结底只有一个根目录，一个独立且唯一的文件结构，Linux中每个分区都是用来组成整个文件系统的一部分。
 		2）Linux中采用了一种叫 “载入” 的处理方法，它的整个文件系统中包含了一整套的文件和目录，且将一个分区和一个目录联系起来。这时要载入的一个分区将使它的存储空间在一个目录下获得。
+查看磁盘空间
+	https://www.runoob.com/w3cnote/linux-view-disk-space.html
+	du -sh *
+		显示每个文件和目录的磁盘使用空间(文件的大小)。
+	df
+		df 以磁盘分区为单位查看文件系统，可以获取硬盘被占用了多少空间，目前还剩下多少空间等信息。
+		常用命令：
+			df -h
+				查看磁盘空间情况：
+					Filesystem文件系统	Size分区大小	Used已使用容量	Avail还可以使用的容量	Use%已用百分比	Mounted on挂载点
+			查看看目录属于哪个磁盘分区：
+				https://www.cnblogs.com/fanblogs/p/12970223.html
+				# df -h /test/ 
+				//没有挂载磁盘的目录，显示在系统盘
+		
+		df 列信息详细介绍：
+			Filesystem：表示该文件系统位于哪个分区，因此该列显示的是设备名称；
+				附：
+					/dev/mapper目录
+						https://blog.csdn.net/jpmsdn/article/details/80311040
+						理解Linux系统的Device mapper机制
+							http://blog.sina.com.cn/s/blog_6237dcca0100hnwb.html 
+						   Device mapper是Linux2.6内核中提供的一种从逻辑设备到物理设备的映射机制，
+						   在该机制下，用户能够很方便的根据自己的需要实现对存储资源的管理。在具体管理时需要用到Linux下的逻辑卷管理器，当前比较流行的逻辑卷管理器有 LVM2（Linux Volume Manager 2 version)、EVMS(Enterprise Volume Management System)、dmraid(Device Mapper Raid Tool)等。
+						/dev/mapper目录的解释？
+						   为了方便叙述，假设一台服务器有三块硬盘分别为a，b，c，每块硬盘的容量为1T。
+						   在安装Linux的时候，先根据系统及自身的需要建立基本的分区，假设对硬盘a进行了分区，分出去了0.1T的空间挂载在/boot目录下，其他硬盘未进行分区。
+						   系统利用Device mapper机制建立了一个卷组（volume group，VG），你可以把VG当做一个资源池来看待，最后在VG上面再创建逻辑卷（logical volume，LV）。
+						   若要将硬盘a的剩余空间、硬盘b和硬盘c都加入到VG中，则硬盘a的剩余空间首先会被系统建立为一个物理卷（physical volume，PV），并且这个物理卷的大小就是0.9T，之后硬盘a的剩余的空间、硬盘b和硬盘c以PV的身份加入到VG这个资源池中，然后你需要多大的空间，就可以从VG中划出多大的空间（当然最大不能超过VG的容量）。
+						   比如此时池中的空间就是2.9T，此时你就可以建立一个1T以上的空间出来，而不像以前最大的容量空间只能为1T。
+   
+					tmpfs
+						tmpfs是临时文件系统的意思，但是他又不是普通的文件系统，因为他不是物理磁盘上的空间，而是内存中的一块空间，却以物理磁盘分区的方式展示给用户，让用户操作这块空间。
+					Linux系统的一般的文件系统名称类似于/dev/sda1或/dev/hda1，即为硬盘？还是硬盘分区
+					
+			1K-blocks：此列表示文件系统的总大小，默认以 KB 为单位；
+			Used：表示用掉的硬盘空间大小；
+			Available：表示剩余的硬盘空间大小；
+			Use%：硬盘空间使用率。如果使用率高达 90% 以上，就需要额外注意，因为容量不足，会严重影响系统的正常运行；
+			Mounted on：文件系统的挂载点，也就是硬盘挂载的目录位置。
+		？
+			可以多个磁盘挂同一个目录下吗
+			一个磁盘可以被分为多个，然后挂到不同目录下把
+			linux 目录剪切会导致目录下程序停止吗
