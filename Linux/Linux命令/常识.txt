@@ -6,6 +6,7 @@ Linux的发行版:
 	一般来说linux系统基本上分两大类： 
 		1.RedHat系列：Redhat、Centos、Fedora等 
 		2.Debian系列：Debian、Ubuntu等 
+			Kali Linux是基于Debian的Linux发行版
 Linux程序:
 	cd, mkdir等都是系统自带的程序，一般在/bin或/usr/bin目录下。
 快捷键：

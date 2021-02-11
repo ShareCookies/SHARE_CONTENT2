@@ -1,0 +1,26 @@
+https://www.runoob.com/docker/docker-tutorial.html
+https://zhuanlan.zhihu.com/p/54512286
+介绍：
+	Docker 是一个开源的应用容器引擎.
+	Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的Linux机器上，也可以实现虚拟化。
+	容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。
+
+	一个完整的Docker有以下几个部分组成：
+		DockerClient客户端
+		Docker Daemon守护进程
+		Docker Image镜像
+			镜像作用：
+				之前：在开发环境构建出了一个war包，想跑到Linux下运行。我们得先在Linux下载好Java、Tomcat、MySQL，配置好对应的环境变量，将war包丢到Tomcat的webapps文件夹下，才能跑起来。
+				现在：在Linux下直接拉取一份镜像(各种环境都配好了)，将镜像运行起来，把war包丢进去就好了。
+		DockerContainer容器
+	docker优缺点：
+		...
+	总结：
+		即docker将一整套环境打包封装成镜像，无需重复配置环境，解决环境带来的种种问题。
+		Docker容器间是进程隔离的，谁也不会影响谁。
+Windows Docker 安装:
+	摘要：
+		Docker 并非是一个通用的容器工具，它依赖于已存在并运行的 Linux 内核环境。
+		Docker 实质上是在已经运行的 Linux 下制造了一个隔离的文件环境，因此它执行的效率几乎等同于所部署的 Linux 主机。
+		因此，Docker 必须部署在 Linux 内核的系统上。如果其他系统想部署 Docker 就必须安装一个虚拟 Linux 环境。
+		

@@ -4,9 +4,19 @@ java图片压缩：
 		https://www.xuebuyuan.com/3229489.html
 		https://blog.csdn.net/zmx729618/article/details/78729049
 		例：
-			Thumbnails.of(file).scale(thumScale) // File //  图片大小比例 0.25f 1/4
-				.outputQuality(thumQuality) //缩放质量 1f 
-				.toFile(file);
+			依赖：
+				<dependency>
+					<groupId>net.coobird</groupId>
+					<artifactId>thumbnailator</artifactId>
+					<version>0.4.8</version>
+				</dependency>
+			代码：
+				Float thumScale = 0.5f;
+				Float thumQuality = 0.25f;
+				Thumbnails.of(file).scale(thumScale) //图片大小比例 0.25f 1/4
+					.outputQuality(thumQuality) //缩放质量 1f 
+					.toFile(file);
+				        
 
 	2.使用java类进行图片压缩：
 		https://blog.csdn.net/yang_1996/article/details/78612646?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase

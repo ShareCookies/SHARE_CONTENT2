@@ -1,5 +1,8 @@
+https://www.freebuf.com/
+https://www.kali.org/downloads/
 https://www.jianshu.com/p/5c424ec40378
 https://www.jianshu.com/p/6bc23153156b
+
 https://mp.weixin.qq.com/s/yCQ19rzq5T1qm_pasVYX6g
 https://mp.weixin.qq.com/s?__biz=MzIzMTQ4NzE2Ng==&mid=2247484209&idx=1&sn=c98fcd434a0caea12b3593d88c430cf5&chksm=e8a220e0dfd5a9f66b65ceb48acda0747414b3d229ef1130442375f32b6603fe2c136120c663&mpshare=1&scene=23&srcid=0817d1mZXdeZSadfodzaFNqb&sharer_sharetime=1597658991362&sharer_shareid=1edbf9618689e93a6430dfd0085b6242#rd
 https://blog.csdn.net/weixin_43650289/article/details/109244790?utm_source=app
@@ -20,3 +23,6 @@ HTTP请求走私漏洞：
 	http://wooyun.2xss.cc/bugs.php
 	
 	
+
+
+https://mp.weixin.qq.com/s?__biz=MzIzMTQ4NzE2Ng==&mid=2247484209&idx=1&sn=c98fcd434a0caea12b3593d88c430cf5&chksm=e8a220e0dfd5a9f66b65ceb48acda0747414b3d229ef1130442375f32b6603fe2c136120c663&mpshare=1&scene=23&srcid=0817d1mZXdeZSadfodzaFNqb&sharer_sharetime=1597658991362&sharer_shareid=1edbf9618689e93a6430dfd0085b6242#rd

@@ -166,3 +166,5 @@ https://blog.csdn.net/dayang0307/article/details/101382010
 		public final B second;
 		public TwoTuple(A a,B b){first = a; second = b;}
 	}
+Java泛型中E、T、K、V等的含义
+	...

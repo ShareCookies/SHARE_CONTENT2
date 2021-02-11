@@ -118,6 +118,9 @@
 					附：
 						apt-key:？
 							apt-key命令用于管理Debian Linux系统中的软件包密钥。每个发布的deb包，都是通过密钥认证的，apt-key用来管理密钥。
+							key作用：
+								apt-key is used to manage the list of keys used by apt to authenticate packages. Packages which have been authenticated using these keys will be considered trusted.
+
 						为什么apt安装的软件可以通过systemctl管理？
 					？whereis指令
 			3 支持tar包

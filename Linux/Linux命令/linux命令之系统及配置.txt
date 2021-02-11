@@ -1,9 +1,12 @@
-1.切换用户的命令：
+1.切换用户的命令：？
+	切换到root用户：
+		sudo -i
+		
 		su或su -
 			su命令和su -命令最大的本质区别：前者只是切换了root身份，但Shell环境仍然是普通用户的Shell；而后者连用户和Shell环境一起切换成root身份了。
 			只有切换了Shell环境才不会出现PATH环境变量错误。su切换成root用户以后，pwd一下，发现工作目录仍然是普通用户的工作目录；
 			而用su -命令切换以后，	工作目录变成root的工作目录了。用echo $PATH命令看一下su和su -以后的环境变量有何不同。
-		sudo可以针对单个命令授予临时权限？？？
+	sudo可以针对单个命令授予临时权限？
 2.用户及用户组：
 	https://www.cnblogs.com/cisum/p/8005641.html
 	介绍：
@@ -44,10 +47,15 @@
 		netstat -anp |grep 6058
 		附：
 			sudo netstat -nlpt
-4.重启：
+4.系统开关：
 	shutdown：　　
-	-r 重启计算器。
-	-h 关机后关闭电源〔halt〕。
+		-r 重启计算器。
+		-h 关机后关闭电源〔halt〕。
+	休眠：
+		https://blog.csdn.net/u010164190/article/details/96357096
+		# echo disk > /sys/power/state //挂起到硬盘(休眠),关闭硬盘、外设等设备，进入关机状态。此时计算机完全关闭，不耗电
+		# echo mem > /sys/power/state  //挂起到内存(待机),关闭硬 盘、外设等设备
+		
 5.网络:
 	防火墙：
 		https://www.linuxprobe.com/chapter-08.html
@@ -169,10 +177,7 @@ service服务：
 					介绍：
 						systemd是Linux系统最新的初始化系统(init),作用是提高系统的启动速度，尽可能启动较少的进程，尽可能更多进程并发启动。
 						systemd对应的进程管理命令是systemctl。
-					附：
-						systemctl
-							$ systemctl stop apache  #关闭apache服务
-							$ systemctl disable apache #设置开机不启动
+
 			命令总结
 				systemctl 管理systemd
 				initctl 管理upstart
@@ -183,16 +188,17 @@ service服务：
 				chkconfig SysV
 	服务管理指令：
 		https://blog.csdn.net/charles_neil/article/details/78448326?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control
-		2.systemctl命令
-			1)
-			融合service和chkconfig的功能于一体
-				systemctl命令兼容了service，即systemctl也会去/etc/init.d目录下，查看，执行相关程序
+		systemctl命令
+			1) 融合service和chkconfig的功能于一体
+				即systemctl命令兼容了service，即systemctl也会去/etc/init.d目录下，查看，执行相关程序
+				...
 			例：
-				systemctl redis start
-				systemctl redis stop
-				# 开机自启动
-				systemctl enable redis
-		1.service命令
+				systemctl start redis 
+				systemctl stop redis 
+				systemctl status redis 
+				systemctl enable redis # 开机自启动
+				systemctl disable apache #设置开机不启动
+		service命令
 			命令：
 				service 服务名 [start | stop | restart | reload | status]
 			service命令其实是去/etc/init.d目录下，去执行相关程序
@@ -207,7 +213,8 @@ service服务：
 			例：
 			设置service开机是否启动：
 				chkconfig name on/off/reset
-		程序注册为Linux系统服务？
+	？
+		程序注册为Linux系统服务
 磁盘分区
 	https://blog.csdn.net/qq_30604989/article/details/81163270?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-3.control
 	原理

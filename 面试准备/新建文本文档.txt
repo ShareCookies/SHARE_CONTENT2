@@ -12,5 +12,5 @@ https://www.jianshu.com/p/513079329766
 		前端内存溢出。
 	redis*，mq，mysql，算法*，并发*，微服务*，原理*
 	
-	
-	
+	侧重原理了解，而不是仅知道有这个东西，
+		https://blog.csdn.net/qq_40910541/article/details/88735255
