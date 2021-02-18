@@ -98,6 +98,8 @@ java实现多线程编程的三种方式：
 				https://www.jianshu.com/p/6f3ee90ab7d3
 				？
 					CompletionStage还是在一个线程完成的吧，只是可以在完成不同的阶段完成后做想做的事。
+				例：
+					./案例/Callable/CompletableTest.txt
 	方式3.继承Thread，并重写run()方法:
 		介绍：
 			直接继承Thread，重写run方法来编写任务，最后启动线程来驱动任务。
