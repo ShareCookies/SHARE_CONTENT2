@@ -1,0 +1,10 @@
+route-nopull
+route www.google.com 255.255.0.0 vpn_gateway
+route 31.13.95.33 255.255.0.0 vpn_gateway
+route 172.217.214.99 255.255.0.0 vpn_gateway
+
+
+OpenVPN客户端添加路由配置（流量分流）
+	https://www.xxshell.com/1760.html
+	https://www.luisimon.xyz/2020/04/25/318/、
+	https://segmentfault.com/q/1010000018044160

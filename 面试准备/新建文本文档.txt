@@ -14,3 +14,8 @@ https://www.jianshu.com/p/513079329766
 	
 	侧重原理了解，而不是仅知道有这个东西，
 		https://blog.csdn.net/qq_40910541/article/details/88735255
+		
+		
+
+面试案例：
+	https://www.cnblogs.com/ffdsj/p/12430109.html
