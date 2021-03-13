@@ -233,6 +233,15 @@
 		逻辑运算符	
 		三目运算符	
 		赋值运算符
+		++：
+			https://blog.csdn.net/cuixianlong/article/details/100151895?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&dist_request_id=1328592.11027.16147547357172587&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
+			https://www.jb51.net/article/179905.htm
+			++原理：
+				...
+			附：
+				//		int b = 4;
+				//		System.out.println((b++) < 5);
+				//		System.out.println(b);
 关键字：
 	修饰符：
 		private,protected,public,package(默认级别，即什么访问修饰符都不写)。
