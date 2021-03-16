@@ -1,0 +1,81 @@
+GC：（Garbage Collector 垃圾收集）
+	介绍：
+		GC作用：
+			回收堆中没有利用价值的内存。
+			没有利用价值的内存指的是：没有被其他对象引用到的对象，或者说是引用数为0的对象。	
+		为什么要有GC：
+			内存处理是编程人员容易出现问题的地方，忘记或者错误的内存回收会导致程序或系统的不稳定甚至崩溃，Java的GC功能可以自动监测对象是否超过作用域从而达到自动回收内存的目的。
+			Java程序员不用担心内存管理，因为垃圾收集器会自动进行管理，防止大部分的内存泄露，提高内存的使用效率。
+	垃圾回收器：
+		./垃圾回收器.txt
+
+	附：
+		与垃圾回收相关的JVM参数：
+			-Xms / -Xmx — 堆的初始大小 / 堆的最大大小
+			-Xmn — 堆中年轻代的大小
+			-XX:-DisableExplicitGC — 让System.gc()不产生任何作用
+			-XX:+PrintGCDetails — 打印GC的细节
+			-XX:+PrintGCDateStamps — 打印GC操作的时间戳
+			-XX:NewSize / XX:MaxNewSize — 设置新生代大小/新生代最大大小
+			-XX:NewRatio — 可以设置老生代和新生代的比例
+			-XX:PrintTenuringDistribution — 设置每次新生代GC后输出幸存者乐园中对象年龄的分布
+			-XX:InitialTenuringThreshold / -XX:MaxTenuringThreshold：设置老年代阀值的初始值和最大值
+			-XX:TargetSurvivorRatio：设置幸存区的目标使用率
+
+	附：
+	Java 中会存在内存泄漏吗：
+		答：
+			理论上Java因为有垃圾回收机制（GC）不会存在内存泄露问题（这也是Java被广泛使用于服务器端编程的一个重要原因）；
+			*然而在实际开发中，可能会存在无用但可达的对象，这些对象不能被GC回收，因此也会导致内存泄露的发生。
+			附：
+				在支持垃圾回收的语言中，内存泄露是很隐蔽的，这种内存泄露其实就是无意识的对象保持。
+				如果一个对象引用被无意识的保留起来了，那么垃圾回收器不会处理这个对象，也不会处理该对象引用的其他对象。
+				因此即使这样的对象只有少数几个，也可能会导致很多的对象被排除在垃圾回收之外，从而对性能造成重大影响，极端情况下会引发Disk Paging（物理内存与硬盘的虚拟内存交换数据），甚至造成OutOfMemoryError。
+	
+		例1：	
+			下面例子中的代码也会导致内存泄露。
+			import java.util.Arrays;
+			import java.util.EmptyStackException;
+
+			public class MyStack<T> {
+				private T[] elements;
+				private int size = 0;
+
+				private static final int INIT_CAPACITY = 16;
+
+				public MyStack() {
+					elements = (T[]) new Object[INIT_CAPACITY];
+				}
+
+				public void push(T elem) {
+					ensureCapacity();
+					elements[size++] = elem;
+				}
+
+				public T pop() {
+					if(size == 0) 
+						throw new EmptyStackException();
+					return elements[--size];
+				}
+
+				private void ensureCapacity() {
+					if(elements.length == size) {
+						elements = Arrays.copyOf(elements, 2 * size + 1);
+					}
+				}
+			}
+			上面的代码实现了一个栈（先进后出（FILO））结构，乍看之下似乎没有什么明显的问题，它甚至可以通过你编写的各种单元测试。
+			然而其中的pop方法却存在内存泄露的问题，当我们用pop方法弹出栈中的对象时，该对象不会被当作垃圾回收，即使使用栈的程序不再引用这些对象，因为栈内部维护着对这些对象的过期引用（obsolete reference）。
+					
+			为什么会引起内存泄漏了：
+				https://www.cnblogs.com/kissazi2/p/3618464.html
+				因为数组其实还是引用着对象，要把对应的位置赋为null数组才没有引用对象，
+				不然你只能期望等这整个栈失去引用（将被GC回收时），栈内的elements数组一起被GC回收。
+				这种问题很隐蔽，通常只要类自己管理内存（如类中有一个Array或List型的结构），那么我们就应该警惕内存泄露的问题。
+		例2：
+			例如Hibernate的Session（一级缓存）中的对象属于持久态，垃圾回收器是不会回收这些对象的，然而这些对象中可能存在无用的垃圾对象，如果不及时关闭（close）或清空（flush）一级缓存就可能导致内存泄露。
+
+	？
+		（不太理解，activity都要被结束了，那么activity里头的引用对象不是应该也要被终结吗？为啥还要null下了）http://b3log.csdn.net/dongsheng186/article/details/46563831	
+
+
