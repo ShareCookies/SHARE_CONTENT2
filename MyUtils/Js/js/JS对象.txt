@@ -16,6 +16,9 @@
 		}
 	方式2：JSON.stringify(content);//把对象的所有属性，转换json格式变量。注：
 	方式3：console.log(content);//调试出对象的所有属性与方法。注：调试推荐 
+附：
+	js获取对象的属性个数
+		Object.keys(obj).length
 
 
 	

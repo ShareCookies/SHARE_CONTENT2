@@ -1,3 +1,9 @@
+？
+	为什么推荐使用StringBuilder替代字符串变化。
+
+	String concatenation '+' in loop
+	Inspection info: Reports String concatenation in loops. As every String concatenation copies the whole String, usually it is preferable to replace it with explicit calls to StringBuilder.append() or StringBuffer.append().
+
 2.修饰符
 	1.0访问修饰符：
 		可见修饰符：protected,private,public

@@ -1,8 +1,17 @@
+https://www.bilibili.com/video/av80660080?share_medium=android&share_source=copy_link&bbid=B4BDC270-2DBF-488D-9867-57FD7A09DF2C6688infoc&ts=1585498860428&tdsourcetag=s_pctim_aiomsg
 java必阅书籍：
-	设计模式：Head First 设计模式 附：《重构 改善既有代码的设计》
-	java基础：java编程思想
-	java框架：spring实战。附：springboot实战，SPRING技术内幕
-	java深入：《深入理解Java虚拟机》
+	基础书籍：
+		《Head First 设计模式》、《计算机网络：自顶向下》、《深入理解计算机系统》、《编译原理》、Linux内核设计与实现
+		《算法导论》、
+		附：
+			《重构 改善既有代码的设计》、《tcp/ip详解 卷一、二、三》
+	java基础：
+		《Java编程思想》、《高性能MySQL》
+	java框架：
+		《Spring实战》第四版。
+		附：springboot实战，SPRING技术内幕、《Spring揭秘》
+	java深入：
+		《深入理解Java虚拟机》、Java并发编程艺术、Netty权威指南、
 
 
 书籍介绍：
@@ -20,10 +29,11 @@ java必阅书籍：
 			这里所说的适合，并不是其它两本对你就没有用。
 			比如你做Java Web和APP后端开发，《tcp/ip详解 卷一、二、三》这本书对你的作用也是很大的。
 			这里只是分出个主次关系而已，你要是时间足够的话，能把三本都精读那当然最好不过了。
-
-书籍：
-	《TCP/IP详解》《计算机网络 自顶向下》
-	《算法导论》《Spring揭秘》《高性能MySQL》
-	《Spring实战》第四版，《Java编程思想》《Head First 设计模式》
 	附：
-		https://www.bilibili.com/video/av80660080?share_medium=android&share_source=copy_link&bbid=B4BDC270-2DBF-488D-9867-57FD7A09DF2C6688infoc&ts=1585498860428&tdsourcetag=s_pctim_aiomsg
+		为什么看操作系统：
+			https://www.cnblogs.com/imxiaobei/articles/13833050.html
+		为什么要学计算机网络：
+			https://www.zhihu.com/question/30230102
+	
+	
+	

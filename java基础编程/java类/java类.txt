@@ -22,7 +22,15 @@
 		向下转型：
 			例：
 				Father f1 = new Son();
-				Son s1 = (Son)f1;	// 现在f1 还是指向 Son对象				
+				Son s1 = (Son)f1;	// 现在f1 还是指向 Son对象	
+			注：
+				Father father = new Father();
+				Son son = (Son)father;
+				//父类强转为字类会报ClassCastException
+				
+			？
+				强制转换原理是什么：
+					为什么原先是指向字类的父类引用，可以强转赋值给字类引用
 			附：
 				子类引用不能指向父类对象的：
 					Father f2 = new Father();

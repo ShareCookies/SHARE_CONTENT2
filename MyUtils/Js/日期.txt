@@ -1,3 +1,4 @@
+https://www.runoob.com/jsref/jsref-obj-date.html
 日期对象：
 	var now = new Date(); //当前日期
 	常用函数：
