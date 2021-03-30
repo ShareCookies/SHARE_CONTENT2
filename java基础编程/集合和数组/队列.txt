@@ -1,0 +1,48 @@
+https://www.jianshu.com/p/7a86c56c632b
+
+
+队列（queue）：
+	1. 介绍：
+	队列作为一种数据结构，队列有队头(head)和队尾(tail)，当有一个元素入队时，它被放在队尾的位置，而出队的元素则总是在队头。(即先进先出(first-in，first-out，FIFO)策略)
+		一般都是fifo但java的一些类实现并没有遵守这个规则。
+	2.用途
+		Queue 通常用来存放 等待处理元素 的集合，一般用于缓冲、并发访问等场景。
+
+	3. Java 集合中 Queue接口实现类
+		Java 集合中的 Queue 继承自 Collection 接口
+		常见Queue接口实现类：
+			BlockingQueue
+			PriorityQueue
+			LinkedList
+				https://www.jianshu.com/p/33a6c622338c
+				https://blog.csdn.net/jdsjlzx/article/details/41654295
+				https://blog.csdn.net/u011240877/article/details/52876543
+			Deque接口
+			...
+		？
+			Queue 一般都是 FIFO 的，但是也有例外，比如优先队列 priority queue（它的顺序是根据自然排序或者自定义 comparator 的）；再比如 LIFO 的队列（跟栈一样，后来进去的先出去）。
+			不论进入、出去的先后顺序是怎样的，使用 remove()，poll() 方法操作的都是 头部 的元素；而插入的位置则不一定是在队尾了，不同的 queue 会有不同的插入逻辑。
+
+Queue接口方法：
+	在尾部添加:
+		boolean add(E e);
+		boolean offer(E e);
+		
+		1. 他们的共同之处是建议实现类禁止添加 null 元素，否则会报空指针 NullPointerException；
+			附：
+				Queue 接口提供的 add, offer 方法初衷之一是希望子类能够禁止添加null元素。
+					为啥呢：
+						因为 poll(), peek() 方法在异常的时候会返回 null，你添加了 null　以后，当获取时就不好分辨究竟是否正确返回。
+				事实上大多数 Queue 的实现类的确响应了 Queue 接口的规定，比如 ArrayBlockingQueue，PriorityBlockingQueue 等等。
+				但还是有一些实现类没有这样要求，比如 LinkedList。
+		2. 不同之处在于 add() 方法在添加失败（比如队列已满）时会报 一些运行时错误 错；
+		而 offer() 方法即使在添加失败时也不会奔溃，只会返回 false。
+	删除并返回头部：
+		E remove();
+		E poll();
+		当队列为空时 remove() 方法会报 NoSuchElementException 错; 而 poll() 不会奔溃，只会返回 null。
+	获取但不删除：
+		E element();
+		E peek();
+		当队列为空时 element() 抛出异常；peek() 不会奔溃，只会返回 null。
+
