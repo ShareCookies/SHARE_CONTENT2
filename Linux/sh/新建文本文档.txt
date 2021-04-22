@@ -1,0 +1,7 @@
+文件遍历：
+	https://www.cnblogs.com/kaituorensheng/archive/2012/12/19/2825376.html
+字符串截取：
+	https://www.cnblogs.com/dalianpai/p/12702237.html
+
+Shell字符串比较相等、不相等方法小结
+	https://blog.csdn.net/q7391206/article/details/52354339
