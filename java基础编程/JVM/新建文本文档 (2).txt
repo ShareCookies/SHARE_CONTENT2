@@ -11,3 +11,17 @@
 	曾有次后台无故挂了，看应用日志打印也没信息.
 		看内存是否主够，有可能不够，然后被linux或jvm关了（应该是linux？）。
 		那么我应该去看什么来跟踪问题了，jvm日志吗？
+
+
+linux下java进程内存占用大于Xmx设置，且一直提升：
+	https://blog.csdn.net/ghostblade/article/details/88097764?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control
+	https://laowan.blog.csdn.net/article/details/113340344
+	超出了设置内存后会怎样？
+查看堆概要信息：
+	1.jmap -heap 19570
+		
+	2.jhsdb jmap --heap --pid  pid
+		JDK9 中新增了 jhsdb 命令
+		https://zhibo.blog.csdn.net/article/details/104628583
+查看具体内存使用？
+	pmap -x pid

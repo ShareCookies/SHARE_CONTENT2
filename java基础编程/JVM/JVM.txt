@@ -28,7 +28,7 @@ JVM:(JavaVirtualMachine)
 				在打开的工具中输入上一步骤中配置的hostname及port进行连接。			
 JVM内存区域：
 	./JVM内存.txt
-JVM内存区域：
+JVM类加载机制：
 	./JVM类加载机制.txt
 GC：（Garbage Collector 垃圾收集）
 	./GC.txt
