@@ -1,0 +1,5 @@
+deepfacelab原理：
+	https://zhuanlan.zhihu.com/p/140444440
+	
+ai芯片：
+	ai芯片前景：https://news.cnblogs.com/n/689944/

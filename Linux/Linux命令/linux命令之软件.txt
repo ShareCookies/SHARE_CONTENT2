@@ -2,12 +2,20 @@
 	命令行浏览器：
 		https://blog.csdn.net/qq_35346390/article/details/76066326
 		curl 
-	curl 
-		curl是一个利用URL语法在命令行下工作的文件传输工具。
-		它支持文件上传和下载，所以是综合传输工具，但按传统，习惯称cURL为下载工具。
+	curl
+		http://www.ruanyifeng.com/blog/2019/09/curl-reference.html
+		curl 是常用的命令行工具，用来请求 Web 服务器。它的名字就是客户端（client）的 URL 工具的意思。
+			它的功能非常强大，命令行参数多达几十种。
+			如果熟练的话，完全可以取代 Postman 这一类的图形界面工具。
 		例：
-		获得页面
-			curl http://curl.haxx.se
+			获得页面
+				curl http://curl.haxx.se
+			get
+				$ curl https://www.example.com
+				不带有任何参数时，curl 就是发出 GET 请求。
+			文件
+				$ curl -F 'file=@photo.png' https://google.com/profile
+
 功能：
 	关闭进程：
 		Linux kill 命令用于删除执行中的程序或工作。
@@ -36,6 +44,9 @@
 		crontab命令参数：
 			-l 列出当前计时器的设置
 			-r 删除计时器的设置
+	日志：
+		系统日志：/var/log/messages
+	
 概念：	
 	守护进程：
 		1.
@@ -123,6 +134,7 @@
 
 						为什么apt安装的软件可以通过systemctl管理？
 					？whereis指令
+					...
 			3 支持tar包
 		注：
 			tar：

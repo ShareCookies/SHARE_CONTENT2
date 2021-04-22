@@ -155,6 +155,7 @@ idea快捷键：
 		Ctrl+N
 	清理未用到的引用类：
 		Ctrl + Alt + O
+		code -》Opitimize imports
 	复制错误提示信息：
 		alt+鼠标左键，即可把全部错误信息复制到剪切板
 	编译快捷键：Ctrl+Shift+F9

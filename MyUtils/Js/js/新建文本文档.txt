@@ -1,0 +1,2 @@
+js监听键盘ctrl+s快捷键保存
+	https://www.cnblogs.com/vicF/p/11731863.html

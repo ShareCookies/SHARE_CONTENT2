@@ -71,7 +71,7 @@ https://blog.csdn.net/java_cxrs/article/details/91661623
 			} catch(IOException e){
 				// 1. 如果抛出的异常与IOException相同则会被该catch捕获
 				e.printStackTrace();//2.打印异常信息
-				
+				// try中有return。catch这里也会执行。
 			} catch(Exception e){
 				// try可以与多个catch配合来捕获多个类型的异常。
 				// Exception e 可以捕获所有异常

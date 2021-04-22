@@ -147,7 +147,8 @@
 					unzip FileName.zip
 					解压war包：
 						unzip -oq common.war -d 指定文件夹
-				压缩：zip FileName.zip DirName
+				压缩：
+					zip -r FileName.zip DirName
 		unrar/rar的安装及使用:
 			下载地址：https://www.rarlab.com/download.htm
 			安装：
