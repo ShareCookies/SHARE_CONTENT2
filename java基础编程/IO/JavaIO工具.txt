@@ -1,0 +1,34 @@
+File类：
+	File类是一个一个实用类库工具，它可以帮助我们处理文件(文件目录)问题。
+	附：
+		它实现了把文件等读取成流或流等写入文件。
+		
+	java.io.File
+		javaIO系统里的一个文件操作类，用来处理文件或文件集（文件夹）。
+		与流体系无直接继承关系，但可以通过FileReader或FileInputStream等转为流体系。
+
+RandomAccessFile类:
+	自我独立的类。
+	RandomAccessFile是一个完全独立的类(与io流体系接口没有任何继承关系)，从头开始编写其所有的方法(大多数都是本地的)。
+	这么做是因为RandomAccessFile拥有和别的I/O类型本质不同的行为，因为我们可以在一个文件内向前和向后移动。
+	附：
+		在JDK 1.4中，RandomAccessFile的大多 数功能(但不是全部)由nio存 储映射文件所取代。
+
+
+标准IO:（System.in、System.out、System.err）
+	标准I/O这个术语参考的是Unix中“程序所使用的单一信息流”这个概念。
+	程序的所有输人都可以来自于标准输入，它的所有输出也都可以发送到标准输出，以及所有的错误信息都可以发送到标准错误。
+	标准I/O的意义在于:我们可以很容易地把程序串联起来，一个程序的标准输出可以成为另-程序的标准输入。
+	标准IO是一个强大的工具。
+	
+	按照标准I/O模型，Java提供了System.in、System.out和System.err。 
+	System.out、System.err能将数据写出到标准输出，且System.out、System.err已经事先被包装成了printStream对象。
+	但System.in却是 一个没有被包装过的未经加工的InputStream.
+	这意味尽管我们可以立即使用System.out和System.err,但是在读取System.in之前必须对其进行包装。
+	例：
+		从标准输入中读取：
+			...
+	标准IO重定向：
+		...
+进程控制：(ProcessBuilder)
+	...

@@ -1,0 +1,39 @@
+javaIO部分API介绍:
+	对象流：
+		java.io.ObjectOutputStream
+			作用：
+				可用于把java对象保存成二进制文件
+			对象存盘前提：	
+				1.：当然java类及其所有属性 要实现Serializable序列号接口(这个接口不需要具体实现？)
+				2.：如果不想保存某属性可在属性前加个transient关键字，则此属性就不会存盘且此属性可不用实现序列化接口。
+					例：private transient String name;
+		java.io.ObjectInputStream
+			作用：
+				可用于把二进制文件读取为java对象，当然这个二进制文件要是用ObjectOutputStream形成的。
+	高效缓冲流
+		https://blog.csdn.net/qq_39304441/article/details/99670966
+		1、BufferedInputStream和BufferedOutputStream
+		2、高效缓冲流是包装类，本身自己不能作为单独的字节流读写字节，用于加强基础的字节流对象，加强之后读写的效率就会提升
+		3、使用：
+		BufferedInputStream(InputStream is)
+				将一个普通的字节输入流，加强为一个高效字节输入流
+				例：
+					./IO流的典型组合使用方式/BufferedInputFile.java
+		BufferedOutputStream(OutputStream os)
+				将一个普通的字节输出流，加强为一个高效字节输出流
+		高效原因
+			1、BufferedInputStream
+				当调用read方法时，不是只读取了一个字节，而是一次读取了8192个字节，存储在流对象自己内部维护的缓冲区数组中，拿出了其中第一个字节返回给调用者；
+				如果第二次再调用read方法，不需要再次去磁盘中读取字节信息了，只需要从内存的数组中取出第二个字节返回即可，减少了和磁盘交互次数8191次，提升了效率。
+				如果数组中的数据全被读完，8193次读取时，就再次到磁盘中读取下一个8192个字节
+			2、BufferedOutputStream
+				当调用write方法时，不是直接将一个字节写出到磁盘，将该字节写出到BufferedOutputStream自己对象维护的一个私有字节数组中，数组的大小为8192字节。
+				等到数组被写满，自动将数组中的数据一次性刷新到目标文件去，减少了和磁盘交互的次数，提升了效率。
+	流的刷新和关闭
+		1.flush()刷新：
+			针对有缓冲区数组的，输出流，缓冲区中的内容，写出到其他设备中
+		2.close()关流：
+			将流对象关闭，释放资源。
+			附：
+				在带缓冲的输出流的close方法中，通常包含一个flush。
+				close方法执行之后，流对象就不能继续使用了；
