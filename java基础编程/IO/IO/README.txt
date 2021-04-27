@@ -104,27 +104,29 @@ JavaIO:
 							除非该二进制流的来源为字符（如文本）否则时无法转换成字符串的。？
 			字符流:
 				介绍：
-					流的数据类型为字符。
-						Reader等实际上还是以二进制流传输数据，只是其读取会以16bit为一单位转换为字符(默认16位Unicode编码)，即流传输的数据类型为字符，所以称之为字符流。
-						即：
-							字符流本质就是基于字节流读取时，根据码表映射字符。
 					Reader和Writer类提供面向字符(默认Unicode编码)的I/O功能。
+						Reader等实际上还是以二进制流传输数据，只是其读取会以16bit为一单位转换为字符(因为默认16位Unicode编码)。
+						即流传输的数据类型为字符，所以称之为字符流。
+						附：
+							根据码表映射字符。
+					
 					类的命名为 xxxReader, xxxWriter一般即为字符流。					
 					附：	
-						2.字符流只能处理字符类型的数据。
-						3.Reader和Writer的作用：
-							1.国际化
+						1.字符流只能处理字符类型的数据。
+						2.Reader和Writer的作用：
+							1.国际化(输出输入的默认格式化)
 								16位的Unicode字符用于字符国际化，
 									Java本身的char也是16位的Unicode
 								所以添加Reader和Writer继承层次结构就是为了在所有的IO操作中都支持Unicode。
 							2.操作字符更方便
-							3.新类库的设计使得它的操作比旧类库更快。
-						4.字符字节流转换：
+							3.新类库的设计使得它的操作比旧类库更快？
+						3.字符字节流转换：
 							“适配器”(adapter) 类: InputStreamReader可以把InputStream转换为Reader,而OutputStreamWriter可以把OutputStream转换为Writer
 					附：
+					字节流字符流对比：
 						InputStream中说的数据源(String对象,文件等),字符流(Reader,Writer)中都有对应的接口。p538
 						但装饰类(Filter)在字符流中却变了，不在通过装饰器模式来改变流的行为，而是直接提供实现类(例BufferWriter)来改变流的行为。
-
+						(新的Java se5的PrintWriter向正确的方向迈进了一步，但是它只是一个部分的解决方案)。
 					附：
 						常见api介绍：
 							InputStreamReader	

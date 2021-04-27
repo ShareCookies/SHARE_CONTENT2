@@ -32,3 +32,17 @@ RandomAccessFile类:
 		...
 进程控制：(ProcessBuilder)
 	...
+
+
+压缩：
+	p568
+对象序列化：
+	p572
+xml：
+	p586
+Preference:
+	p588
+
+
+？：
+	https://www.cnblogs.com/zhengchenhui/p/6008618.html
