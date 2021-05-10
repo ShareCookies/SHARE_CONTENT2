@@ -1,6 +1,116 @@
+Java8新特性：
+	https://www.runoob.com/java/java8-new-features.html
+	3	函数式接口
+	1	Lambda 表达式
+	2	方法引用
+	4	默认方法
+	5	Stream
+	6	Optional 类
+	7	Nashorn, JavaScript 引擎
+	8	新的日期时间 API
+	9	Base64
+2. 函数式接口（functional interface）
+	Java8新引入的概念。
+	定义：
+		一个接口，如果只有一个显式声明的抽象方法，那么它就是一个函数式接口。
+		附：
+			一般用@FunctionalInterface标注出来（也可以不标）。
+	例：
+	  	@FunctionalInterface
+		public interface Runnable { void run(); }
+	   
+	   
+	  	public interface Comparator<T> { int compare(T o1, T o2); boolean equals(Object obj); }
+		//Comparator接口。它里面声明了两个方法，貌似不符合函数式接口的定义，但它的确是函数式接口。
+		//这是因为equals方法是Object的，所有的接口都会声明Object的public方法——虽然大多是隐式的。所以，Comparator显式的声明了equals不影响它依然是个函式数接口。
+	内置函数式接口：
+		Predicate 断言
+		
+			Predicate 是一个可以指定入参类型，并返回 boolean 值的函数式接口。
+			它内部提供了一些带有默认实现的方法，可以被用来组合一个复杂的逻辑判断（and, or, negate）。
+			例：
+				Predicate<String> predicate = (s) -> s.length() > 0;
+				predicate.test("foo");              // true
+				predicate.negate().test("foo");     // false
+		Function？
+		Supplier 生产者
+		Consumer 消费者
+		Comparator
+Lambda表达式:
+	https://www.runoob.com/java/java8-lambda-expressions.html
+	介绍：
+		Lambda 表达式，也可称为闭包，它是推动 Java 8 发布的最重要新特性。
+		Lambda的类型：
+			Lambda的类型为函数式接口。
+			例：
+				Runnable r1 = () -> {System.out.println("Hello Lambda!");};
+			https://blog.csdn.net/ioriogami/article/details/12782141
+		Lambda原理：！！！
+			https://www.cnblogs.com/fanguangdexiaoyuer/p/7729235.html
+			1. 为Lambda表达式生成1个静态方法。(静态方法中就是我们的表达式)
+			2. Lambda表达式其实是转化成与之对应的函数式接口的一个类内部实现类，然后实现类回去调用前面的静态方法。
+		Lambda的好处：
+			可理解为Lambda 允许把函数作为一个方法的参数。
+				即：函数作为参数传递进方法中。
+			使用 Lambda 表达式可以使代码变的更加简洁紧凑。
+	lambda表达式语法格式：
+		1. lambda操作符:
+			java中，引入了一个新的操作符“->”，该操作符在很多资料中，称为箭头操作符，或者lambda操作符；
+			箭头操作符将lambda分成了两个部分：
 
-Lambda表达式
-Stream
+	    2. 操作符左侧：lambda表达式的参数列表
+	    3. 操作符右侧：lambda表达式中所需要执行的功能，即lambda函数体
+   		可见λ表达式由三部分组成：参数列表，箭头操作符（->），以及一个表达式或语句块。
+
+	例：
+		//一个函数性接口
+		@FunctionalInterface
+		public interface Test {public int add(int x, int y);}
+
+		//lamda表达式赋值给test
+		Test test = (int x, int y) -> { return x + y; }
+		简化：
+			左侧：
+				1. 省略参数类型
+					参数类型也可以省略，Java编译器会根据上下文推断出来参数类型(类型推断机制)。
+	    			(x, y) -> { return x + y; }; 
+					注：
+						无参数：
+							() -> { System.out.println("Hello Lambda!"); }
+							//这个例子里的λ表达式没有参数，也没有返回值（相当于一个方法接受0个参数，返回void，其实就是Runnable里run方法的一个实现）：
+				附：
+				2. 省略参数列表的括号
+					如果只有一个参数且可以被Java推断出类型，那么参数列表的括号也可以省略。
+	    			list -> { return list.size(); }
+			右侧：	
+				3. 省略大括号
+					对于只包含一行方法的代码块，我们可以省略大括号，直接 return 关键代码即可。
+					(int x, int y) -> x + y;
+方法引用：
+	https://www.cnblogs.com/ziyue7575/p/a27313e734cb645171572b28efcbb900.html
+	介绍：
+		方法引用使用一对冒号 :: 。
+		方法引用通过方法的名字来指向一个方法。
+		好处：
+			方法引用可以使语言的构造更紧凑简洁，减少冗余代码。
+接口内允许添加方法的默认实现:
+	Java 8 允许我们通过 default 关键字对接口中定义的抽象方法提供一个默认的实现。
+
+	例：
+		// 定义一个公式接口
+		interface Formula {
+			// 计算
+			double calculate(int a);
+
+			// 求平方根
+			default double sqrt(int a) {
+				return Math.sqrt(a);
+			}
+		}
+	在上面这个接口中，我们除了定义了一个抽象方法 calculate，还定义了一个带有默认实现的方法 sqrt。 
+	我们在实现这个接口时，就可以只需要实现 calculate 方法，默认方法 sqrt 可以直接调用。
+	sqrt 方法不必强制实现。
+
 Stream 流
 	什么是 Stream 流:
 
@@ -49,3 +159,7 @@ Stream 流
 		？Map<Long, User> maps = userList.stream().collect(Collectors.toMap(User::getId, Function.identity(), (key1, key2) -> key2));
 			map的值不是对象，而是对象的某个属性
 				Map<Long, String> maps = userList.stream().collect(Collectors.toMap(User::getId, User::getAge, (key1, key2) -> key2));
+
+
+Java8 中 List 转 Map(Collectors.toMap) 使用技巧
+	https://zhangzw.com/posts/20191205.html

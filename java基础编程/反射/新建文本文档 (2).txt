@@ -1,0 +1,4 @@
+判断类是否相同
+	需要判断是否是某类的实例
+	然后再判断是否className相同。
+	System.out.println(str  instanceof Timestamp && str.getClass().getName() == Timestamp.class.getName());

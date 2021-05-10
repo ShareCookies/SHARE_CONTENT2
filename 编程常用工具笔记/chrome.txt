@@ -4,10 +4,17 @@ https://juejin.cn/post/6926822995142918152
 	清空缓存：Ctrl+Shift+Del
 调试界面：
 	f12快速开启chrome的调试界面。
-附录：
-	扩展程序手动安装：
-		https://www.jianshu.com/p/b7d782ef81e0
-		.crx改为.rar后缀解压，然后谷歌点击更多工具-》扩展程序-》开发者模式-》加载已解压的扩展程序即可
+谷歌离线插件：
+	插件安装：
+		https://www.cccitu.com/3391.html
+		打开Chrome浏览器的扩展程序(或复制chrome://extensions/到浏览器地址打开)，点击右上角开启开发者选项，最后将文件夹内.crx后缀的离线安装包拖动到打开的页面，松手，根据提示完成安装。
+		附：
+		安装报错则:(扩展程序手动安装)
+			https://www.jianshu.com/p/b7d782ef81e0
+			.crx改为.rar后缀解压，然后谷歌点击更多工具-》扩展程序-》开发者模式-》加载已解压的扩展程序即可
+	插件离线包下载：
+		https://crxdl.com/
+		
 f12：
 	NetWork：
 		1.网页上进行一操作后，出现的所有http传输都会出现在这。
