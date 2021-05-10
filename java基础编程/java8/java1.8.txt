@@ -1,9 +1,9 @@
 Java8新特性：
 	https://www.runoob.com/java/java8-new-features.html
-	3	函数式接口
-	1	Lambda 表达式
-	2	方法引用
-	4	默认方法
+	函数式接口
+	Lambda 表达式
+	方法引用
+	默认方法
 	5	Stream
 	6	Optional 类
 	7	Nashorn, JavaScript 引擎
@@ -13,8 +13,10 @@ Java8新特性：
 	Java8新引入的概念。
 	定义：
 		一个接口，如果只有一个显式声明的抽象方法，那么它就是一个函数式接口。
+		函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。
 		附：
-			一般用@FunctionalInterface标注出来（也可以不标）。
+			但是函数式接口可以有多个非抽象方法的接口。
+			函数式接口一般用@FunctionalInterface标注出来（也可以不标）。
 	例：
 	  	@FunctionalInterface
 		public interface Runnable { void run(); }
@@ -45,12 +47,14 @@ Lambda表达式:
 			例：
 				Runnable r1 = () -> {System.out.println("Hello Lambda!");};
 			https://blog.csdn.net/ioriogami/article/details/12782141
-		Lambda原理：！！！
+		Lambda原理：！
 			https://www.cnblogs.com/fanguangdexiaoyuer/p/7729235.html
 			1. 为Lambda表达式生成1个静态方法。(静态方法中就是我们的表达式)
-			2. Lambda表达式其实是转化成与之对应的函数式接口的一个类内部实现类，然后实现类回去调用前面的静态方法。
+			2. Lambda表达式其实是被隐式转换为，对应的函数式接口的一个匿名实现类，然后实现类去调用前面的静态方法。
+			！
+				那java如何找到对应的函数式接口，如果有多个符合的函数式接口，那么是任意一个吧。
 		Lambda的好处：
-			可理解为Lambda 允许把函数作为一个方法的参数。
+			有了Lambda 则允许把函数作为一个方法的参数。
 				即：函数作为参数传递进方法中。
 			使用 Lambda 表达式可以使代码变的更加简洁紧凑。
 	lambda表达式语法格式：
@@ -87,12 +91,18 @@ Lambda表达式:
 					对于只包含一行方法的代码块，我们可以省略大括号，直接 return 关键代码即可。
 					(int x, int y) -> x + y;
 方法引用：
+	https://www.cnblogs.com/wuhenzhidu/p/10727065.html
 	https://www.cnblogs.com/ziyue7575/p/a27313e734cb645171572b28efcbb900.html
 	介绍：
-		方法引用使用一对冒号 :: 。
-		方法引用通过方法的名字来指向一个方法。
-		好处：
+		方法引用使用一对冒号::
+		方法引用即：
+			通过方法的名字来指向一个方法。
+		附：
+			方法引用可以理解为Lambda表达式的另外一种表现形式。
+			我们用Lambda表达式来实现匿名方法。
+			但有些情况下，我们仅仅是调用一些已经存在的方法，，在这种情况下我们倾向于通过方法名来调用它。
 			方法引用可以使语言的构造更紧凑简洁，减少冗余代码。
+		
 接口内允许添加方法的默认实现:
 	Java 8 允许我们通过 default 关键字对接口中定义的抽象方法提供一个默认的实现。
 
@@ -107,15 +117,15 @@ Lambda表达式:
 				return Math.sqrt(a);
 			}
 		}
-	在上面这个接口中，我们除了定义了一个抽象方法 calculate，还定义了一个带有默认实现的方法 sqrt。 
-	我们在实现这个接口时，就可以只需要实现 calculate 方法，默认方法 sqrt 可以直接调用。
-	sqrt 方法不必强制实现。
-
+		在上面这个接口中，我们除了定义了一个抽象方法 calculate，还定义了一个带有默认实现的方法 sqrt。 
+		我们在实现这个接口时，就可以只需要实现 calculate 方法，默认方法 sqrt 方法不必强制实现，可以直接调用。
+		
 Stream 流
 	什么是 Stream 流:
 
-		简单来说，我们可以使用 java.util.Stream 对一个包含一个或多个元素的集合做各种操作。
-		这些操作可能是 中间操作 亦或是 终端操作。 终端操作会返回一个结果，而中间操作会返回一个 Stream 流。
+		简单来说，我们可以使用 java.util.Stream 对一个包含多个元素的集合做各种操作。
+		这些操作可能是 中间操作 亦或是 终端操作。 
+		终端操作会返回一个结果，而中间操作会返回一个 Stream 流。
 
 		注：
 			需要注意的是，你只能对实现了 java.util.Collection 接口的类做流的操作。
@@ -123,20 +133,7 @@ Stream 流
 
 			Stream 流支持同步执行，也支持并发执行。
 	流操作：
-		中间操作：map 转换
-			中间操作 Map 能够帮助我们将 List 中的每一个元素做功能处理。
-			例如下面的示例，通过 map 我们将每一个 string 转成大写：
-
-			stringCollection
-				.stream()
-				.map(String::toUpperCase)
-				.sorted((a, b) -> b.compareTo(a))
-				.forEach(System.out::println);
-
-			// "DDD2", "DDD1", "CCC", "BBB3", "BBB2", "AAA2", "AAA1"
-			另外，我们还可以做对象之间的转换，业务中比较常用的是将 DO（数据库对象） 转换成 BO（业务对象） 。
-		终端操作：filter 过滤
-			例：
+		例：
 			首先，我们创建一个 List 集合：
 			List<String> stringCollection = new ArrayList<>();
 			stringCollection.add("ddd2");
@@ -146,8 +143,24 @@ Stream 流
 			stringCollection.add("bbb3");
 			stringCollection.add("ccc");
 			stringCollection.add("bbb2");
-			stringCollection.add("ddd1");
-			Filter 的入参是一个 Predicate, 上面已经说到，Predicate 是一个断言的中间操作，它能够帮我们筛选出我们需要的集合元素。它的返参同样 是一个 Stream 流，我们可以通过 foreach 终端操作，来打印被筛选的元素：
+			stringCollection.add("ddd1");	
+		中间操作：map 转换
+			中间操作 Map 能够帮助我们将 List 中的每一个元素做功能处理。
+			例
+				如下面的示例，：
+
+			stringCollection
+				.stream()
+				.map(String::toUpperCase) //通过 map 我们将每一个 string 转成大写，并返回stream
+				.sorted((a, b) -> b.compareTo(a)) // stream在进行排序
+				.forEach(System.out::println);//
+
+			// "DDD2", "DDD1", "CCC", "BBB3", "BBB2", "AAA2", "AAA1"
+
+		中间操作：filter 过滤
+			
+			Filter 的入参是一个 Predicate, 通过断言我们能够筛选出我们需要的集合元素。
+			它的返参同样 是一个 Stream 流，我们可以通过 foreach 终端操作，来打印被筛选的元素：
 
 			stringCollection
 				.stream()
