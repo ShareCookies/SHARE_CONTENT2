@@ -45,30 +45,30 @@ https://blog.csdn.net/dayang0307/article/details/101382010
 			注：这样类便可以得到复用，我们可以将泛型替换成任何我们想要的类型。
 	例：
 		定义泛型类：
-		public class Generic<T>{ 
-			private T key;//key这个成员变量的类型为T,T的类型由外部指定  
-			public Generic(T key) { //泛型构造方法形参key的类型也为T，T的类型由外部指定
-				this.key = key;
+			public class Generic<T>{ 
+				private T key;//key这个成员变量的类型为T,T的类型由外部指定  
+				public Generic(T key) { //泛型构造方法形参key的类型也为T，T的类型由外部指定
+					this.key = key;
+				}
+				public T getKey(){ //泛型方法getKey的返回值类型为T，T的类型由外部指定
+					return key;
+				}
 			}
-			public T getKey(){ //泛型方法getKey的返回值类型为T，T的类型由外部指定
-				return key;
-			}
-		}
-		注：
-			1.此处T可以随便写为任意标识，如T、V等
-			2.所有使用泛型的地方都会替换成传入的实参类型
+			注：
+				1.此处T可以随便写为任意标识，如T、V等
+				2.所有使用泛型的地方都会替换成传入的实参类型
 		实例化泛型类：
-		Generic<Integer> genericInteger = new Generic<Integer>(123456);
-		注：
-			1.在实例化泛型类时，推荐指定T的具体类型
-				在使用泛型的时候如果传入泛型实参，则会根据传入的泛型实参做相应的限制，此时泛型才会起到本应起到的限制作用。
-				如果不传入泛型类型实参的话，在泛型类中使用泛型的方法或成员变量定义的类型可以为任何的类型。
-			2.泛型的参数，类型只能是类类型（包括自定义类），不能是简单类型
-			
-			3.?
-			不能对确切的泛型类型使用instanceof操作。如下面的操作是非法的，编译时会出错。
-			if(ex_num instanceof Generic<Number>){   
-			} 
+			Generic<Integer> genericInteger = new Generic<Integer>(123456);
+			注：
+				1.在实例化泛型类时，推荐指定T的具体类型
+					在使用泛型的时候如果传入泛型实参，则会根据传入的泛型实参做相应的限制，此时泛型才会起到本应起到的限制作用。
+					如果不传入泛型类型实参的话，在泛型类中使用泛型的方法或成员变量定义的类型可以为任何的类型。
+				2.泛型的参数，类型只能是类类型（包括自定义类），不能是简单类型
+				
+				3.?
+				不能对确切的泛型类型使用instanceof操作。如下面的操作是非法的，编译时会出错。
+				if(ex_num instanceof Generic<Number>){   
+				} 
 
 泛型接口:
 	https://www.cnblogs.com/alsf/p/5697548.html
@@ -130,17 +130,31 @@ https://blog.csdn.net/dayang0307/article/details/101382010
 		静态方法与泛型：
 			静态方法无法访问类上定义的泛型；即：如果静态方法要使用泛型的话，必须将静态方法也定义成泛型方法 。
 泛型通配符：
+	https://zhuanlan.zhihu.com/p/35975079
 	无界通配符：
 		<?>
+		
 		例：
+			? getFirst()
+			void setFirst(?)
+			没有上界也没有下界。
+			我们唯一能确定的就是第一个getFirst方法返回的可以赋给一个Object类型的变量。
+			而setFirst方法干脆就不能以任何形式调用。但是可以调用setFirst(null),但好像没有什么意义。
+
 			List<?>表示“具有某种特定类型的非原生List，只是我们不知道那种类型是什么。
 			附：
-			java泛型无界通配符和原生的区别什么：
-				无界通配符<?>看起来意味着“任何事物”，因此使用无界通配符好像等价于使用原生类型。
-				实际上，List表示“持有任何Object类型的原生List”，而List<?>表示“具有某种特定类型的非原生List，只是我们不知道那种类型是什么。”
+				这种通配符类型很"脆弱"，为什么要有这种类型呢。
+				corejava解释它对于很多简单的操作非常有用，如这个方法用来测试一个Pair是否包含一个null引用，它不需要实际的类型：
+				public static boolean hasNulls(Pair<?> p){
+					return p.getFirst() == null || p.getSecond() == null;
+				}
+
 
 	超类型通配符：
 		<? super  Father>
+		例：
+			void setFirst(? super Manager)
+			这个类型是有“下界”的，就是说传来的参数只要是Manager类或者它的子类，那么这样的传参都是可以接受的，编译器由于知道下界，这些传参就是安全的。
 	泛型上下边界：
 		为泛型添加上下边界，即传入的类型实参必须是指定类型的子类型：
 			Generic<? extends  Father> generic = new Generic<Son>(new Son());	

@@ -9,7 +9,7 @@ Java8新特性：
 	7	Nashorn, JavaScript 引擎
 	8	新的日期时间 API
 	9	Base64
-2. 函数式接口（functional interface）
+1. 函数式接口（functional interface）
 	Java8新引入的概念。
 	定义：
 		一个接口，如果只有一个显式声明的抽象方法，那么它就是一个函数式接口。
@@ -38,7 +38,7 @@ Java8新特性：
 		Supplier 生产者
 		Consumer 消费者
 		Comparator
-Lambda表达式:
+2. Lambda表达式:
 	https://www.runoob.com/java/java8-lambda-expressions.html
 	介绍：
 		Lambda 表达式，也可称为闭包，它是推动 Java 8 发布的最重要新特性。
@@ -90,7 +90,7 @@ Lambda表达式:
 				3. 省略大括号
 					对于只包含一行方法的代码块，我们可以省略大括号，直接 return 关键代码即可。
 					(int x, int y) -> x + y;
-方法引用：
+3. 方法引用：
 	https://www.cnblogs.com/wuhenzhidu/p/10727065.html
 	https://www.cnblogs.com/ziyue7575/p/a27313e734cb645171572b28efcbb900.html
 	介绍：
@@ -100,9 +100,15 @@ Lambda表达式:
 		附：
 			方法引用可以理解为Lambda表达式的另外一种表现形式。
 			我们用Lambda表达式来实现匿名方法。
-			但有些情况下，我们仅仅是调用一些已经存在的方法，，在这种情况下我们倾向于通过方法名来调用它。
+			但有些情况下，我们仅仅是调用一些已经存在的方法，在这种情况下我们倾向于通过方法名来调用它。
 			方法引用可以使语言的构造更紧凑简洁，减少冗余代码。
-		
+	例：
+		Java 中 4 种不同方法的引用。
+		类型	语法	对应的Lambda表达式
+		静态方法引用	类名::staticMethod	(args) -> 类名.staticMethod(args)
+		实例方法引用	inst::instMethod	(args) -> inst.instMethod(args)
+		对象方法引用	类名::instMethod	(inst,args) -> 类名.instMethod(args)
+		构建方法引用	类名::new	(args) -> new 类名(args)
 接口内允许添加方法的默认实现:
 	Java 8 允许我们通过 default 关键字对接口中定义的抽象方法提供一个默认的实现。
 
@@ -176,3 +182,6 @@ Stream 流
 
 Java8 中 List 转 Map(Collectors.toMap) 使用技巧
 	https://zhangzw.com/posts/20191205.html
+	userList.stream().collect(Collectors.toMap(User::getId, User::getName));
+
+ 
