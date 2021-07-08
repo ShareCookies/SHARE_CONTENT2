@@ -1,0 +1,200 @@
+		类的加载过程：
+			1. 通过一个类的全限定名来获取定义次类的二进制流(ZIP 包、网络、运算生成、JSP 生成、数据库读取)。
+			2. 将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。
+			3. 在内存中生成一个代表这个类的 java.lang.Class 对象，作为方法去这个类的各种数据的访问入口。
+			？
+				2，3具体区别
+			附:
+				数组类的特殊性：数组类本身不通过类加载器创建，它是由 Java 虚拟机直接创建的。
+				但数组类与类加载器仍然有很密切的关系，因为数组类的元素类型最终是要靠类加载器去创建的，数组创建过程如下：
+
+					如果数组的组件类型是引用类型，那就递归采用类加载加载。
+					如果数组的组件类型不是引用类型，Java 虚拟机会把数组标记为引导类加载器关联。
+					数组类的可见性与他的组件类型的可见性一致，如果组件类型不是引用类型，那数组类的可见性将默认为 public。
+加载阶段与连接阶段的部分内容是交叉进行的，但是开始时间保持先后顺序。				
+		类加载器：
+			Java中的类加载器是一个重要的Java运行时系统组件，它负责在运行时查找和装入类文件中的类。
+				通过一个类的全限定名来获取描述此类的二进制字节流。
+			类加载器包括：
+				根加载器（BootStrap）、扩展加载器（Extension）、系统加载器（System）和用户自定义类加载器（java.lang.ClassLoader的子类）。
+	
+				
+			父委托机制（PDM）：
+				从Java 2（JDK 1.2）开始，类加载过程采取了父亲委托机制（PDM），PDM更好的保证了Java平台的安全性。
+				在该机制中，JVM自带的Bootstrap是根加载器，其他的加载器都有且仅有一个父类加载器。
+				类的加载首先请求父类加载器加载，父类加载器无能为力时才由其子类加载器自行加载。
+			关于几个类加载器说明：
+				Bootstrap：一般用本地代码实现，负责加载JVM基础核心类库（rt.jar）；
+				Extension：从java.ext.dirs系统属性所指定的目录中加载类库，它的父加载器是Bootstrap；
+				System：又叫应用类加载器，其父类是Extension。它是应用最广泛的类加载器。它从环境变量classpath或者系统属性java.class.path所指定的目录中记载类，是用户自定义加载器的默认父加载器。
+				
+
+https://blog.csdn.net/briblue/article/details/54973413
+类的加载
+	类的加载是指把类的.class文件中的数据读入到内存中，然后产生与所加载类对应的Class对象。？
+	jvm通过类加载器来实现类的加载。
+	Java语言系统自带有三个类加载器:
+		1. BootstrapClassLoader最顶层的加载类，主要加载核心类库.
+			%JRE_HOME%\lib下的rtjar、resources.jar、charsets.jar和class等。
+			附：
+				可以通过启动jvm时指定Xbootclasspath和路径来改变BootstrapClassLoader的加载目录。
+				比如java -Xbootclasspath/a:path被指定的文件追加到默认的bootstrap路径中
+		2. ExtentionClassLoader扩展的类加载器，加载目录%JRE_HOME%\ib\ext目录下的jar包和class文件。
+			附：
+				可以加载-Djava.ext.dirs选项指定的目录。
+		3. AppclassLoader也称为SystemAppClass，加载当前应用的classpath的所有类。
+		父委托机制（PDM）：（双亲委托）
+
+
+Launcher
+	sun.misc.Launcher,它是一个java虚拟机的入口应用。
+	
+	从以下代码中我们可以得到相关信息：
+		1. Launcher初始化了ExtClassLoader和AppClassLoader。
+		2. 虽然Launcher中并没有看见BootstrapClassLoader,但有bootClassPath.
+			System.getProperty("sun.boot.class.path")得到的
+		这个就是BootstrapClassLoader加载的jar包路径，即JRE目录下的jar包和class文件。
+			？然后这个值有什么用了，Launcher在rt.jar中，bc还要在加载吗
+		3. 	然后我们可以了解到BootstrapClassLoader、ExtClassLoader、AppClassloader实际是查阅相应的环境属性来加载资源文件的。
+			(sun.boot.class.path、java.ext.dirs和java.class.path)
+	public class Launcher {
+		private static Launcher launcher = new Launcher();
+		private static String bootClassPath =
+			System.getProperty("sun.boot.class.path");
+
+		public static Launcher getLauncher() {
+			return launcher;
+		}
+
+		private ClassLoader loader;
+
+		public Launcher() {
+			// Create the extension class loader
+			ClassLoader extcl;
+			try {
+				extcl = ExtClassLoader.getExtClassLoader();
+			} catch (IOException e) {
+				throw new InternalError(
+					"Could not create extension class loader", e);
+			}
+
+			// Now create the class loader to use to launch the application
+			try {
+				loader = AppClassLoader.getAppClassLoader(extcl);
+			} catch (IOException e) {
+				throw new InternalError(
+					"Could not create application class loader", e);
+			}
+
+			//设置AppClassLoader为线程上下文类加载器，这个文章后面部分讲解
+			Thread.currentThread().setContextClassLoader(loader);
+		}
+
+		/*
+		 * Returns the class loader used to launch the main application.
+		 */
+		public ClassLoader getClassLoader() {
+			return loader;
+		}
+		/*
+		 * The class loader used for loading installed extensions.
+		 */
+		static class ExtClassLoader extends URLClassLoader {}
+
+		/**
+		 * The class loader used for loading from java.class.path.
+		 * runs in a restricted security context.
+		 */
+		static class AppClassLoader extends URLClassLoader {}
+	}				
+
+	/*
+     * The class loader used for loading installed extensions.
+     */
+    static class ExtClassLoader extends URLClassLoader {
+
+        static {
+            ClassLoader.registerAsParallelCapable();
+        }
+
+        /**
+         * create an ExtClassLoader. The ExtClassLoader is created
+         * within a context that limits which files it can read
+         */
+        public static ExtClassLoader getExtClassLoader() throws IOException
+        {
+            final File[] dirs = getExtDirs();
+
+            try {
+                // Prior implementations of this doPrivileged() block supplied
+                // aa synthesized ACC via a call to the private method
+                // ExtClassLoader.getContext().
+
+                return AccessController.doPrivileged(
+                    new PrivilegedExceptionAction<ExtClassLoader>() {
+                        public ExtClassLoader run() throws IOException {
+                            int len = dirs.length;
+                            for (int i = 0; i < len; i++) {
+                                MetaIndex.registerDirectory(dirs[i]);
+                            }
+                            return new ExtClassLoader(dirs);
+                        }
+                    });
+            } catch (java.security.PrivilegedActionException e) {
+                throw (IOException) e.getException();
+            }
+        }
+
+        private static File[] getExtDirs() {
+            String s = System.getProperty("java.ext.dirs");
+            File[] dirs;
+            if (s != null) {
+                StringTokenizer st =
+                    new StringTokenizer(s, File.pathSeparator);
+                int count = st.countTokens();
+                dirs = new File[count];
+                for (int i = 0; i < count; i++) {
+                    dirs[i] = new File(st.nextToken());
+                }
+            } else {
+                dirs = new File[0];
+            }
+            return dirs;
+        }
+ 
+		......
+    }
+
+
+
+	/**
+     * The class loader used for loading from java.class.path.
+     * runs in a restricted security context.
+     */
+
+    static class AppClassLoader extends URLClassLoader {
+
+        public static ClassLoader getAppClassLoader(final ClassLoader extcl)
+            throws IOException
+        {
+            final String s = System.getProperty("java.class.path");
+            final File[] path = (s == null) ? new File[0] : getClassPath(s);
+
+     
+            return AccessController.doPrivileged(
+                new PrivilegedAction<AppClassLoader>() {
+                    public AppClassLoader run() {
+                    URL[] urls =
+                        (s == null) ? new URL[0] : pathToURLs(path);
+                    return new AppClassLoader(urls, extcl);
+                }
+            });
+        }
+        ......
+    }
+	AppClassLoader加载的就是java.class.path下的路径。 
+	例：
+		System.out.println(System.getProperty("java.class.path"));
+		结果 D:\workspace\ClassLoaderDemo\bin
+		这个路径就是当前java工程目录bin,里面存放的是编译生成的class文件。
+	

@@ -24,15 +24,30 @@
 	变量值.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar;
 	设置环境变量原因：
 		JAVA_HOME:JAVA_HOME指向的是JDK的安装路径
-			一是为了方便引用，比如，JDK安装在C:\jdk1.6.0目录里，则设置JAVA_HOME为该目录路径, 那么以后要使用这个路径的时候, 只需输入%JAVA_HOME%即可, 避免每次引用都输入很长的路径串;
-			二则是归一原则, 当JDK路径改变的时候, 仅需更改JAVA_HOME的变量值即可, 否则,就要更改任何用绝对路径引用JDK目录的文档, 要是万一没有改全, 某个程序找不到JDK, 后果是可想而知的----系统崩溃!
-			三则是第三方软件会引用约定好的 JAVA_HOME 变量, 不然, 你不能正常使用该软件。
+			例：
+				C:\Program Files\Java\jdk1.8.0_91
+			附：
+				JAVA_HOME作用：
+					一是为了方便引用，比如，JDK安装在C:\jdk1.6.0目录里，则设置JAVA_HOME为该目录路径, 那么以后要使用这个路径的时候, 只需输入%JAVA_HOME%即可, 避免每次引用都输入很长的路径串;
+					二则是归一原则, 当JDK路径改变的时候, 仅需更改JAVA_HOME的变量值即可, 否则,就要更改任何用绝对路径引用JDK目录的文档, 要是万一没有改全, 某个程序找不到JDK, 后果是可想而知的----系统崩溃!
+					三则是第三方软件会引用约定好的 JAVA_HOME 变量, 不然, 你不能正常使用该软件。
 		path：
-			path 变量使得我们能够在系统中的任何地方运行java应用程序，比如 javac、java、javah 等等,这就要找到我们安装 JDK 的目录，
-			假设我们的JDK安装在 C:\jdk1.6.0 目录下,那么在 C:\jdk1.6.0\bin 目录下就是我们常用的 java 应用程序,我们就需要把 C:\jdk1.6.0\bin 这个目录加到 path 环境变量里面。
+			将程序路径包含在PATH当中后，在命令行窗口就可以直接键入它的名字运行程序了，而不再需要键入它的全路径。
+			例：
+				java和javac命令，也就是在原来的PATH路径上添加JDK目录下的bin目录和jre目录的bin.
+				PATH=%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;%PATH%;
+
+
 		classpath：
-			当java虚拟机要运行一个类时，会在classpath环境变量中所定义的路径下寻找所需的class文件。（cmd中输java Hello 即虚拟机运行class文件）
-			sun 为我们提供了一些类包，如 dt.jar， tools.jar，这两个 jar 包都位于 C:\jdk1.6.0\lib 目录下，所以通常我们都会把这两个 jar 包加到我们的 classpath 环境变量中 
+			指向jar包路径。
+			例：
+				CLASSPATH=.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar
+				注：.;代表当前目录
+			附：
+				当java虚拟机要运行一个类时，会在classpath环境变量中所定义的路径下寻找所需的class文件。
+					附：
+						cmd中输java Hello 即虚拟机运行class文件
+				sun 为我们提供了一些类包，如 dt.jar， tools.jar，这两个 jar 包都位于 C:\jdk1.6.0\lib 目录下，所以通常我们都会把这两个 jar 包加到我们的 classpath 环境变量中 
 
 
 4.测试JDK是否安装成功:开启cmd，键入命令: java、javac看是否都有信息出现，有即成功。（java -version 查看版本）
