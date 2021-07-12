@@ -1,0 +1,114 @@
+自定义ClassLoader步骤:
+	1.编写一个类继承自ClassLoader抽象类。
+	2.复写它的findClass()方法。
+	3.在findClass()方法中调用defineClass()。
+	
+		defineClass
+			能将class二进制内容转换成Class对象,如果不符合要求的会抛出各种异常。
+		附:
+			自定义一个ClassLoader创建时如果没有指定parent,那么它的parent默认就是AppClassLoader。
+			因为这样就能够保证它能访问系统内置加载器加载成功的class文件。
+	附：
+		自定义加载器作用：
+			BootStrapClassLoader、ExtClassLoader、AppClassLoader都是加载指定路径下的jar包。
+			如果我们要突破这种限制，实现自己煤些特殊的需求,我们就得自定义ClassLoader,自己指定加载的路径，可以是磁盘、内存、网络或者其它。
+
+例：
+	import java.io.ByteArrayOutputStream;
+	import java.io.File;
+	import java.io.FileInputStream;
+	import java.io.FileNotFoundException;
+	import java.io.IOException;
+	public class DiskClassLoader extends ClassLoader {
+		private String mLibPath;
+		public DiskClassLoader(String path) {
+			// TODO Auto-generated constructor stub
+			mLibPath = path;
+		}
+
+		@Override
+		protected Class<?> findClass(String name) throws ClassNotFoundException {
+			// TODO Auto-generated method stub
+			
+			String fileName = getFileName(name);
+			
+			File file = new File(mLibPath,fileName);
+			
+			try {
+				FileInputStream is = new FileInputStream(file);
+				
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				int len = 0;
+				try {
+					while ((len = is.read()) != -1) {
+						bos.write(len);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				byte[] data = bos.toByteArray();
+				is.close();
+				bos.close();
+				
+				return defineClass(name,data,0,data.length);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return super.findClass(name);
+		}
+
+		//获取要加载 的class文件名
+		private String getFileName(String name) {
+			// TODO Auto-generated method stub
+			int index = name.lastIndexOf('.');
+			if(index == -1){ 
+				return name+".class";
+			}else{
+				return name.substring(index+1)+".class";
+			}
+		}
+		
+	}
+
+	import java.lang.reflect.InvocationTargetException;
+	import java.lang.reflect.Method;
+
+	public class ClassLoaderTest {
+
+		public static void main(String[] args) {
+			// TODO Auto-generated method stub
+		
+			//创建自定义classloader对象。
+			DiskClassLoader diskLoader = new DiskClassLoader("D:\\lib");
+			try {
+				//加载class文件
+				Class c = diskLoader.loadClass("com.frank.test.Test");
+				
+				if(c != null){
+					try {
+						Object obj = c.newInstance();
+						Method method = c.getDeclaredMethod("say",null);
+						//通过反射调用Test类的say方法
+						method.invoke(obj, null);
+					} catch (InstantiationException | IllegalAccessException 
+							| NoSuchMethodException
+							| SecurityException | 
+							IllegalArgumentException | 
+							InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+ContextClassLoader：
+	？
