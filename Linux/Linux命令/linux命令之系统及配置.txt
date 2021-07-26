@@ -325,3 +325,14 @@ service服务：
 			可以多个磁盘挂同一个目录下吗
 			一个磁盘可以被分为多个，然后挂到不同目录下把
 			linux 目录剪切会导致目录下程序停止吗
+查看系统：
+	查看linux系统的体系结构：
+		https://blog.csdn.net/lixuande19871015/article/details/90485929
+		uname -a
+		ARM架构、
+			aarch64 aarch64 aarch64 GNU/Linux
+		X86架构
+			 x86_64 x86_64 x86_64 GNU/Linux
+		MIPS架构
+
+		X64

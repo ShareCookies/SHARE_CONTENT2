@@ -1,13 +1,28 @@
+https://www.runoob.com/linux/linux-shell.html
+
 一.变量：
 定义变量：
 			your_name="qinjx"
-
+	附：
+		数字和字符串
+		字符串
+			单双引号
 使用变量：
 	使用一个定义过的变量，只要在变量名前面加美元符号即可。
 	例：
 		echo $your_name
-	
-	
+数组：
+	定义数组
+	在 Shell 中，用括号来表示数组，数组元素用"空格"符号分割开。定义数组的一般形式为：
+
+	数组名=(值1 值2 ... 值n)
+	例如：
+		array_name=(value0 value1 value2 value3)
+读取数组
+	读取数组元素值的一般格式是：
+		${数组名[下标]}
+	例如：
+		valuen=${array_name[n]}	
 三.控制结构：
      (一)if语句：
       1）if语句：

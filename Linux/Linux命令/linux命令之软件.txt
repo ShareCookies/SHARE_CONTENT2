@@ -15,7 +15,8 @@
 				不带有任何参数时，curl 就是发出 GET 请求。
 			文件
 				$ curl -F 'file=@photo.png' https://google.com/profile
-
+	wget：
+		wget 这个会将访问的首页下载到本地
 功能：
 	关闭进程：
 		Linux kill 命令用于删除执行中的程序或工作。
