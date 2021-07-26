@@ -1,4 +1,4 @@
-红黑树（平衡二叉搜索树）：
+\红黑树（平衡二叉搜索树）：
 	前言：
 		一棵高度为h的二叉搜索树，它的动态集合操作时间复杂度均为O(h)。因此，如果搜索树的高度较低时，这些集合操作会执行得较快。然而，如果树的高度较高时，这些集合操作可能并不比在链表上执行得快。（100个节点高度可能就为100了）
 			O(h)结果(参见第12章)
@@ -12,17 +12,12 @@
 			一棵红黑树是满足下面红黑性质的二叉搜索树:
 				1.每个结点或是红色的，或是黑色的。
 				2.根结点是黑色的。
-				3.每个叶结点(NIL)是黑色的。
+				3.每个叶子节点都是黑色的空节点（NIL节点）；
 				4.如果一个结点是红色的，则它的两个子结点都是黑色的。
 				5.对每个结点，从该结点到其所有后代叶结点的简单路径上，均包含相同数目的黑色结点。
 					(没有这个性质的花，那么我不就可以一直往一个节点上塞了)
 				
-			？为什么要有这些性质了，是只有满足了这些性质，才能确保没有一条路径会比其他路径长出2呗。
-			有这些性质的推导过程吗？
-				1是定义
-				5是确保各路劲长度不会差别2倍以上。
-				2是约定俗成，3也是吗？
-				4了？
+				2,3原因？
 			附：
 				二叉搜索树性质：节点x的左边都比它小，右边都比它大。
 			附:
@@ -77,48 +72,64 @@
 			旋转有两种:左旋和右旋。
 				例：
 					./img/旋转.png
-					LEFT-ROTATE(T, x)： 以x与x右节点为支轴，x向下（左）拉。
-					RIGHT-ROTATE(T, y)： 以y与y左节点为支轴，y向下（右）拉。
-		插入：
+					LEFT-ROTATE(T, x)
+						左旋即x要变为左节点，x要旋转为其右叶节点的左节点。
+					RIGHT-ROTATE(T, y)
+						右旋即y要变为右节点，x要旋转为其右叶节点的左节点。
+		插入：			
 			p178
 			RB-INSERT(T, z)
 				zParent = NIL
-				x= T.root 
-				while x≠NIL //找到z的父节点（）
+				x = T.root 
+				//找到z的父节点
+				while x≠NIL 
 					zParent=x //这里要为深克隆
-					if z.key<x.key
+					if z.key < x.key
 						x = x.left
-					else x =x. right ;
+					else x =x.right ;
 				z.p=zParent
 				// z插入树中
-				if y== NIL
+				if zParent == NIL
 					T.root = z // tree T was empty
 				else if z.key< zParent.key 
 					zParent.left= z
 				else zParent.right= z
+				// 
 				z.left = NIL
-				z. right = NIL
-				z. color = RED //将z着为红色。
-				RB-INSERT-FIXUP(T, z) //因为将z着为红色可能违反其中的一-条红黑性质，所以在RB-INSERT的第17行中调用RB INSERT FIXUP(T, z)来保持红黑性质。
+				z.right = NIL
+				z.color = RED //将z着为红色。
+				RB-INSERT-FIXUP(T, z) //因为将z着为红色可能违反其中的一条红黑性质，所以在RB-INSERT的第17行中调用RB INSERT FIXUP(T, z)来保持红黑性质。
 			// 方法主要目的就是判断性质2和4是否成立
 			RB-INSERT-FIXUP(T, z)
-				while z. p. color == RED //如果性质4被破坏 //注意： 只要保证z与z父节点符合性质4，那么这颗树就能符合红黑树。
-					if z.p== z.p.p.left //如果z的父节点为左节点
-						y= z.p.p.right // z的叔父节点
-						if y.color == RED //如果z的叔父节点为红色，则z的父节点重上为黑色 （修正性质4），叔父节点上为黑色，祖父节点上为红色，（然后准备修复性质5），z节点指针上升为祖父节点。
-							z. p. color = BLACK// case 1
-							y. color = BLACK// case 1
-							z. p. p. color = RED// case 1
-							z=z.p.p// case 1
-						else if z == z. p. right //如果z的叔父节点为黑且z为右节点，z节点指针上升为父节点并左旋。
-							Z=z.p// case2
+				//如果性质4被破坏 //注意： 只要保证z与z父节点符合性质4，那么这颗树就能符合红黑树。
+				while z.p.color == RED
+					if z.p == z.p.p.left //如果z的父节点为左节点
+						uncle = z.p.p.right // z的叔父节点
+						if uncle.color == RED
+                            //此时情况：z红，父左节点且红，叔父节点红，祖父节点黑。
+                            //修复策略：
+                                //父节点上黑（红下要2黑），叔父节点上黑色，祖父节点上红（黑节点数要一样）
+                                // z指针指向祖父节点（祖父节点红影响（红下要2黑））
+							z.p.color = BLACK// case 1
+							uncle.color = BLACK// case 1
+							z.p.p.color = RED// case 1
+							z = z.p.p// case 1
+						else if z == z.p.right
+                            //此时情况：z红 z为右节点，z父节点红，z叔父节点为黑
+                            //修复策略：如果z为右节点，z节点指针上升到父节点并左旋。
+                            //（首先左旋二叉搜索数性质不变。然后旋转后各分支黑节点颜色数量不变，因为z.p 完整的接管了z的左分支， 原先z的左分支就和z右分支和z.p左分支黑节点数同。）
+							z=z.p// case2
 							LEFT-ROTATE(T, z)//case2.
-						else //如果z的叔父节点为黑且z为左节点，z父节点上为黑色，z祖父节点上为红色，z祖父节点右旋。
-							z. p.color = BLACK// case3
-							z. p. p. color = RED// case 3
-							RIGHT-ROTATE(T, z.p. p)//case3
+                        //此时情况：z红 。 z.p 红 左节点。z.p.p.r黑 z.p.p 黑
+                        //修复策略：
+                            // z父节点上为黑色（修复红下2黑），
+                            // z祖父节点上为红色，z祖父节点右旋。（因为z.p 红所以以下黑节点数同 z.p.p.r等于z.p.r）（因为z.p上黑，z.p.p的左右分支就不均衡了，z.p.p上红 并优选接收z。p.r）
+                        z.p.color = BLACK// case3
+                        z.p.p.color = RED// case3
+                        RIGHT-ROTATE(T, z.p.p)//case3
 					else( same as then clause with“right" and“left" exchanged //同理把子句的所有right改为left即可) 
-				T. root. color = BLACK //如果性质2被破坏，则直接把根上为黑色就对了。
+				//直接把根上为黑色就对了。因为这样性质2就修复了
+				T.root.color = BLACK 
 				附：
 				首先，要确定当结点z被插人并着为红色后，红黑性质中有哪些不能继续保持。
 					仅可能被破坏的就是性质2和性质4，即根结点需要为黑色以及一个红结点不能有红孩子。这两个性质可能被破坏是因为z被着为红色。如果z是根结点，则破坏了性质2;如果z的父结点是红结点，则破坏了性质4。

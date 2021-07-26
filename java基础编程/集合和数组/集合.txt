@@ -24,38 +24,32 @@
 		├TreeMap (具体实现类，基于红黑树的开发)	
 		├Hashtable （线程安全,速度慢，不推荐）
 		└ConcurrentHashMap （线程安全）
-	注：
+	附：
 		1.Collection和Map都继承了Iterable接口，都拥有一个iterator()的方法，该方法返回一个Iterator对象，可以用来遍历集合中的元素 。
 			例：./遍历小总结.txt
-		2.Collection和Collections：
-			Collection：
-				java.util.Collection 是集合框架的一个父接口。
-				它提供了对集合对象进行基本操作的通用接口方法。Collection接口的意义是为各种具体的集合提供了最大化的统一操作方式。
-			Collections：
-				java.util.Collections 是一个集合工具类。
-				提供了一系列的静态方法来辅助容器操作，这些方法包括对容器的搜索、排序、线程安全化等等。
-				注：此类不能实例化（构造方法为private），就像一个工具类。
-				排序：
-					Collections工具类的sort方法有两种使用的形式。
-					第一种要求传入的待排序容器中存放的对象比较实现Comparable接口以实现元素的比较；
-					第二种不强制性的要求容器中的元素必须可比较，但是要求传入第二个参数，参数是Comparator接口的子类型（需要重写compare方法实现元素的比较），相当于一个临时定义的排序规则，其实就是通过接口注入比较元素大小的算法，也是对回调模式的应用（Java中对函数式编程的支持）!.
-					
-					例：
-						1.只能针对有顺序的的集合使用，如 List实现类， TreeSet 或 TreeMap
-						2.重写要放入集合的元素的compare方法
-						3.然后通过 Collections.sort() 来排序。
-						./案例/(排序)listSortModel.java		
-	附：
+		Collection：
+			java.util.Collection 是集合框架的一个父接口。
+			它提供了对集合对象进行基本操作的通用接口方法。Collection接口的意义是为各种具体的集合提供了最大化的统一操作方式。
+		Collections：
+			java.util.Collections 是一个集合工具类。
+			提供了一系列的静态方法来辅助容器操作，这些方法包括对容器的搜索、排序、线程安全化等等。
+			附：
+				此类不能实例化（构造方法为private），仅仅是一个工具类。
+			例:
+			排序：
+				Collections工具类的sort方法有两种使用的形式。
+				第一种要求传入的待排序容器中存放的对象比较实现Comparable接口以实现元素的比较；
+				第二种不强制性的要求容器中的元素必须可比较，但是要求传入第二个参数，参数是Comparator接口的子类型（需要重写compare方法实现元素的比较），相当于一个临时定义的排序规则，其实就是通过接口注入比较元素大小的算法，也是对回调模式的应用（Java中对函数式编程的支持）!.
+				
+				例：
+					1.只能针对有顺序的的集合使用，如 List实现类， TreeSet 或 TreeMap
+					2.重写要放入集合的元素的compare方法
+					3.然后通过 Collections.sort() 来排序。
+					./案例/(排序)listSortModel.java		
 		集合归类（容器归类）：
 			普通容器: List/Set/Map
 			同步容器: Vector/Hashtable
 			并发容器：CopyOnWriteArrayList、ConcurrentHashMap、ArrayBlockQueue
-		集合和数组的关系：
-			几乎所有的集合都是基于数组来实现的.
-				因为集合是对数组做的封装,所以,数组永远比任何一个集合要快
-			集合提供了比数组更多的功能：
-				例：
-					一个数组实例具有固定的大小，不能伸缩。集合则可根据需要动态改变大小。
 	附：
 		对应数据结构特点：
 			Linked 改快读慢
@@ -71,8 +65,8 @@ Map接口：
 				在Map 中插入、删除和定位元素，HashMap 是最好的选择。但如果您要按顺序遍历键，那么TreeMap 会更好。
 					因为HashMap根据关键字定位能耗时能达到常数O(1),而TreeMap要O(lgn).
 					但散列方法的存储对关键字是随机的，不便于顺序查找关键字，也不适合于范围查找，或最大值最小值查找。
-			2.HashMap优化：
-				为了优化 HashMap 空间的使用，您可以调优初始容量和负载因子。
+			2.Map优化：
+				为了优化 HashMap 空间的使用，您可以调优初始容量和负载因子。？
 				TreeMap 没有调优选项，因为该树总处于平衡状态。
 	附：
 		map常见操作：
@@ -424,3 +418,11 @@ Collection接口：
 	https://blog.csdn.net/zhangqunshuai/article/details/80660974
 	https://blog.csdn.net/qq_22118507/article/details/51576319
 	https://blog.csdn.net/bestxiaok/article/details/78413022
+
+附：
+	集合和数组的关系：
+		没有必然联系，但有部分集合是基于数组来实现的.
+			因为集合是对数组做的封装,所以,数组永远比任何一个集合要快。
+		集合提供了比数组更多的功能：
+			例：
+				一个数组实例具有固定的大小，不能伸缩。集合则可根据需要动态改变大小。
