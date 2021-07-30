@@ -1,0 +1,27 @@
+https://blog.csdn.net/u014527058/article/details/52751488
+在枚举出现之前，如果想要表示一组特定的离散值，往往使用一些常量。
+	这样做的缺点有：（1）代码可读性差、易用性低。
+		（2）类型不安全。（3）耦合性高，扩展性差。
+枚举通常用来表示诸如颜色、方式、类别、状态等等数目有限、形式离散、表达又极为明确的量。
+
+附：
+
+	枚举消除if else ：
+		https://www.bilibili.com/read/cv4257620
+		public enum EnumTest  {
+			SUN() {
+				@Override
+				public String hasOpetation() {
+					return "有玩手机权限";
+				}
+			};
+			public String hasOpetation() {
+				return "无权限";
+			}
+			public static void main(String[] args) {
+			   String day = "SUN";
+			   System.out.println(EnumTest.valueOf(day).hasOpetation());
+			}
+		}		
+
+	https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/basic/%E7%94%A8%E5%A5%BDJava%E4%B8%AD%E7%9A%84%E6%9E%9A%E4%B8%BE%E7%9C%9F%E7%9A%84%E6%B2%A1%E6%9C%89%E9%82%A3%E4%B9%88%E7%AE%80%E5%8D%95.md

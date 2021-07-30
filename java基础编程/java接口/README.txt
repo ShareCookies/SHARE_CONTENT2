@@ -54,7 +54,17 @@
 		*Java8接口方法默认实现：
 			https://blog.csdn.net/fly910905/article/details/87534052
 			从java8开始，接口可以给方法一个默认的实现，称之为默认接口方法，这样所有实现该接口的子类都可以持有该方法的默认实现。
+			例：
+				默认接口方法的定义很简单，只要在接口的方法定义前添加一个default关键字即可，如下：
 
+				public interface A {
+					/**
+					 * 默认方法定义
+					 */
+					default void method() {
+						System.out.println("This is a default method!");
+					}
+				}
 	Java接口的使用：
 		接口作为参数传递：
 			介绍：

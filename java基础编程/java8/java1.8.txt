@@ -127,6 +127,11 @@ Java8新特性：
 		我们在实现这个接口时，就可以只需要实现 calculate 方法，默认方法 sqrt 方法不必强制实现，可以直接调用。
 		
 Stream 流
+	流操作：
+		这种风格将要处理的元素集合看作一种流， 流在管道中传输， 并且可以在管道的节点上进行处理， 比如筛选， 排序，聚合等。
+
+		元素流在管道中经过中间操作（intermediate operation）的处理，最后由最终操作(terminal operation)得到前面处理的结果。
+
 	什么是 Stream 流:
 
 		简单来说，我们可以使用 java.util.Stream 对一个包含多个元素的集合做各种操作。
@@ -174,10 +179,26 @@ Stream 流
 				.forEach(System.out::println);
 
 			// "aaa2", "aaa1"
-	附：
-		？Map<Long, User> maps = userList.stream().collect(Collectors.toMap(User::getId, Function.identity(), (key1, key2) -> key2));
-			map的值不是对象，而是对象的某个属性
-				Map<Long, String> maps = userList.stream().collect(Collectors.toMap(User::getId, User::getAge, (key1, key2) -> key2));
+		终端操作：collect
+            List<String> list = urger.getTags()
+				.stream()
+				.filter((s) -> {int start = s.indexOf("绩效目标");return start != -1;})
+				.collect(Collectors.toList());
+			附：
+				Collectors
+					Collectors 类实现了很多归约操作，例如将流转换成集合和聚合元素。
+					Collectors 可用于返回列表或字符串：
+					Collectors返回列表
+						List<String>strings = Arrays.asList("abc", "", "bc", "efg", "abcd","", "jkl");
+						List<String> filtered = strings.stream().filter(string -> !string.isEmpty()).collect(Collectors.toList());
+					Collectors返回字符串
+						System.out.println("筛选列表: " + filtered);
+						String mergedString = strings.stream().filter(string -> !string.isEmpty()).collect(Collectors.joining(", "));
+						System.out.println("合并字符串: " + mergedString);			
+					附：
+						？Map<Long, User> maps = userList.stream().collect(Collectors.toMap(User::getId, Function.identity(), (key1, key2) -> key2));
+							map的值不是对象，而是对象的某个属性
+								Map<Long, String> maps = userList.stream().collect(Collectors.toMap(User::getId, User::getAge, (key1, key2) -> key2));
 
 
 Java8 中 List 转 Map(Collectors.toMap) 使用技巧

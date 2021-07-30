@@ -48,29 +48,20 @@
 			所以，实际上 enum 就是一个 class，只不过 java 编译器帮我们做了语法的解析和编译而已。
 			可以把 enum 看成是一个普通的 class，它们都可以定义一些属性和方法，不同之处是：enum 不能使用 extends 关键字继承其他类，因为 enum 已经继承了 java.lang.Enum（java是单一继承）。
 
+枚举介绍：
+https://www.zhihu.com/question/19908744
+Java 5新增的enum关键词，可以定义枚举类。
+该类是一个特殊的类，可以定义自己的field、方法、可以实现接口，也可以定义自己的构造器。
+但枚举类使用enum定义后在编译后默认继承了java.lang.Enum类，而不是普通的继承Object类。
+enum声明类继承了Serializable和Comparable两个接口。
+且采用enum声明后，该类会被编译器加上final声明（同String），故该类是无法继承的。
+枚举类的内部定义的枚举值就是该类的实例（且必须在第一行定义，当类初始化时，这些枚举值会被实例化）。
+	由于这些枚举值的实例化是在类初始化阶段，所以应该将枚举类的构造器（如果存在），采用private声明（这种情况下默认也是private）。
+另外补充一点，由于JVM类初始化是线程安全的，所以可以采用枚举类实现一个线程安全的单例模式。
+Enum的本质语义是把一个类的多个实例直接列举出来。
+而继承是类的行为, 不是实例的行为。
+因为在语义设计上不能被继承，所以在实现时要进行语法上的约束，编译器会将其声明为final。
 
-
-对枚举进行遍历和switch的操作：
-	public class Test {
-		public static void main(String[] args) {
-			for (EnumTest e : EnumTest.values()) {
-				System.out.println(e.toString());
-			}			 
-			EnumTest test = EnumTest.TUE;
-			switch (test) {
-				case MON:
-					System.out.println("今天是星期一");
-					break;
-				case TUE:
-					System.out.println("今天是星期二");
-					break;
-				// ... ...
-				default:
-					System.out.println(test);
-					break;
-			}
-		}
-	}
 枚举对象的常用方法：
 	返回枚举常量的名称：
 		String toString()
@@ -102,24 +93,24 @@
 			}
 	static <T extends Enum<T>> T valueOf(Class<T> enumType, String name) 
           返回带指定名称的指定枚举类型的枚举常量。
-附：
-
-	枚举消除if else ：
-		https://www.bilibili.com/read/cv4257620
-		public enum EnumTest  {
-			SUN() {
-				@Override
-				public String hasOpetation() {
-					return "有玩手机权限";
-				}
-			};
-			public String hasOpetation() {
-				return "无权限";
+对枚举进行遍历和switch的操作：
+	public class Test {
+		public static void main(String[] args) {
+			for (EnumTest e : EnumTest.values()) {
+				System.out.println(e.toString());
+			}			 
+			EnumTest test = EnumTest.TUE;
+			switch (test) {
+				case MON:
+					System.out.println("今天是星期一");
+					break;
+				case TUE:
+					System.out.println("今天是星期二");
+					break;
+				// ... ...
+				default:
+					System.out.println(test);
+					break;
 			}
-			public static void main(String[] args) {
-			   String day = "SUN";
-			   System.out.println(EnumTest.valueOf(day).hasOpetation());
-			}
-		}		
-
-	https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/basic/%E7%94%A8%E5%A5%BDJava%E4%B8%AD%E7%9A%84%E6%9E%9A%E4%B8%BE%E7%9C%9F%E7%9A%84%E6%B2%A1%E6%9C%89%E9%82%A3%E4%B9%88%E7%AE%80%E5%8D%95.md
+		}
+	}
