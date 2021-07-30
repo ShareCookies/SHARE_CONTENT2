@@ -264,8 +264,8 @@ Map接口：
 						parent.right = e;
 				2. 插入后维护红黑色性质。
 					fixAfterInsertion(e);
-				附：
-					看下算法与数据结果树，然后在看下源码，就可理解TreeMap实现。
+				详：
+					./新建文件夹/TreeMap红黑树源码.java
 	
 	附：其余Map实现类
 		Hashtable：

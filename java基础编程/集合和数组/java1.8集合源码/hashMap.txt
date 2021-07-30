@@ -1,0 +1,155 @@
+新增：
+	public V put(K key, V value) {
+		return putVal(hash(key), key, value, false, true);
+	}
+	
+	1. 插入键值对时，先获取key的hash。
+		static final int hash(Object key) {
+			int h;
+			return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+		}
+		Object自带hashCode方法：
+			https://louluan.blog.csdn.net/article/details/41547649?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
+			
+			* @return  a hash code value for this object.
+			public native int hashCode();
+			jvm为对象生成的关键码值(hashCode散列值),关键码值是根据一定的规则将与对象相关的信息（比如对象的存储地址，对象的字段等）映射成一个数值，这个数值称作为散列值。
+		^ (h >>> 16)
+			https://www.cnblogs.com/chuijingjing/p/9405598.html
+			https://www.cnblogs.com/yesiamhere/p/6675067.html
+			无符号右移，异或
+	2. 找key在哈希表数组上的位置
+		/**
+		 * Implements Map.put and related methods.
+		 *
+		 * @param hash hash for key
+		 * @param key the key
+		 * @param value the value to put
+		 * @param onlyIfAbsent if true, don't change existing value
+		 * @param evict if false, the table is in creation mode.
+		 * @return previous value, or null if none
+		 */
+		 
+		final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+			boolean evict) {
+				Node<K,V>[] tab; Node<K,V> p; int n, i;
+				// 为空，初始化hash表
+				if ((tab = table) == null || (n = tab.length) == 0)
+					n = (tab = resize()).length;
+				/*
+					tab[i = (n - 1) & hash] //找插入数据的hash在数组中位置(就是找当前要插入的数据应该在哈希表中的位置)
+						(n - 1) & hash 等于hash % n 
+						？
+						https://blog.csdn.net/argleary/article/details/100940228
+						https://blog.csdn.net/q2365921/article/details/96031412?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
+				*/
+				//当key对应位置无值时，插入元素。
+				if ((p = tab[i = (n - 1) & hash]) == null)
+					tab[i] = newNode(hash, key, value, null);
+				//当key对应位置有值时：
+				else {
+					Node<K,V> e; K k;
+					/*
+					if 如果key与旧key是一样的则覆盖插入。
+						如何判断是一样的：
+							两key的hash相等 且(两key内存地址一样或equal对比相等)
+						是否覆盖插入操作是在最后的if中。
+					*/
+					if (p.hash == hash &&
+						((k = p.key) == key || (key != null && key.equals(k))))
+						e = p;
+					
+					// 如果是红黑树节点，则直接在树中插入 or 更新键值对(执行红黑树的添加操作)
+					else if (p instanceof TreeNode)
+						e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+					
+					// 此时插槽（p节点）应为链表
+					else {
+						// 不断遍历链表，直到把节点往链表中插入 or 更新键值对，(当链表长度过长时，链表可能会转为红黑树)
+						for (int binCount = 0; ; ++binCount) {
+							//p链节点下个节点为null则，next赋为插入元素
+							if ((e = p.next) == null) { 
+								p.next = newNode(hash, key, value, null);
+								if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+									treeifyBin(tab, hash);
+								break;
+							}
+							//p下个链节点，key与旧key是同元素，则覆盖插入（跳出循环value在下面的if中赋值）。
+								//是否同元素判断同上
+								是否覆盖插入操作是在最后的if中。
+							if (e.hash == hash &&
+								((k = e.key) == key || (key != null && key.equals(k))))
+								break;
+							p = e;
+						}
+					}
+					if (e != null) { // existing mapping for key
+						V oldValue = e.value;
+						if (!onlyIfAbsent || oldValue == null)
+							e.value = value;
+						afterNodeAccess(e);
+						return oldValue;
+					}
+				}
+				++modCount;
+				if (++size > threshold)
+					resize();
+				afterNodeInsertion(evict);
+				return null;							
+			}
+附：
+			/**
+			 * The table, initialized on first use, and resized as
+			 * necessary. When allocated, length is always a power of two.
+			 * (We also tolerate length zero in some operations to allow
+			 * bootstrapping mechanics that are currently not needed.)
+			 */
+			/*
+				表，在第一次使用时初始化，并根据需要调整大小。
+				transient:
+					属性前添加关键字transient，序列化对象的时候，这个属性就不会序列化到指定的目的地中。
+			*/
+
+			transient Node<K,V>[] table;
+			/**
+			 * Initializes or doubles table size.  If null, allocates in
+			 * accord with initial capacity target held in field threshold.
+			 * Otherwise, because we are using power-of-two expansion, the
+			 * elements from each bin must either stay at same index, or move
+			 * with a power of two offset in the new table.
+			 *
+			 * @return the table
+			 */
+			//初始化或加倍表大小。
+			final Node<K,V>[] resize() {}
+			
+    /**
+     * The bin count threshold for using a tree rather than list for a
+     * bin.  Bins are converted to trees when adding an element to a
+     * bin with at least this many nodes. The value must be greater
+     * than 2 and should be at least 8 to mesh with assumptions in
+     * tree removal about conversion back to plain bins upon
+     * shrinkage.
+     */
+    static final int TREEIFY_THRESHOLD = 8;			
+    /**
+     * Replaces all linked nodes in bin at index for given hash unless
+     * table is too small, in which case resizes instead.
+     */
+    final void treeifyBin(Node<K,V>[] tab, int hash) {
+	}
+    /**
+     * The next size value at which to resize (capacity * load factor).
+     *
+     * @serial
+     */
+    // (The javadoc description is true upon serialization.
+    // Additionally, if the table array has not been allocated, this
+    // field holds the initial array capacity, or zero signifying
+    // DEFAULT_INITIAL_CAPACITY.)
+    int threshold;	
+	
+	//LinkedHashMap的回调方法
+    // Callbacks to allow LinkedHashMap post-actions
+    void afterNodeAccess(Node<K,V> p) { }	
+	
