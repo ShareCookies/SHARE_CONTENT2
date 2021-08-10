@@ -66,7 +66,7 @@ Map接口：
 					因为HashMap根据关键字定位能耗时能达到常数O(1),而TreeMap要O(lgn).
 					但散列方法的存储对关键字是随机的，不便于顺序查找关键字，也不适合于范围查找，或最大值最小值查找。
 			2.Map优化：
-				为了优化 HashMap 空间的使用，您可以调优初始容量和负载因子。？
+				为了优化 HashMap 空间的使用，您可以调优初始容量和负载因子。
 				TreeMap 没有调优选项，因为该树总处于平衡状态。
 	附：
 		map常见操作：
@@ -90,78 +90,113 @@ Map接口：
 	HashMap实现类：
 		介绍：
 			基于哈希表实现。
-			特性：
-			1. 插入重复的key
-				插入重复的key，会覆盖掉对应的key，value，并返回被覆盖的value。
-			    * @return the previous value associated with <tt>key</tt>, or  <tt>null</tt> if there was no mapping for <tt>key</tt>.
-			附：
-				1.HashMap允许使用 null 值和 null 键
+		特性：
+			构造方法：
+				构造函数HashMap(int initialCapacity, float loadFactor)：构造一个带指定初始容量和加载因子的空 HashMap。
+					initialCapacity初始容量：
+						数组初始容量(散列表初始容量)。
+					loadFactor加载因子：
+						用来扩容用。
+						随着HashMap中元素的数量越来越多，发生碰撞的概率就越来越大，所产生的链表长度就会越来越长，这样势必会影响HashMap的速度，为了保证HashMap的效率，系统必须要在某个临界点进行扩容处理。该临界点在当HashMap中元素的数量等于table数组长度*加载因子。
+						但是扩容是一个非常耗时的过程，因为它需要重新计算这些数据在新table数组中的位置并进行复制处理。所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。
+				?
+					预知10000个元素，那么初始容量10000吗
+			新增put：
+				1. 插入重复的key
+					插入重复的key，会覆盖掉对应的key，value，并返回被覆盖的value。
+					* @return the previous value associated with <tt>key</tt>, or  <tt>null</tt> if there was no mapping for <tt>key</tt>.
+				2. HashMap允许使用 null 值和 null 键
 			
-		HashMap方法：
-			构造函数HashMap(int initialCapacity, float loadFactor)：构造一个带指定初始容量和加载因子的空 HashMap。
-				initialCapacity初始容量：
-					数组初始容量(散列表初始容量)。
-				loadFactor加载因子：
-					用来扩容用。
-					随着HashMap中元素的数量越来越多，发生碰撞的概率就越来越大，所产生的链表长度就会越来越长，这样势必会影响HashMap的速度，为了保证HashMap的效率，系统必须要在某个临界点进行扩容处理。该临界点在当HashMap中元素的数量等于table数组长度*加载因子。但是扩容是一个非常耗时的过程，因为它需要重新计算这些数据在新table数组中的位置并进行复制处理。所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。
+
 		HashMap的实现原理：
-			https://blog.csdn.net/chenssy/article/details/18323767
+			https://blog.csdn.net/chenssy/article/details/18323767、
+			./java1.8集合源码/hashMap.txt
 			附：
 				什么是Hash表：
 					哈希表是基于哈希函数建立的一种映射表(当作数组)。
 					hash函数根据key(hashCode)计算出应该存储在哈希表上那个位置.
 						hashMap中hash函数就是取余
-			新增：
-				public V put(K key, V value) {
-					return putVal(hash(key), key, value, false, true);
-				}
-				
-				1. 插入键值对时，获取key的hash。
-					hash来源：
-						static final int hash(Object key) {
-							int h;
-							return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
-						}
-						Object自带hashCode方法：
-							https://louluan.blog.csdn.net/article/details/41547649?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
+				新增：（简版）
+					public V put(K key, V value) {
+						return putVal(hash(key), key, value, false, true);
+					}
+					
+					1. 插入键值对时，获取key的hash。
+						hash来源：
+							static final int hash(Object key) {
+								int h;
+								return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+							}
+							Object自带hashCode方法：
+								https://louluan.blog.csdn.net/article/details/41547649?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
+								
+								* @return  a hash code value for this object.
+								public native int hashCode();
+								jvm为对象生成的关键码值(hashCode散列值),关键码值是根据一定的规则将与对象相关的信息（比如对象的存储地址，对象的字段等）映射成一个数值，这个数值称作为散列值。
+					putVal():https://blog.csdn.net/hsee2006/article/details/104784557/
+					2. 找key在哈希表数组上的位置
+						tab[i = (n - 1) & hash] //找插入数据的hash在数组中位置(就是找当前要插入的数据应该在哈希表中的位置)
+							(n - 1) & hash 等于hash % n 
+							https://blog.csdn.net/argleary/article/details/100940228
+							https://blog.csdn.net/q2365921/article/details/96031412?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
+						当key对应位置无值时，插入元素。
+						当key对应位置有值时：
+							if 如果key与旧key是一样的则覆盖插入。
+								如何判断是一样的：
+									两key的hash相等 且(equal对比相等或两key内存地址一样)
+								if (p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k))))
+							else if // 如果是红黑树节点，则直接在树中插入 or 更新键值对
+								else if (p instanceof TreeNode)
+									// 如果当前的bucket里面已经是红黑树的话，执行红黑树的添加操作
+									e = ((TreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);						
+								
+							else // 把节点往链表中插入 or 更新键值对，(当链表长度过长时，链表可能会转为红黑树)
 							
-							* @return  a hash code value for this object.
-							public native int hashCode();
-							jvm为对象生成的关键码值(hashCode散列值),关键码值是根据一定的规则将与对象相关的信息（比如对象的存储地址，对象的字段等）映射成一个数值，这个数值称作为散列值。
-				putVal():https://blog.csdn.net/hsee2006/article/details/104784557/
-				2. 找key在哈希表数组上的位置
-					tab[i = (n - 1) & hash] //找插入数据的hash在数组中位置(就是找当前要插入的数据应该在哈希表中的位置)
-						(n - 1) & hash 等于hash % n 
-						https://blog.csdn.net/argleary/article/details/100940228
-						https://blog.csdn.net/q2365921/article/details/96031412?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
-					当key对应位置无值时，插入元素。
-					当key对应位置有值时：
-						if 如果key与旧key是一样的则覆盖插入。
-							如何判断是一样的：
-								两key的hash相等 且(equal对比相等或两key内存地址一样)
-							if (p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k))))
-						else if // 如果是红黑树节点，则直接在树中插入 or 更新键值对
-							else if (p instanceof TreeNode)
-								// 如果当前的bucket里面已经是红黑树的话，执行红黑树的添加操作
-								e = ((TreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);						
-							
-						else // 把节点往链表中插入 or 更新键值对，(当链表长度过长时，链表可能会转为红黑树)
-						
-							for (int binCount = 0;; ++binCount)
-							{
-								if ((e = p.next) == null)
+								for (int binCount = 0;; ++binCount)
 								{
-									p.next = newNode(hash, key, value, null);
-									// TREEIFY_THRESHOLD = 8，判断如果当前bucket的位置链表长度大于8的话就将此链表变成红黑树。
-									if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
-										treeifyBin(tab, hash);
-									break;
-								}
-								if (e.hash == hash && ((k = e.key) == key || (key != null && key.equals(k))))
-									break;
-								p = e;
-							}						
-
+									if ((e = p.next) == null)
+									{
+										p.next = newNode(hash, key, value, null);
+										// TREEIFY_THRESHOLD = 8，判断如果当前bucket的位置链表长度大于8的话就将此链表变成红黑树。
+										if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+											treeifyBin(tab, hash);
+										break;
+									}
+									if (e.hash == hash && ((k = e.key) == key || (key != null && key.equals(k))))
+										break;
+									p = e;
+								}						
+			
+				HashMap是怎么解决哈希冲突的
+					为什么会有hash冲突：
+						hash值一样但不是同一个对象，此时就会hash冲突，此时就要通过链表等来存放冲突对象了。
+					1. 通过链表。
+						JDK1.7的是数组+链表
+					2. 通过红黑树。
+						JDK1.8的是数组+链表 或者 数组+红黑树
+						两种方案分表什么时候使用了：
+							数组+链表：
+								链表长度大于8
+							数组+红黑树：
+								链表长度大于8且table的长度大于64
+								附：
+									如果小于64，就通过扩容的方式来解决，
+									
+									附：！
+									链表长度大于8有两种情况：
+										1、table长度足够，hash冲突过多
+										2、hash没有冲突，但是在计算table下标的时候，由于table长度太小，导致很多hash不一致的
+										第二种情况是可以用扩容的方式来避免的，扩容后链表长度变短，读写效率自然提高。另外，扩容相对于转换为红黑树的好处在于可以保证数据结构更简单。f
+					附：
+						HashMap红黑树树化过程
+							https://www.cnblogs.com/finite/p/8251587.html
+				HashMap扩容：
+					随着HashMap中元素的数量越来越多，发生碰撞的概率就越来越大，所产生的链表长度就会越来越长，这样势必会影响HashMap的速度，为了保证HashMap的效率，系统必须要在某个临界点进行扩容处理。
+					该临界点在当HashMap中元素的数量等于table数组长度*加载因子。
+					注：
+						但是扩容是一个非常耗时的过程，因为它需要重新计算这些数据在新table数组中的位置并进行复制处理。所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。
+					HashMap的扩容操作是怎么实现:
+						...
 			附:
 				1. HashMap如何判断key是否为同一个对象：(HashSet同理因为调用hashmap)
 					判断过程：
@@ -198,49 +233,25 @@ Map接口：
 						  因为可能出现4+4等3+5的情况。
 						*/
 					}
-			附：
-				HashMap是怎么解决哈希冲突的
-					为什么会有hash冲突：
-						hash值一样但不是同一个对象，此时就会hash冲突，此时就要通过链表等来存放冲突对象了。
-					1. 通过链表。
-						JDK1.7的是数组+链表
-					2. 通过红黑树。
-						JDK1.8的是数组+链表 或者 数组+红黑树
-						两种方案分表什么时候使用了：
-							数组+链表：
-								链表长度大于8
-							数组+红黑树：
-								链表长度大于8且table的长度大于64
-								附：
-									如果小于64，就通过扩容的方式来解决，
-									
-									附：！
-									链表长度大于8有两种情况：
-										1、table长度足够，hash冲突过多
-										2、hash没有冲突，但是在计算table下标的时候，由于table长度太小，导致很多hash不一致的
-										第二种情况是可以用扩容的方式来避免的，扩容后链表长度变短，读写效率自然提高。另外，扩容相对于转换为红黑树的好处在于可以保证数据结构更简单。f
-					附：
-						HashMap红黑树树化过程
-							https://www.cnblogs.com/finite/p/8251587.html
-				HashMap扩容：
-					随着HashMap中元素的数量越来越多，发生碰撞的概率就越来越大，所产生的链表长度就会越来越长，这样势必会影响HashMap的速度，为了保证HashMap的效率，系统必须要在某个临界点进行扩容处理。
-					该临界点在当HashMap中元素的数量等于table数组长度*加载因子。
-					注：
-						但是扩容是一个非常耗时的过程，因为它需要重新计算这些数据在新table数组中的位置并进行复制处理。所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。
-					HashMap的扩容操作是怎么实现:
-						...
+
 	TreeMap实现类：
 		https://zhuanlan.zhihu.com/p/105377431
 		介绍：
-			基于红黑树实现，红黑树一种平衡二叉查找树。
-				附：二叉查找树操作耗时O(h) 红黑树高至多lgn 所以红黑树操作耗时O(lgn)
-			TreeMap要求存放的键值对的键必须实现Comparable接口.
+			基于红黑树实现。
+				附：
+					红黑树一种平衡二叉查找树。
+					二叉查找树操作耗时O(h) 红黑树高至多lgn 所以红黑树操作耗时O(lgn)
+		特性：
+			构造方法：
+				1. TreeMap要求存放的键值对的键必须实现Comparable接口.
 				因为要根据键元素进行对比，然后插入到红黑树中。
-			附：
-				TreeMap不允许使用null 键。
+				2. TreeMap不允许使用null 键。
 					因为key要对比插入
 		TreeMap的实现原理：
 			新增：
+				详：
+					./新建文件夹/TreeMap红黑树源码.java
+				简：
 				1. 插入键值对时，把key从根节点开始对比，找到对应位置插入。
 					小在比左边，大在比右，一样大则覆盖value。
 					public V put(K key, V value) {
@@ -264,17 +275,16 @@ Map接口：
 						parent.right = e;
 				2. 插入后维护红黑色性质。
 					fixAfterInsertion(e);
-				详：
-					./新建文件夹/TreeMap红黑树源码.java
 	
-	附：其余Map实现类
+	附：
+	其余Map实现类
 		Hashtable：
 			Hashtable大部分方法都使用了synchronized关键字，是线程安全的；
 			附：
 				HashMap没有考虑同步，是线程不安全的；
 			附：
 				Hashtable K/V都不允许为null；HashMap允许K/V都为null；
-		ConcurrentHashMap：
+？？？		ConcurrentHashMap：
 			ConcurrentHashMap和Hashtable的区别：
 				HashTable 在每次同步执行时都要锁住整个结构。 ConcurrentHashMap 锁的方式更细粒度的。
 
@@ -285,8 +295,8 @@ Map接口：
 					具体实现:ConcurrentHashMap内部有一个Segment.
 				jdk 1.8:
 					在jdk 8中，ConcurrentHashMap不再使用Segment分离锁，而是采用一种乐观锁CAS算法来实现同步问题，但其底层还是“数组+链表->红黑树”的实现。
-					？
-		LinkedHashMap：
+
+		LinkedHashMap：！！！
 			介绍：
 				类似hashMap，仅比hashMap慢一点，但迭代访问时更快。
 					注：为了提高速度，LinkedHashMap散列化所有的元素，但又使用了链表保存了顺序。
@@ -297,11 +307,11 @@ Map接口：
 				对于需要定期清理元素以节省空间的程序来说，此功能使得程序很容易得以实现。
 			例：
 				./案例/LinkedHashMapDemo.java
-
+			
 		WeakHashMap：
-
+			...
 		IdentityHashMap：
-
+			...
 Collection接口：
 	Set接口：
 		介绍：
@@ -312,28 +322,32 @@ Collection接口：
 			Set 接口常见的两种实现：
 				HashSet 和TreeSet。
 		HashSet：	
-			对象无序不可重复，基于HashMap开发，插入时是直接放入到hashMap的key上。
-			注：
+			对象不可重复、无序。
+			原理：
+				基于HashMap开发，插入时是直接放入到hashMap的key上。
+			附：
 				对象存入HashSet建议重写hashCode()和equals()方法，hashMap判断是否重复是通过这两个方法。
 		TreeSet:
-			对象不能重复但有自然顺序（例从小到大顺序），通常是基于TreeMap实现，插入到map的key上。
-			能放入集合的对象：		
-				一个类的实例如果想放在TreeSet中存储的话，要求实现Comparable接口。
-			注：
-				对象存入TreeSet要实现Comparable接口：
+			对象不能重复但有自然顺序（例从小到大顺序）。
+			原理：
+				通常是基于TreeMap实现，插入到map的key上。
+			
+			附：
+				对象存入TreeSet要实现Comparable接口。
 					TreeSet判断元素是否重复 、以及确定元素的顺序 靠的都是这个方法；
 					@override
 					public int compareTO(Object o){//当前一个类与另一个类的比较。
 						//当前对象的某个判断比另一个对象的小返回-1，大返回1，等于即返回0会被treeset拒绝接收。
 							//从大到小排可以乘-1或另一个类与当前类比较。可进行多重比较排序如：颜色不同按颜色排，同按重量排 
 					}
-		注：？
+		附：
 			为优化 HashSet 空间的使用，您可以调优初始容量和负载因子。
 			TreeSet 不包含调优选项，因为树总是平衡的，保证了插入、删除、查询的性能为log(n)。
+			就是hashmap和treeamp了
 	List:接口
 		介绍：
 			List 接口继承了 Collection 接口，表示一个允许重复项的有序集合概念，称为列表或序列。
-				附：List 接口在 iterator、add、remove、equals 和 hashCode 方法的协定上加了一些其他约定，超过了 Collection 接口中指定的约定。
+
 			特性：
 				1.元素允许重复项
 				2.有序集合
@@ -419,10 +433,10 @@ Collection接口：
 	https://blog.csdn.net/qq_22118507/article/details/51576319
 	https://blog.csdn.net/bestxiaok/article/details/78413022
 
-附：
-	集合和数组的关系：
-		没有必然联系，但有部分集合是基于数组来实现的.
-			因为集合是对数组做的封装,所以,数组永远比任何一个集合要快。
-		集合提供了比数组更多的功能：
-			例：
-				一个数组实例具有固定的大小，不能伸缩。集合则可根据需要动态改变大小。
+	附：
+		集合和数组的关系：
+			没有必然联系，但有部分集合是基于数组来实现的.
+				因为集合是对数组做的封装,所以,数组永远比任何一个集合要快。
+			集合提供了比数组更多的功能：
+				例：
+					一个数组实例具有固定的大小，不能伸缩。集合则可根据需要动态改变大小。

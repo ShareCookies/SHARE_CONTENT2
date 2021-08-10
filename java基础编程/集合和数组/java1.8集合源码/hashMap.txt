@@ -63,14 +63,19 @@
 					else if (p instanceof TreeNode)
 						e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
 					
-					// 此时插槽（p节点）应为链表
+					// 此时通过链表来解决hash冲突
 					else {
-						// 不断遍历链表，直到把节点往链表中插入 or 更新键值对，(当链表长度过长时，链表可能会转为红黑树)
+						// 不断遍历链表
+						// 直到把节点往链表中插入 or 更新键值对，(当链表长度过长时，链表可能会转为红黑树)
 						for (int binCount = 0; ; ++binCount) {
-							//p链节点下个节点为null则，next赋为插入元素
+							//p链节点下个节点为null则，元素插入到下个节点
 							if ((e = p.next) == null) { 
 								p.next = newNode(hash, key, value, null);
+								
+								//当链表长度大于树形阈值，扩容为红黑树
+								//static final int TREEIFY_THRESHOLD = 8;树形阈值
 								if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+									//替换给定哈希索引处 bin 中的所有链接节点，除非表太小，在这种情况下改为调整大小。
 									treeifyBin(tab, hash);
 								break;
 							}
@@ -83,47 +88,43 @@
 							p = e;
 						}
 					}
+					//有存在对应key的映射，把值插入其中。
 					if (e != null) { // existing mapping for key
 						V oldValue = e.value;
 						if (!onlyIfAbsent || oldValue == null)
 							e.value = value;
+						//空实现，LinkedHashMap的专用回调方法	
 						afterNodeAccess(e);
 						return oldValue;
 					}
 				}
+				
 				++modCount;
+				//在hashmap中新增一个值后，
+				//当大小大于阈值时，扩容
 				if (++size > threshold)
 					resize();
+				//空实现，LinkedHashMap的专用回调方法
+				// Callbacks to allow LinkedHashMap post-actions
 				afterNodeInsertion(evict);
 				return null;							
 			}
 附：
-			/**
-			 * The table, initialized on first use, and resized as
-			 * necessary. When allocated, length is always a power of two.
-			 * (We also tolerate length zero in some operations to allow
-			 * bootstrapping mechanics that are currently not needed.)
-			 */
-			/*
-				表，在第一次使用时初始化，并根据需要调整大小。
-				transient:
-					属性前添加关键字transient，序列化对象的时候，这个属性就不会序列化到指定的目的地中。
-			*/
+hashmap扩容：
+	/**
+	 * The table, initialized on first use, and resized as
+	 * necessary. When allocated, length is always a power of two.
+	 * (We also tolerate length zero in some operations to allow
+	 * bootstrapping mechanics that are currently not needed.)
+	 */
+	/*
+		表，在第一次使用时初始化，并根据需要调整大小。
+		transient:
+			属性前添加关键字transient，序列化对象的时候，这个属性就不会序列化到指定的目的地中。
+	*/
 
-			transient Node<K,V>[] table;
-			/**
-			 * Initializes or doubles table size.  If null, allocates in
-			 * accord with initial capacity target held in field threshold.
-			 * Otherwise, because we are using power-of-two expansion, the
-			 * elements from each bin must either stay at same index, or move
-			 * with a power of two offset in the new table.
-			 *
-			 * @return the table
-			 */
-			//初始化或加倍表大小。
-			final Node<K,V>[] resize() {}
-			
-    /**
+	transient Node<K,V>[] table;
+	/**
      * The bin count threshold for using a tree rather than list for a
      * bin.  Bins are converted to trees when adding an element to a
      * bin with at least this many nodes. The value must be greater
@@ -131,16 +132,10 @@
      * tree removal about conversion back to plain bins upon
      * shrinkage.
      */
-    static final int TREEIFY_THRESHOLD = 8;			
-    /**
-     * Replaces all linked nodes in bin at index for given hash unless
-     * table is too small, in which case resizes instead.
-     */
-    final void treeifyBin(Node<K,V>[] tab, int hash) {
-	}
-    /**
+    static final int TREEIFY_THRESHOLD = 8;
+	/**
      * The next size value at which to resize (capacity * load factor).
-     *
+     * 要调整大小的下一个大小值（容量*负载系数）
      * @serial
      */
     // (The javadoc description is true upon serialization.
@@ -148,8 +143,214 @@
     // field holds the initial array capacity, or zero signifying
     // DEFAULT_INITIAL_CAPACITY.)
     int threshold;	
-	
-	//LinkedHashMap的回调方法
-    // Callbacks to allow LinkedHashMap post-actions
-    void afterNodeAccess(Node<K,V> p) { }	
-	
+	/**
+     * The number of key-value mappings contained in this map.
+     */
+    transient int size;
+	/**
+     * The maximum capacity, used if a higher value is implicitly specified
+     * by either of the constructors with arguments.
+     * MUST be a power of two <= 1<<30.
+		最大容量，10亿
+     */
+    static final int MAXIMUM_CAPACITY = 1 << 30;
+	/**
+     * The default initial capacity - MUST be a power of two.
+	 默认初始容量， 16
+     */
+    static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
+	/**
+	 * Initializes or doubles table size.  If null, allocates in
+	 * accord with initial capacity target held in field threshold.
+	 * Otherwise, because we are using power-of-two expansion, the
+	 * elements from each bin must either stay at same index, or move
+	 * with a power of two offset in the new table.
+	 *
+		将表格大小初始化或加倍。
+		如果为空，则根据字段阈值中保留的初始容量目标进行分配。
+		否则，因为我们使用的是二次幂展开，所以每个容器中的元素必须保持在相同的索引中，或者在新表中以二次幂偏移量移动。
+	 * @return the table
+	 */
+	//初始化或加倍表大小。
+    final Node<K,V>[] resize() {
+        Node<K,V>[] oldTab = table;
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        int oldThr = threshold;
+        int newCap, newThr = 0;
+		//旧hashmap容量大于0
+        if (oldCap > 0) {
+            if (oldCap >= MAXIMUM_CAPACITY) {
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            }
+			// 旧hashmap容量大于16，且扩大2倍还小于最大容量，则新阈值翻倍
+            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+                     oldCap >= DEFAULT_INITIAL_CAPACITY)
+                newThr = oldThr << 1; // double threshold
+        }
+		//旧阈值大0，
+        else if (oldThr > 0) // initial capacity was placed in threshold
+            newCap = oldThr;
+		// 使用默认的初始容量
+        else {               // zero initial threshold signifies using defaults
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+        }
+        if (newThr == 0) {//新阈值为空，则为其计算赋值
+            float ft = (float)newCap * loadFactor;
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+                      (int)ft : Integer.MAX_VALUE);
+        }
+        threshold = newThr;
+        @SuppressWarnings({"rawtypes","unchecked"})
+		//初始化hash表
+        Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+        table = newTab;
+		//翻倍hash表
+        if (oldTab != null) {
+			//遍历旧hash表
+            for (int j = 0; j < oldCap; ++j) {
+                Node<K,V> e;
+                if ((e = oldTab[j]) != null) {
+					//置空旧hash表
+                    oldTab[j] = null;
+					//无下个元素，即仅一个元素。
+                    if (e.next == null)
+						//旧hash表元素赋值到新hash表
+                        newTab[e.hash & (newCap - 1)] = e;
+                    else if (e instanceof TreeNode)
+						//树节点元素重赋值？
+                        ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+                    else { // preserve order
+						//链表重新赋值到新hashmap？
+                        Node<K,V> loHead = null, loTail = null;
+                        Node<K,V> hiHead = null, hiTail = null;
+                        Node<K,V> next;
+                        do {
+                            next = e.next;
+//?
+https://blog.csdn.net/u010425839/article/details/106620440/
+https://blog.csdn.net/zhxue123/article/details/8648413
+https://www.cnblogs.com/lukelook/p/11275003.html
+https://blog.csdn.net/u014683368/article/details/81124138
+                            if ((e.hash & oldCap) == 0) {
+                                if (loTail == null)
+                                    loHead = e;
+                                else
+                                    loTail.next = e;
+                                loTail = e;
+                            }
+                            else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+                        } while ((e = next) != null);
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+                        if (hiTail != null) {
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                    }
+                }
+            }
+        }
+        return newTab;
+    }
+
+红黑树解决hash冲突：
+    /**
+     * The table, initialized on first use, and resized as necessary. 
+	 When allocated, length is always a power of two.
+     * (We also tolerate length zero in some operations to allow
+     * bootstrapping mechanics that are currently not needed.)
+     */
+	 //节点数组，hashmap中用他来存放元素
+    transient Node<K,V>[] table;
+	/**
+     * The smallest table capacity for which bins may be treeified.
+     * (Otherwise the table is resized if too many nodes in a bin.)
+     * Should be at least 4 * TREEIFY_THRESHOLD to avoid conflicts
+     * between resizing and treeification thresholds.
+     */
+    static final int MIN_TREEIFY_CAPACITY = 64;
+    /**
+	 * 替换给定哈希索引处 bin 中的所有链接节点，除非表太小，在这种情况下改为调整大小。
+     * Replaces all linked nodes in bin at index for given hash unless
+     * table is too small, in which case resizes instead.
+     */
+    final void treeifyBin(Node<K,V>[] tab, int hash) {
+        int n, index; Node<K,V> e;
+        if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
+            resize();
+		//链表红黑树化
+        else if ((e = tab[index = (n - 1) & hash]) != null) {
+			// do while走完仅是把链表上节点替换为树节点
+			// hd根节点 // t1 保存前置节点的
+            TreeNode<K,V> hd = null, tl = null;
+            do {
+				//生成树节点
+                TreeNode<K,V> p = replacementTreeNode(e, null);
+                if (tl == null)
+                    hd = p;
+                else {
+                    p.prev = tl;
+                    tl.next = p;
+                }
+                tl = p;
+            } while ((e = e.next) != null);
+			//红黑树化
+            if ((tab[index] = hd) != null)
+                hd.treeify(tab);
+        }
+    }
+	/**
+	?
+	 * Forms tree of the nodes linked from this node.
+	 */
+	final void treeify(Node<K,V>[] tab) {
+		TreeNode<K,V> root = null;
+		for (TreeNode<K,V> x = this, next; x != null; x = next) {
+			next = (TreeNode<K,V>)x.next;
+			x.left = x.right = null;
+			if (root == null) {
+				x.parent = null;
+				x.red = false;
+				root = x;
+			}
+			else {
+				K k = x.key;
+				int h = x.hash;
+				Class<?> kc = null;
+				for (TreeNode<K,V> p = root;;) {
+					int dir, ph;
+					K pk = p.key;
+					if ((ph = p.hash) > h)
+						dir = -1;
+					else if (ph < h)
+						dir = 1;
+					else if ((kc == null &&
+							  (kc = comparableClassFor(k)) == null) ||
+							 (dir = compareComparables(kc, k, pk)) == 0)
+						dir = tieBreakOrder(k, pk);
+
+					TreeNode<K,V> xp = p;
+					if ((p = (dir <= 0) ? p.left : p.right) == null) {
+						x.parent = xp;
+						if (dir <= 0)
+							xp.left = x;
+						else
+							xp.right = x;
+						root = balanceInsertion(root, x);
+						break;
+					}
+				}
+			}
+		}
+		moveRootToFront(tab, root);
+	}
