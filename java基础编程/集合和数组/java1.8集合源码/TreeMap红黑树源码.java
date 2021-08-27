@@ -123,3 +123,5 @@ private void fixAfterInsertion(Entry<K,V> x) {
 	//修复性质2
 	root.color = BLACK;
 }
+
+
