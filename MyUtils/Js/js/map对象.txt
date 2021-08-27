@@ -25,4 +25,6 @@ mapObj = new Map()
 
 	m.forEach(function (item, key, mapObj) {
 		console.log(item);
+		console.log(key);
+		console.log(mapObj);
 	});

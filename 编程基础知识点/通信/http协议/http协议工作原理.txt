@@ -27,6 +27,9 @@
 		服务器一直在一特定端口上监听连接。			
 		用户在客户端发起一个http请求，客户端(浏览器)将通过TCP/IP协议与指定的服务器建立一个TCP套接字连接。
 			注：只有服务器在指定端口上监听连接，连接才会建立起来。
+		？一个端口能建立多少个请求
+			https://blog.csdn.net/weixin_40710708/article/details/116795880
+			https://blog.csdn.net/u011580175/article/details/80306414?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control
 	2.客户向服务器发送HTTP请求:
 		通过TCP套接字，客户端向Web服务器发送一个包含请求报文的数据块.
 			一个请求报文由请求行、请求头部、空行和请求数据4部分组成。
