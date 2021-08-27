@@ -1,4 +1,15 @@
-复杂度:
+思想：
+	递归:
+		核心概念:自己调用自己
+		./基础/递归.txt
+	分治思想：
+		./基础/分治策略
+排序算法：
+	./排序算法.txt
+常见算法：
+	https://blog.csdn.net/lee_nacl/article/details/61419606
+	https://www.cnblogs.com/bulingpan/p/6416362.html
+复杂度:？
 	https://blog.csdn.net/weixin_30340819/article/details/98148676
 	https://blog.csdn.net/qq_17534301/article/details/82872357
 	介绍：
@@ -62,32 +73,3 @@
 					这段代码中，第一行new了一个数组出来，这个数据占用的大小为n，这段代码的2-6行，虽然有循环，但没有再分配新的空间，因此，这段代码的空间复杂度主要看第一行即可，即 S(n) = O(n)
 什么是算法的稳定性：
 	https://segmentfault.com/q/1010000014749041
-思想：
-	递归:
-		核心概念:自己调用自己
-		例：
-			案例1:
-				问题：
-					有五个人坐在一起，问第五个人多少岁？他说比第四个人大2岁。问第四个人岁数，他说比第三个人大2岁。问第三个人，又说比第二个人大2岁。问第二个人，说比第一个人大2岁。最后问第一个人，他说是10岁。请问第五个人多大。用递归调用的方法设计程序完成本题目。
-				实现：    
-					当前函数的部分值来自，上个自身函数。
-						上个自身函数要有终止的条件
-					public int recursionRule(Integer uptoNum){
-						if (uptoNum == 1){ return 10;}
-						else {
-							return recursionRule(uptoNum-1)+2;
-						}
-					}
-					public static void main(String[] args) {
-						NumAddRecursion son = new NumAddRecursion();
-						System.out.println(son.recursionRule(5));
-					}
-			案例2：
-				./例/递归.txt
-	分治思想：
-		
-排序算法：
-	./排序算法.txt
-常见算法：
-	https://blog.csdn.net/lee_nacl/article/details/61419606
-	https://www.cnblogs.com/bulingpan/p/6416362.html
