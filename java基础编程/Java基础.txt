@@ -362,14 +362,7 @@
 		使用native修饰的函数(方法)，说明这个方法是原生函数。
 		即这个方法是用C/C++语言实现的，且被编译成了DLL，由java负责去调用。
 附：
-	Java命令：
-		javac
-			javac是用来编译.java文件的。
-		java
-			执行.class字节码文件
-		javap
-			字节码查看工具及反编译工具.
-			主要用于帮助开发者深入了解 Java 编译器的机制
+
 	cmd运行class：
 		com.test
 		那么当前目录下要有目录 com/test.class

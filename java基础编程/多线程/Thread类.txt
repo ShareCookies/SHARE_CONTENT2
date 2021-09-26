@@ -14,22 +14,7 @@ Thread类:
 				Thread.currentThread().setPriority();
 				//值建议Thread.MAX_ PRIORITY、 NORM_ PRIORITY和MIN_ PRIORITY
 		.join()：
-			加入一个线程。
-			在某个线程中(调用线程)调用其他线程的join方法(被调用线程)时，
-			调用线程将被阻塞，直到被调用线程执行完它才会继续运行，进入可运行状态吗？估计不是。
-			例：
-				b任务的run中，写a线程.join(),则b线程要等待a线程运行完才能继续运行。
-			注：
-				调用线程将被阻塞，那么其恢复后是重新排队还是直接运行？
-				若调用的线程耗时，那么会被剥夺cpu资源吧，那么此时调用线程还是在阻塞状态吗？
-			join()中断：
-				介绍：
-					interrupt()；
-					调用interrupt方法可以中断join。
-				例：
-					被调用线程引用.interrupt();被调用线程任务要捕获InterruptedExeception。
-				注：
-					isInterrupted()判断是否在join调用状态。
+			/线程通信/Thread.join().txt
 		.sleep():
 			介绍：
 				线程休眠指定时间

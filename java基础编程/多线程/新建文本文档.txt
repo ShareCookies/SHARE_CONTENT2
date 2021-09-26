@@ -1,7 +1,2 @@
 定时任务
 	https://blog.csdn.net/sufu1065/article/details/108091234
-
-线程池中的线程异常
-当执行方式是 execute 方法时，在控制台会打印堆栈异常：
-当执行方式是 submit 方法时，在控制台不会打印堆栈异常：
-	https://blog.csdn.net/qq_27243343/article/details/108707572

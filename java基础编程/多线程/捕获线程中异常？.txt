@@ -1,0 +1,25 @@
+捕获线程中异常：
+	介绍:
+		由于线程的本质特性，使得你不能捕获从线程中逃逸的异常。
+		一旦异常逃出任务的run方法，它就会向外传播到控制台。
+		在JavaSE5之前,你可以使用线程组来捕获这些异常，JavaSE5后就可以用Executor来解决这个问题，因此你就不再需要了解有关线程组的任何知识了。
+	实现：
+		实现UncaughtExceptionHandler接口创建一异常处理器类，
+		把异常处理器类绑定到线程。
+		绑定3方式:
+			1.
+				线程引用设置异常处理器thread.setUncaughtExceptionHandler
+			2.
+				修改Executor产生线程的方式，给其传递一个ThreadFactory,该工厂将在每个新创建的Thread对象上附着一个Thread.UncaughtExceptionHandler。
+			3.
+				Thread.setDefaultUncaughtExceptionHandler(new MyUncaughtExceptionHandler());
+	例：
+		./案例/线程异常/
+
+
+
+？
+线程池中的线程异常
+当执行方式是 execute 方法时，在控制台会打印堆栈异常：
+当执行方式是 submit 方法时，在控制台不会打印堆栈异常：
+	https://blog.csdn.net/qq_27243343/article/details/108707572

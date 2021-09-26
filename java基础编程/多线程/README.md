@@ -1,7 +1,7 @@
 # Java并发编程：
 [什么并发(了解什么是线程、为什么要有线程)](https://github.com/yuyumyself/SHARE_CONTENT2/blob/master/java%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%B6%E5%8F%91.txt)
 
-[线程的相关内容(了解线程的一些概念。可后续在看)](https://github.com/yuyumyself/SHARE_CONTENT2/blob/master/java%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C.txt)
+[线程的相关内容(了解线程的一些概念。可后续在看)](https://github.com/ShareCookies/SHARE_CONTENT2/blob/master/java%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9.txt)
 
 - 线程的生命周期
 - 守护线程与用户线程

@@ -1,0 +1,11 @@
+
+管道输入/输出流和普通的文件输入/输出流或者网络输入/输出流不同之处在于，它主要用于线程之间的数据传输，而传输的媒介为内存。
+管道输入/输出流主要包括了如下4种具体实现：
+	PipedOutputStream、PipedInputStream、 PipedReader和PipedWriter，前两种面向字节，而后两种面向字符。
+
+	附：
+		对于Piped类型的流，必须先要进行绑定，也就是调用connect()方法，如果没有将输入/输 出流绑定起来，对于该流的访问将会抛出异常。
+例：
+	创建printThread，它用来接受main线程的输入，
+	任何 main线程的输入均通过PipedWriter写入，而printThread在另一端通过PipedReader将内容读出 并打印。
+	Piped.java

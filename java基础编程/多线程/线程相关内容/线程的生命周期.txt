@@ -1,0 +1,112 @@
+线程的生命周期：
+	介绍：
+		Java中任何对象都有生命周期，当对象创建完成时生命周期就开始了。
+	线程生命周期：
+		介绍：
+			线程生命周期阶段能划分为：新建状态（New），就绪状态（Runnable）,运行状态（Running）,阻塞状态（Blocked）,死亡状态（Terminated）。
+			不同的状态表明了线程当前正在进行的活动。
+		新建状态（New）：
+			创建一个线程对象后（即new后），还没有调用start()方法，该线程对象就处于新建状态。
+			此时仅仅由jvm为其分配了内存，没有表现出任何线程的动态特征。
+		运行状态（Runnable）：
+			Java 线程将操作系统中的就绪和运行两种状态笼统地称作“运行中”
+
+			就绪状态（Runnable）：
+				当线程对象调用start()后，该线程就进入就绪状态（或叫可运行状态）。
+				此时线程位于可运行池中，具备了可运行条件，能否运行得等待系统的调度。
+			运行状态（Running）：
+				如果处于就绪状态的线程获得cpu使用权，则开始执行run()中的线程执行体，该线程就处于运行状态。
+				注：
+					1.一个线程不可能一直处于运行状态（除非线程执行体够短一下子执行完），
+					因为当线程使用完系统分配的时间后就会被剥夺占用的cpu资源，让其余线程获得执行机会。
+					2.只有处于就绪状态的线程才可能转换到运行状态。
+		阻塞状态（Blocked）：
+			阻塞状态，表示线程阻塞于锁
+			例：
+				获取锁没获取到进入阻塞状态。
+				？
+					主动放弃锁了什么状态
+		等待状态(WAITING):
+			等待状态，表示线程进入等待状态，
+			进入该状态表示当前线程需要等待其他线程做出一些特定动作。
+			例：
+				/线程通信/等待、通知机制.txt
+		超时等待状态(TIME_WAITING)
+			超时等待状态， 该状态不同于WAITING,它是可以在指定的时间自行返回的
+			
+			例：
+				Thread.sleep(ms);
+					使一个线程从运行态进入阻塞状态（睡眠阻塞），不释放锁，指定时间后自动苏醒并返回到可运行状态。
+		附：
+			可理解为等待是主动放弃的。超时是被动的
+		终止状态TERMINATED：
+			表示当前线程已经执行完毕。
+				线程的run()方法中代码正常执行完毕。
+				或者线程抛出一个未捕获的异常或错误，线程则进入死亡状态，线程结束。
+		注：
+			./附件/java线程状态变迁.png
+			pdf176
+		附：
+			所以又3类原因会导致线程的运行状态改变。
+				1.java代码控制 2.jvm控制 3.操作系统自动控制的。
+			例：
+				1.java代码控制
+					比如调用sleep()、wait()、Thread.join()
+					park和unpark：
+						LockSupport提供了park和unpark进行线程的挂起和恢复操作：
+							https://blog.csdn.net/opensure/article/details/53349698?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
+					...
+					附：
+						在较早的代码中,也可能会看到用suspend()和resume()来阻塞和唤醒线程,但是在现代Java中这些方法被废止了(因为可能导致死锁)。?
+						stop()方法也已经被废止了，因为它不释放线程获得的锁，
+						并且如果线程处于不一致的状态(受损状态)，其他任务可以在这种状态下浏览并修改它们。这样所产生的问题是微妙而难以被发现的。
+					
+
+				
+				2.jvm控制
+					准备执行同步方法或同步代码块时获取不到锁进入了等锁池。
+						即：
+						任务试图在某个对象上调用其同步控制方法，但是对象锁不可用，因为另一个任务已经获取了这个锁。
+						直到线程获取到了想要的锁资源（那是谁把锁分给它了？等待过程线程是处于阻塞队列中？），进入Runnable状态；
+					
+					
+					...:
+						https://zhidao.baidu.com/question/370475099.html
+						https://www.cnblogs.com/duanxz/p/3733179.html
+				3.操作系统
+					1.耗时的输入输出操作。
+					...
+					//正在执行的线程在某些情况下会失去cpu的使用权，进入阻塞状态。
+					//错：此时线程不能进入排队队列，只有引起阻塞的原因消除后才能转入就绪状态。
+					唤醒：
+						如果线程遇到了IO阻塞，无能为力，因为IO是操作系统实现的，Java代码并没有办法直接接触到操作系统。
+						
+					2.任务在等待某个输入输出完成。
+					附：
+						是只针对线程的吗？
+							应该是有系统决定的，可能线程可能进程吧。
+					？那此时java线程的状态会改变吗
+		
+线程状态查看：
+例：
+	./附件/ThreadState.java
+1. jps 获取java进程id。
+	例：运行该示例，打开终端或者命令提示符，键入“jps”，输出如下。
+		611
+		935 Jps
+		929 ThreadState
+		可以看到运行示例对应的进程ID是929，
+2. jstack 进程id 获取进程的栈信息。
+	部分输出如下：
+	// BlockedThread-2线程阻塞在获取Blocked.class示例的锁上
+	"BlockedThread-2" prio=5 tid=0x00007feacb05d000 nid=0x5d03 waiting for monitor entry [0x000000010fd58000]
+		java.lang.Thread.State: BLOCKED (on object monitor)
+	// BlockedThread-1线程获取到了Blocked.class的锁
+	"BlockedThread-1" prio=5 tid=0x00007feacb05a000 nid=0x5b03 waiting on condition [0x000000010fc55000]
+		java.lang.Thread.State: TIMED_WAITING (sleeping)
+	// WaitingThread线程在Waiting实例上等待
+	"WaitingThread" prio=5 tid=0x00007feacb059800 nid=0x5903 in Object.wait() [0x000000010fb52000]
+		java.lang.Thread.State: WAITING (on object monitor)
+	// TimeWaitingThread线程处于超时等待 
+	"TimeWaitingThread" prio=5 tid=0x00007feacb058800 nid=0x5703 waiting on condition [0x000000010fa4f000] 
+		java.lang.Thread.State: TIMED_WAITING (sleeping)	
