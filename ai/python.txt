@@ -1,0 +1,23 @@
+https://www.liaoxuefeng.com/wiki/1016959663602400/1017063413904832
+python介绍：
+	当我们编写Python代码时，我们得到的是一个包含Python代码的以.py为扩展名的文本文件。
+	Python是一门解释性语言，通常我们编写Python代码并存放到.py为扩展名的文本文件中。
+	要运行代码，就需要Python解释器去执行.py文件。
+
+python安装：
+	...
+
+	附：
+	直接运行py文件
+		有同学问，能不能像.exe文件那样直接运行.py文件呢。
+		在Windows上是不行的，但是，在Mac和Linux上是可以的，
+		1. 方法是在.py文件的第一行加上一个特殊的注释：
+			#!/usr/bin/env python3
+			print('hello, world')
+		2. 然后，通过命令给hello.py以执行权限：
+			$ chmod a+x hello.py
+			就可以直接运行hello.py了，比如在Mac下运行：
+
+	Python的交互模式和直接运行.py文件有什么区别呢：
+		直接输入python进入交互模式，相当于启动了Python解释器，但是等待你一行一行地输入源代码，每输入一行就执行一行。
+		直接运行.py文件相当于启动了Python解释器，然后一次性把.py文件的源代码给执行了，你是没有机会以交互的方式输入源代码的。
