@@ -8,20 +8,19 @@ https://www.cnblogs.com/fengsehng/p/6048610.html
 		线程的创建本身也耗费资源。
 			大量的线程回收也会给GC带来很大的压力。
 	什么是线程池：
-		线程池的出现让线程可进行复用。
-			线程池顾名思义就是事先创建若干个可执行的线程放入一个池（容器）中，需要的时候从池中获取线程不用自行创建，使用完毕不需要销毁线程而是放回池中，从而减少创建和销毁线程对象的开销。
+		线程池顾名思义就是事先创建若干个可执行的线程放入一个池（容器）中，需要的时候从池中获取线程不用自行创建，使用完毕不需要销毁线程而是放回池中，从而减少创建和销毁线程对象的开销。
+			线程池的出现让线程可进行复用。
 	
 Executor框架：（执行器(者)框架）
 	Java 5引入了Executor框架，来简化并发编程的操作。
 	Executor框架的内容包括：
 		规范接口：
-			Executor接口
-		Executor框架提供的线程池实现类：（通过该类可以创建线程池）
+			Executor接口、ExecutorService接口
+		线程池实现类：（通过该类可以创建线程池。规范接口实现类。）
 			ThreadPoolExecutor类
 		线程池工具类：
 			Executors，工厂方法类，通过该类可以快速创建线程池。
-		等
-	
+
 	Executor（规范接口）：
 		介绍：
 			规范接口，我称其为任务执行器(者)。
@@ -89,13 +88,17 @@ Executor框架：（执行器(者)框架）
 			corePoolSize:核心线程数。
 				默认情况下核心线程会一直存活，即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为true。
 			maximumPoolSize:线程池所能容纳的最大线程数。
-				超过这个数的线程将被阻塞。当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效。
-			keepAliveTime:非核心线程的闲置超时时间，超过这个时间就会被回收。
-			unit:指定keepAliveTime的单位，如TimeUnit.SECONDS。
+				超过这个数的线程将被阻塞。
+				当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效。
+			keepAliveTime:
+				非核心线程的闲置超时时间，超过这个时间就会被回收。
+			unit:
+				指定keepAliveTime的单位，如TimeUnit.SECONDS。
 				当将allowCoreThreadTimeOut设置为true时对corePoolSize生效。
 			workQueue:线程池中的任务队列.
 				常用的有三种队列，SynchronousQueue,LinkedBlockingDeque,ArrayBlockingQueue。
-			threadFactory:线程工厂，提供创建新线程的功能。ThreadFactory是一个接口，只有一个方法
+			threadFactory:线程工厂，提供创建新线程的功能。
+				ThreadFactory是一个接口，要重写其newThread方法。
 			RejectedExecutionHandler：任务拒绝策略
 				 <dt>Rejected tasks</dt>
 				 1. <dd>New tasks submitted in method {@link #execute(Runnable)} will be <em>rejected</em> when the Executor has been shut down, and also when the Executor uses finite bounds for both maximum threads and work queue capacity, and is saturated.  

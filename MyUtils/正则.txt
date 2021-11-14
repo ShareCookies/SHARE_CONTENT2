@@ -66,6 +66,13 @@ js：
 			...
 	正则替换：
 		var str='aab,《5455》《5455》bcc,a,a';
-		var reg=/《.*?》/;
+		var reg=/(\n)*?》/;
 		str=str.replace(reg,';');
 		？规则写在两个斜杆中吗
+		
+		例：
+			var str="fds1\n\n\nfd\n\n";
+			while(str.includes("\n\n")){
+				var reg=/(\n){2,}/;
+				str=str.replace(reg,'\n');
+			}

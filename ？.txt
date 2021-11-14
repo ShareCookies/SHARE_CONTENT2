@@ -1,1 +1,12 @@
 serverless
+2021
+	https？
+		ssl
+			https://blog.csdn.net/xiaoming100001/article/details/81109617/
+	http等实现
+		
+	Lombok：
+		Lombok的基本使用
+			https://www.jianshu.com/p/2543c71a8e45
+		为什么有的程序员不推荐使用Lombok！		
+			https://cloud.tencent.com/developer/article/1589073

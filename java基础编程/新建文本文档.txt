@@ -1,3 +1,10 @@
+位移操作符的存在有什么意义？
+	https://www.zhihu.com/question/343184920
+	位移后还是要重新复制，不然还是不会改变
+        int i = 1;
+        System.err.println(i<<1);
+        System.err.println(i);
+
 ?
 	方法参数用final的意义
 	class Car {

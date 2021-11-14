@@ -31,6 +31,8 @@ fastJson转换：
 			先对象转json字符串，在字符串转json对象
 	JAVA对象转JSON字符串：
 		String s = JSON.toJSONString(对象);
+		附：
+			java对象属性要有get set或.
 	JSON字符串转JSON对象：
 		String s ="{\"action\":\"add\",\"id\":\"1\",\"ordinal\":8,\"organUnitFullName\":\"testJSON\",\"parent\":\"0\",\"suborderNo\":\"58961\"}";
 		JSONObject jsonObject = JSON.parseObject(s);

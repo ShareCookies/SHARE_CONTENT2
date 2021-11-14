@@ -39,7 +39,8 @@
 	详情：http://blog.csdn.net/windle89/article/details/70788519
 3.查看端口占用情况：
 	https://www.cnblogs.com/wangtao1993/p/6144183.html
-	lsof -i:8000 查看端口占用情况
+	1. 用于查看指定的端口号的进程情况
+		netstat -tunlp |grep 端口号，用于查看指定的端口号的进程情况
 	2.查看端口：
 	netstat -anp
 		https://blog.csdn.net/wll_1017/article/details/47333883

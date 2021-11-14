@@ -1,0 +1,55 @@
+https://www.cnblogs.com/wangcheng-blog/p/jvm_tools.html
+5.javap
+	javap是一个反编译工具，也可以查看class文件中的信息。
+	基本语法如下：javap [ options ] classes
+
+6.jdb
+	jdb是一个断点工具，便于在线调试。
+	...
+7.jps
+	jps用于查看正在运行的JVM进程号。
+	例：
+		如果是查看本机运行的JVM实例，直接输入jps
+		如果要查看运行的JVM的全限定名，可以输入jps -l
+		
+		如果要查看运行的JVM的main方法传入的参数可以输入jps -m
+		如果要查看运行的JVM的各个参数，可以输入jps -v
+		如果要只要查看运行的进程ID，可以输入jps -q
+8.jstat
+	jstat用于查看运行的JVM实例的运行数据。基本语法如下：
+9.jstatd
+	jstatd同样用于监控JVM实例，不同于jstat的是它通过RMI方式
+10.jvisualvm
+	jvisualvm是JDK提供的图形化jstat工具。
+	可以监控本地的JVM实例，也可以通过JMX或RMI的方式监控远程的JVM实例。
+11.jinfo
+	jinfo用于打印特定JVM实例的配置信息。
+12.jmap
+	看JVM的so对象内存占用情况或指定的JVM实例堆内存情况。
+		jmap -J-d64 29869
+
+		jmap -J-d64 -heap 29869
+
+
+	如果我们想查看这个JVM实例堆里对象的详细情况可以输入
+
+		jmap -J-d64 -histo:live 29869
+
+	加入live参数是只看到目前堆里存活的对象情况。
+
+		jmap -J-d64 -finalizerinfo 29869
+
+	查看等待回收的对象
+
+		最常用的是我们会生成一个dump文件然后使用jhat工具来查看，比如生成29869这个进程的dump文件可以这样:
+
+		jmap -J-d64 -dump:format=b,file=29869.bin 29869
+13.jhat
+14.jstack
+	jstack用于打印指定进程的调用堆栈信息，基本语法如下：
+
+	jstack [ option ] pid
+
+	如果是在64位机器上运行，可以加一个-J-d64参数。
+
+	jstack -J-d64 29869

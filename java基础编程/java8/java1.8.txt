@@ -31,7 +31,9 @@ Java8新特性：
 			Predicate 是一个可以指定入参类型，并返回 boolean 值的函数式接口。
 			它内部提供了一些带有默认实现的方法，可以被用来组合一个复杂的逻辑判断（and, or, negate）。
 			例：
+				// 实现并实例化了一个断言，且对断言的抽象方法test，进行了实现。
 				Predicate<String> predicate = (s) -> s.length() > 0;
+				// 调用
 				predicate.test("foo");              // true
 				predicate.negate().test("foo");     // false
 		Function？
@@ -170,9 +172,12 @@ Stream 流
 
 		中间操作：filter 过滤
 			
-			Filter 的入参是一个 Predicate, 通过断言我们能够筛选出我们需要的集合元素。
-			它的返参同样 是一个 Stream 流，我们可以通过 foreach 终端操作，来打印被筛选的元素：
-
+			Filter 的入参是一个 Predicate, 
+				filter 会遍历Stream 流 ，并通过 断言 判断出当前元素是否为true 是则最终会形成一个Stream 流返回。
+			它的返参同样 是一个 Stream 流
+			附：
+				1. 即通过Filter我们能够筛选出我们需要的集合元素
+				2. 我们可以在filter后通过 foreach 终端操作，来打印被筛选好的元素。
 			stringCollection
 				.stream()
 				.filter((s) -> s.startsWith("a"))
