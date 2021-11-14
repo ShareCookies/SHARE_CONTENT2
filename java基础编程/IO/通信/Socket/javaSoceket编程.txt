@@ -1,0 +1,72 @@
+附：
+	套接字
+		https://www.cnblogs.com/xshun/p/11991482.html#_caption_1
+	LINUX实现socket原理：
+		https://blog.csdn.net/vipshop_fin_dev/article/details/102966081
+
+套接字编程：
+	java socket编程其实是linux socket编程的更简化版本。
+		因为操作系统提供了套接字api，java也是调用它来实现网络编程的(无需关心它如何传输，这属于网络其他层次的工作。)。
+			接收了？应用程序去监听它，还是它主动调
+			监听的话那如果有多条信息了
+	而且java socket编程隔离了差异化。
+		不同系统间的套接字api估计还是不一样的吧，但我们使用java编程的话估计都是一样的吧。
+		因为这里的具体实现都有jvm本地方法实现了吧。
+java socket编程名词解释：
+	InetAddress类和InetSocketAddress类
+		https://www.cnblogs.com/bfcs/p/10787114.html
+		https://www.cnblogs.com/Scorpicat/p/12035687.html
+		
+		InetAddress.java:	
+			/**
+			 * This class represents an Internet Protocol (IP) address.
+			 *
+			 */
+			InetAddress类代表了个网络地址(ip地址)。
+		InetSocketAddress.java:	
+			/**
+			 *
+			 * This class implements an IP Socket Address (IP address + port number)
+			 * InetAddress类代表了个网络套接字地址(即ip+端口)。
+			 * <p>
+			 * It provides an immutable object used by sockets for binding, connecting, or as returned values.
+			 * <p>
+			 * 给socket编程使用，如绑定，连接等
+			 */
+			 附：
+				1. new ServerSocket(6677);内部就是用InetSocketAddress来包裹ip和端口。
+TCP编程
+	https://www.cnblogs.com/Scorpicat/p/12059021.html
+	//建立服务器
+    ServerSocket server = new ServerSocket(6677);
+	//阻塞式接收Socket
+	Socket client = server.accept();
+	
+	//新建客户端Socket
+	Socket client = new Socket("localhost",6677);
+	
+URL
+	套接字和url关系？
+	url用来进行一次性资源获取的吗，
+	url也是通过套接字实现的吗
+	例：
+		https://www.cnblogs.com/Scorpicat/p/12035835.html
+		
+		
+UDP编程:
+	例：https://www.cnblogs.com/Scorpicat/p/12050140.html
+	DatagramSocket()
+	
+	
+
+	
+
+
+
+    
+
+java与linux实现socket原理：
+	https://blog.csdn.net/vipshop_fin_dev/article/details/102966081
+	java的socket实现是通过调用操作系统的socket api实现的,下面图表展示其调用关系：
+		java与linux api调用关系.png
+

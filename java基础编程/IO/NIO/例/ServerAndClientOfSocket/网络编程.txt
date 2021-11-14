@@ -1,0 +1,139 @@
+//阻塞式接收Socket
+Socket client = server.accept();
+client.getInputStream()
+获取输入流：
+	Socket.java:
+		/**
+		 * Gets an InputStream for this socket.
+		 */
+		protected synchronized InputStream getInputStream() throws IOException {
+			synchronized (fdLock) {
+				if (isClosedOrPending())
+					throw new IOException("Socket Closed");
+				if (shut_rd)
+					throw new IOException("Socket input is shutdown");
+				if (socketInputStream == null)
+					socketInputStream = new SocketInputStream(this);
+			}
+			return socketInputStream;
+		}
+	SocketInputStream.java:
+		/**
+		 * Creates a new SocketInputStream. Can only be called
+		 * by a Socket. This method needs to hang on to the owner Socket so
+		 * that the fd will not be closed.
+		 * @param impl the implemented socket input stream
+		 */
+		//这个input作用是什么了？
+		SocketInputStream(AbstractPlainSocketImpl impl) throws IOException {
+			super(impl.getFileDescriptor());
+			this.impl = impl;
+			socket = impl.getSocket();
+		}
+	FileInputStream.java:
+		套接字输入流调用了父类的输入流？
+		/**
+		 * Creates a <code>FileInputStream</code> by using the file descriptor
+		 * <code>fdObj</code>, which represents an existing connection to an
+		 * actual file in the file system.
+		 * <p>
+		 * If there is a security manager, its <code>checkRead</code> method is
+		 * called with the file descriptor <code>fdObj</code> as its argument to
+		 * see if it's ok to read the file descriptor. If read access is denied
+		 * to the file descriptor a <code>SecurityException</code> is thrown.
+		 * <p>
+		 * If <code>fdObj</code> is null then a <code>NullPointerException</code>
+		 * is thrown.
+		 * <p>
+		 * This constructor does not throw an exception if <code>fdObj</code>
+		 * is {@link java.io.FileDescriptor#valid() invalid}.
+		 * However, if the methods are invoked on the resulting stream to attempt
+		 * I/O on the stream, an <code>IOException</code> is thrown.
+		 *
+		 * @param      fdObj   the file descriptor to be opened for reading.
+		 * @throws     SecurityException      if a security manager exists and its
+		 *                 <code>checkRead</code> method denies read access to the
+		 *                 file descriptor.
+		 * @see        SecurityManager#checkRead(java.io.FileDescriptor)
+		 */
+		public FileInputStream(FileDescriptor fdObj) {
+			SecurityManager security = System.getSecurityManager();
+			if (fdObj == null) {
+				throw new NullPointerException();
+			}
+			if (security != null) {
+				security.checkRead(fdObj);
+			}
+			fd = fdObj;
+			path = null;
+
+			/*
+			 * FileDescriptor is being shared by streams.
+			 * Register this stream with FileDescriptor tracker.
+			 */
+			fd.attach(this);
+		}
+//建立连接
+DataInputStream dis = new DataInputStream(client.getInputStream());//选择需要的合适的流，不需要如本文的流
+//接收数据并处理
+Object obj1 = dis.readUTF();
+数据的读取：
+	最终还是调用FileInputStream的read？
+	
+	DataInputStream.java:
+		public final String readUTF() throws IOException {
+			return readUTF(this);
+		}
+		public final static String readUTF(DataInput in) throws IOException {
+			...
+			in.readFully(bytearr, 0, utflen);
+			...
+		}
+		 /**
+		 * The input stream to be filtered.
+		 */
+		protected volatile InputStream in;
+		
+		public final void readFully(byte b[], int off, int len) throws IOException {
+			if (len < 0)
+				throw new IndexOutOfBoundsException();
+			int n = 0;
+			while (n < len) {
+				//即调用SocketInputStream.java的read
+				int count = in.read(b, off + n, len - n);
+				if (count < 0)
+					throw new EOFException();
+				n += count;
+			}
+		}
+	SocketInputStream.java：
+		/**
+		 * Reads into a byte array <i>b</i> at offset <i>off</i>,
+		 * <i>length</i> bytes of data.
+		 * @param b the buffer into which the data is read
+		 * @param off the start offset of the data
+		 * @param length the maximum number of bytes read
+		 * @return the actual number of bytes read, -1 is
+		 *          returned when the end of the stream is reached.
+		 * @exception IOException If an I/O error has occurred.
+		 */
+		public int read(byte b[], int off, int length) throws IOException {
+			return read(b, off, length, impl.getTimeout());
+		}
+		....
+		/**
+		 * Reads into an array of bytes at the specified offset using
+		 * the received socket primitive.
+		 * @param fd the FileDescriptor
+		 * @param b the buffer into which the data is read
+		 * @param off the start offset of the data
+		 * @param len the maximum number of bytes read
+		 * @param timeout the read timeout in ms
+		 * @return the actual number of bytes read, -1 is
+		 *          returned when the end of the stream is reached.
+		 * @exception IOException If an I/O error has occurred.
+		 */
+		private native int socketRead0(FileDescriptor fd,
+									   byte b[], int off, int len,
+									   int timeout)
+			throws IOException;
