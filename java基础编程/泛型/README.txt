@@ -1,43 +1,45 @@
 https://blog.csdn.net/s10461/article/details/53941091
 https://blog.csdn.net/dayang0307/article/details/101382010
-介绍:
-	泛型：泛型实现了”参数化类型”的概念，使代码可以应用于多种类型。
-	许多原因促成了泛型的出现。
-	其中一个原因就是创建容器类。
-		通常我们只会用容器存储一种类型的对象，即指定容器要持有什么类型的对象，
-		而且由编译器来保证类型的正确性，而且当你取出对象时自动就是正确的类型。
-		注：
-			使用Object就无法达到这种效果。
-	例子：一个碗可以装很多种食物，加上范型，比如是面，那么这个碗只能是装上面这类的食物的！
-	例:
-		用来规定你这个集合中出现的数据类型
-		TreeSet<Displayer> displayerSet = new TreeSet<Displayer>();
-		//一个二叉树集合，这个集合里的参数只能是Displayer类displayerSet.add(displayer);
-泛型特性:
-	泛型只在编译阶段有效。
-	例：
-		List<String> stringArrayList = new ArrayList<String>();
-		List<Integer> integerArrayList = new ArrayList<Integer>();
 
-		Class classStringArrayList = stringArrayList.getClass();
-		Class classIntegerArrayList = integerArrayList.getClass();
+泛型：
+	泛型实现了”参数化类型”的概念，使代码可以应用于多种类型。
+	附：
+		1. 许多原因促成了泛型的出现。
+			其中一个原因就是创建容器类。
+				通常我们只会用容器存储一种类型的对象，
+					即指定容器要持有什么类型的对象，
+				而且由编译器来保证类型的正确性，
+					即当你取出对象时即可指定正确的类型。
+				注：
+					使用Object就无法达到这种效果。
+			例:
+				
+				ArrayList<String> displayerSet = new ArrayList<String>(); //用来规定你这个集合中出现的数据类型
+				for (String s: displayerSet){}
+		2. 泛型只在编译阶段有效。
+			例：（对于这个例子不好）
+				List<String> stringArrayList = new ArrayList<String>();
+				List<Integer> integerArrayList = new ArrayList<Integer>();
 
-		if(classStringArrayList.equals(classIntegerArrayList)){
-			Log.d("泛型测试","类型相同");
-		}
-		输出结果：D/泛型测试: 类型相同。
+				Class classStringArrayList = stringArrayList.getClass();
+				Class classIntegerArrayList = integerArrayList.getClass();
 
-	通过上面的例子可以证明，在编译之后程序会采取去泛型化的措施。
-		在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，
-		并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。？
-		也就是说，泛型信息不会进入到运行时阶段。
-			JVM是运行字节码的，所有的泛型对于虚拟机来讲都是属于普通类。
-			泛型的本质就是利用编译器实现的Java语法糖，编译器将java文件转换为class文件前，会进行泛型擦除，所以在反编译的class文件中，是看不到泛型声明的
-	对此总结成一句话：泛型类型在逻辑上看以看成是多个不同的类型，实际上都是相同的基本类型。
+				if(classStringArrayList.equals(classIntegerArrayList)){
+					System.err.println("类型相同");
+				}
+				输出结果：类型相同。
+
+			通过上面的例子可以证明，在编译之后程序会采取去泛型化的措施。
+				在编译过程中，正确检验泛型结果后，会将泛型的相关信息擦出，
+				并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法。？
+				也就是说，泛型信息不会进入到运行时阶段。
+					JVM是运行字节码的，所有的泛型对于虚拟机来讲都是属于普通类。
+					泛型的本质就是利用编译器实现的Java语法糖，编译器将java文件转换为class文件前，会进行泛型擦除，所以在反编译的class文件中，是看不到泛型声明的
+			对此总结成一句话：泛型类型在逻辑上看以看成是多个不同的类型，实际上都是相同的基本类型。
 
 
 
-泛型的使用：	
+泛型的应用：	
 	泛型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。
 泛型类:
 	介绍:
@@ -71,27 +73,26 @@ https://blog.csdn.net/dayang0307/article/details/101382010
 				} 
 
 泛型接口:
-	https://www.cnblogs.com/alsf/p/5697548.html
 	泛型接口与泛型类的定义及使用基本相同。	
 	注:
 	父类|接口有泛型时:
 		父类或接口有泛型时，子类可指定泛型具体值，或子类可不指定泛型具体值继续用T来代指约束类
 		1.子类指定泛型的参数类型:
 			public class WordsDao extends BaseDaoHibImpl<String>
-			//实例化该类时部分地方法只能传字符串参数。
+			//实例化该类时，部分的方法只能传字符串参数。
 		2.子类不指定泛型具体值:
 			public class WordsDao<T> extends BaseDaoHibImpl<T>
-			//实例化该子类时在确认泛型参数实际类型。	
+			//实例化该子类时，再确认泛型参数实际类型。	
 泛型方法:
 	介绍：
 		泛型方法，是在调用方法的时候指明泛型的具体类型 。
-	声明泛型方法:
-		在public 与 返回值中间 使用 <T>。
-		<T>表明该方法将使用泛型类型T，此时才可以在方法中使用泛型类型T（此时T才可以出现在这个泛型方法的任意位置）。
-		注：
-			1.只有声明了<T>的方法才算泛型方法，泛型类中的使用了泛型的成员方法并不是泛型方法。
-			2.与泛型类的定义一样，此处T可以随便写为任意标识
-			3.泛型的数量也可以为任意多个？
+		声明泛型方法:
+			在public 与 返回值中间 使用 <T>。
+			<T>表明该方法将使用泛型类型T，此时才可以在方法中使用泛型类型T。
+				//即此时T才可以出现在这个泛型方法的任意位置
+			附：
+				1.只有声明了<T>的方法才算泛型方法，泛型类中的使用了泛型的成员方法并不是泛型方法。
+				3.泛型的数量也可以为任意多个？
 	例：
 		public <T> T genericMethod(Class<T> tClass)throws InstantiationException ,
 		  IllegalAccessException{
@@ -110,9 +111,12 @@ https://blog.csdn.net/dayang0307/article/details/101382010
 
 			}
 			*/
-	注：
+	附：
+		静态方法与泛型：
+			静态方法无法访问类上定义的泛型；
+			即：如果静态方法要使用泛型的话，必须将静态方法定义成泛型方法。
+	附：
 		泛型类中的泛型方法有些地方要注意下：
-			https://blog.csdn.net/s10461/article/details/53941091
 			  class GenerateTest<T>{
 				public void show_1(T t){
 					System.out.println(t.toString());
@@ -127,36 +131,18 @@ https://blog.csdn.net/dayang0307/article/details/101382010
 					System.out.println(t.toString());
 				}
 			}
-		静态方法与泛型：
-			静态方法无法访问类上定义的泛型；即：如果静态方法要使用泛型的话，必须将静态方法也定义成泛型方法 。
 泛型通配符：
 	https://zhuanlan.zhihu.com/p/35975079
-	无界通配符：
-		<?>
-		
-		例：
-			? getFirst()
-			void setFirst(?)
-			没有上界也没有下界。
-			我们唯一能确定的就是第一个getFirst方法返回的可以赋给一个Object类型的变量。
-			而setFirst方法干脆就不能以任何形式调用。但是可以调用setFirst(null),但好像没有什么意义。
+	https://www.cnblogs.com/Guoyutian/p/5079518.html
+	介绍：
+		//1. 泛型可用于类、接口、方法的定义。2. 泛型指明这里将只能用一个类型，但这里类型还未定义。
+			//定义这里将应用一个类型
+		//1.通配符是配合泛型实例化用的。2. 通过变量(或形参)接收，实例化泛型类等时，可在变量的<>中通过通配符为泛型指明实例化的泛型范围 
+			//用来为泛型指明范围的。
 
-			List<?>表示“具有某种特定类型的非原生List，只是我们不知道那种类型是什么。
-			附：
-				这种通配符类型很"脆弱"，为什么要有这种类型呢。
-				corejava解释它对于很多简单的操作非常有用，如这个方法用来测试一个Pair是否包含一个null引用，它不需要实际的类型：
-				public static boolean hasNulls(Pair<?> p){
-					return p.getFirst() == null || p.getSecond() == null;
-				}
-
-
-	超类型通配符：
-		<? super  Father>
-		例：
-			void setFirst(? super Manager)
-			这个类型是有“下界”的，就是说传来的参数只要是Manager类或者它的子类，那么这样的传参都是可以接受的，编译器由于知道下界，这些传参就是安全的。
 	泛型上下边界：
-		为泛型添加上下边界，即传入的类型实参必须是指定类型的子类型：
+		为泛型添加上下边界，即传入的类型实参必须是指定类型的子类型。
+		例：
 			Generic<? extends  Father> generic = new Generic<Son>(new Son());	
 		注：
 			未添加上边界，子类泛型不能与父类泛型匹配。
@@ -165,9 +151,38 @@ https://blog.csdn.net/dayang0307/article/details/101382010
 				//        Generic<Father> generic = new Generic<Son>(new Son());
 				//        Incompatible types.
 				//        Required:Generic<com.china.hcg.eas.business.Father>
-				//        Found:Generic<com.china.hcg.eas.business.Son>
+				//        Found:Generic<com.china.hcg.eas.business.Son>	
+	超类型通配符：
+		void setFirst(Generic<? super Father> test){}
+		这个类型是有“下界”的，就是说传来的参数只要是Father类或者它的子类，那么这样的传参都是可以接受的。
+		编译器由于知道下界，这些传参就是安全的。
+
+		例：
+			public void processElements(List<? extends Father> elements){
+				for(Father a : elements){
+					System.out.println();
+				}
+			}
+	无限定通配符：
+		没有上界也没有下界。
+		例：
+			void getFirst(Generic<?> test){}
+				//我们唯一能确定的就是第一个getFirst方法返回的可以赋给一个Object类型的变量。
+			
+			void setFirst(Generic<?> test){}
+				//而setFirst方法干脆就不能以任何形式调用。
+				//但是可以调用setFirst(null),但好像没有什么意义。	
+		附：
+			无界通配符类型很"脆弱"，为什么要有这种类型呢。
+			corejava解释它对于很多简单的操作非常有用，如这个方法用来测试一个p的指定属性是否包含一个null引用，因此它不需要实际的类型：
+			public static boolean hasNulls(Generic<?> p){
+				return p.getFirst() == null;
+			}
+
+
+
 注：
-	泛型数组：
+	泛型数组：？
 		在java中是”不能创建一个确切的泛型类型的数组”的。
 		在运行时JVM是不知道泛型信息的，如果可以进行泛型数组的声明，上面说的这种情况在编译期将不会出现任何的警告和错误，只有在运行时才会出错。
 附：
