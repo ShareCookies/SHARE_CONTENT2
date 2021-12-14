@@ -209,6 +209,18 @@ Map接口：
 							附：
 								为什么hashcode码可能会相同了，
 								因为可能出现4+4等3+5的情况。
+							例：
+							两个对象的 hashCode() 相同，equals() 不一定 true。
+								String str1 = "通话";
+								String str2 = "重地";
+								System. out. println(String. format("str1：%d | str2：%d",  str1. hashCode(),str2. hashCode()));
+								System. out. println(str1. equals(str2));
+								执行的结果：
+								str1：1179395 | str2：1179395
+								false
+								代码解读：
+									String对象重写了hashcode方法。
+									虽然“通话”和“重地”的 hashCode() 相同，然而 equals() 则为 false。
 				2.
 				* 一个类的实例如果想放在hashset中存储的话，建议同时重写equals和hashcode方法，并保持一定的契约关系。
 				例：

@@ -1,0 +1,66 @@
+运算符:
+	https://www.cnblogs.com/shuaiding/p/11124974.html
+	运算符1：
+		针对2进制而言。
+		&与（均1为1）、|或（有1为1）、~非（取反）、^异或(同0异1)
+	运算符2：
+		...
+		分隔符	   
+		一元运算符	
+		算术运算符
+			除法运算：
+				java中的“/”、“%”运算，其中前者为取整，后者取余数。
+				DecimalFormat：
+					https://blog.csdn.net/qq_35573326/article/details/79974366
+		移位运算符
+		关系运算符	
+			==:
+				对于基本类型和引用类型 == 的作用效果是不同的：
+					基本类型：比较的是值是否相同；
+						例：
+							int n=3;int m=3;用==比较的时候结果是true。
+						？原理了
+					引用类型：比较的是引用是否相同；
+						附：
+							比较的是对象在内存中的地址
+						例：
+
+							String x = "string";
+							String y = "string";
+							String z = new String("string");
+							System.out.println(x==y); // true
+							System.out.println(x==z); // false
+							System.out.println(x.equals(y)); // true
+							System.out.println(x.equals(z)); // true
+							代码解读：
+								因为 x 和 y 指向的是同一个引用，所以 == 也是 true，
+								而 new String()方法则重写开辟了内存空间，所以 == 结果为 false，
+								而 equals 比较的一直是值，所以结果都为 true。
+	
+				
+				注：
+					 equals 默认情况下是引用比较（ equals 本质上就是 ==），
+					 只是很多类重新了 equals 方法，比如 String、Integer 等把它变成了值比较，所以一般情况下 equals 比较的是值是否相等。
+					
+		逻辑运算符	
+		三目运算符	
+		赋值运算符
+		++：
+			https://blog.csdn.net/cuixianlong/article/details/100151895?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&dist_request_id=1328592.11027.16147547357172587&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
+			https://www.jb51.net/article/179905.htm
+			++原理：
+				...
+			例：
+				// 结果0
+				// i++是i用完后，才会把i值拿去加
+				int i =0;
+				System.err.println(i++);
+				// 结果1
+				// ++i是i用前，就会把i值拿去加
+				int j =0;
+				System.err.println(++j);
+				// 结果1
+				//？
+				// i++ 是整个表达式用完才生效。例 这里k++ 并不会因为加了(),就算一个运输 k结果就为1了
+				//int k = 0;
+				//System.err.println((k++)+1);

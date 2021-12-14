@@ -9,11 +9,13 @@
 			return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
 		}
 		Object自带hashCode方法：
-			https://louluan.blog.csdn.net/article/details/41547649?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
-			
 			* @return  a hash code value for this object.
+			* (This is typically implemented by converting the internal address of the object into an integer 
+				所以可理解为hashcode为内存地址，但不同对象可能有同个hashcode
 			public native int hashCode();
 			jvm为对象生成的关键码值(hashCode散列值),关键码值是根据一定的规则将与对象相关的信息（比如对象的存储地址，对象的字段等）映射成一个数值，这个数值称作为散列值。
+				
+			https://louluan.blog.csdn.net/article/details/41547649?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
 		^ (h >>> 16)
 			https://www.cnblogs.com/chuijingjing/p/9405598.html
 			https://www.cnblogs.com/yesiamhere/p/6675067.html
