@@ -1,0 +1,106 @@
+Proxy#newProxyInstance
+	介绍：
+	 * Returns an instance of a proxy class for the specified interfaces
+     * that dispatches method invocations to the specified invocation handler.
+	 返回(实现指定接口)代理类的实例.
+	 代理类将方法调用分派给指定的调用处理程序.
+	 
+	
+    public static Object newProxyInstance(ClassLoader loader,
+                                          Class<?>[] interfaces,
+                                          InvocationHandler h)
+        throws IllegalArgumentException
+    {
+        Objects.requireNonNull(h);
+
+        final Class<?>[] intfs = interfaces.clone();
+       ...
+        /*
+         * Look up or generate the designated proxy class.
+         */
+		 //生成指定代理类
+        Class<?> cl = getProxyClass0(loader, intfs);
+
+        ...
+    }	 
+	 
+Proxy#getProxyClass0	 
+    生成代理类
+    private static Class<?> getProxyClass0(ClassLoader loader,
+                                           Class<?>... interfaces) {
+        .
+        // If the proxy class defined by the given loader implementing the given interfaces exists, this will simply return the cached copy;
+		如果实现给定接口的代理类存在,由指定加载程序定义的。将返回缓存副本
+        // otherwise, it will create the proxy class via the ProxyClassFactory
+		否则将通过代理类工厂创建代理类
+        return proxyClassCache.get(loader, interfaces);
+    }
+ProxyClassFactory
+	介绍：
+	 * A factory function that generates, defines and returns the proxy class given
+     * the ClassLoader and array of interfaces.
+	 一工厂方法，生成一代理类，
+		该类要有由指定加载器加载且实现了指定接口？
+		
+	    @Override
+        public Class<?> apply(ClassLoader loader, Class<?>[] interfaces) {
+			//验证接口是否符合要求
+            ...
+
+            /*
+             * Record the package of a non-public proxy interface so that the
+             * proxy class will be defined in the same package.  Verify that
+             * all non-public proxy interfaces are in the same package.
+             */
+			//如果接口为public，则代理类包路径赋值为默认的代理包路径com.sun.proxy
+			//否则赋值为包名!
+            ...
+            if (proxyPkg == null) {
+                // if no non-public proxy interfaces, use com.sun.proxy package
+                proxyPkg = ReflectUtil.PROXY_PACKAGE + ".";
+            }
+			//生成代理类名
+            long num = nextUniqueNumber.getAndIncrement();
+            String proxyName = proxyPkg + proxyClassNamePrefix + num;
+
+            /*
+             * Generate the specified proxy class.
+             */
+			 //生成代理类二进制数据
+            byte[] proxyClassFile = ProxyGenerator.generateProxyClass(
+                proxyName, interfaces, accessFlags);
+			return defineClass0(loader, proxyName,
+                                    proxyClassFile, 0, proxyClassFile.length);	
+
+        }
+ProxyGenerator
+	介绍：
+		其实就是在代理类的每个方法加上InvocationHandler(调用拦截处理器)。
+		这样子代理类，就可实现代理功能。至于是否继续调用到具体类，则由调用拦截处理器来处理。
+	private byte[] generateClassFile() {
+		...
+			this.methods.add(this.generateConstructor());
+			var11 = this.proxyMethods.values().iterator();
+
+			while(var11.hasNext()) {
+				var12 = (List)var11.next();
+				var15 = var12.iterator();
+
+				while(var15.hasNext()) {
+					ProxyGenerator.ProxyMethod var16 = (ProxyGenerator.ProxyMethod)var15.next();
+					this.fields.add(new ProxyGenerator.FieldInfo(var16.methodFieldName, "Ljava/lang/reflect/Method;", 10));
+					this.methods.add(var16.generateMethod());
+				}
+			}
+		...
+	}
+	private ProxyGenerator.MethodInfo generateConstructor() throws IOException {
+		...
+		var2.writeShort(this.cp.getMethodRef("java/lang/reflect/Proxy", "<init>", "(Ljava/lang/reflect/InvocationHandler;)V"));
+		...
+	}
+	private ProxyGenerator.MethodInfo generateMethod() throws IOException {
+		...
+		var9.writeShort(ProxyGenerator.this.cp.getFieldRef("java/lang/reflect/Proxy", "h", "Ljava/lang/reflect/InvocationHandler;"));
+		...
+	}
