@@ -38,13 +38,13 @@
 				Thread.sleep(ms);
 					使一个线程从运行态进入阻塞状态（睡眠阻塞），不释放锁，指定时间后自动苏醒并返回到可运行状态。
 		附：
-			可理解为等待是主动放弃的。超时是被动的
+			这两种状态本质上是同一种状态
 		终止状态TERMINATED：
 			表示当前线程已经执行完毕。
 				线程的run()方法中代码正常执行完毕。
 				或者线程抛出一个未捕获的异常或错误，线程则进入死亡状态，线程结束。
 		注：
-			./附件/java线程状态变迁.png
+			./例/java线程状态变迁.png
 			pdf176
 		附：
 			所以又3类原因会导致线程的运行状态改变。
@@ -57,11 +57,9 @@
 							https://blog.csdn.net/opensure/article/details/53349698?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control
 					...
 					附：
-						在较早的代码中,也可能会看到用suspend()和resume()来阻塞和唤醒线程,但是在现代Java中这些方法被废止了(因为可能导致死锁)。?
-						stop()方法也已经被废止了，因为它不释放线程获得的锁，
-						并且如果线程处于不一致的状态(受损状态)，其他任务可以在这种状态下浏览并修改它们。这样所产生的问题是微妙而难以被发现的。
-					
-
+						过期的线程方法：
+							线程的暂停suspend()、恢复resume()和终止stop()。
+							./过期的线程方法.txt
 				
 				2.jvm控制
 					准备执行同步方法或同步代码块时获取不到锁进入了等锁池。
@@ -89,7 +87,7 @@
 		
 线程状态查看：
 例：
-	./附件/ThreadState.java
+	./例/ThreadState.java
 1. jps 获取java进程id。
 	例：运行该示例，打开终端或者命令提示符，键入“jps”，输出如下。
 		611

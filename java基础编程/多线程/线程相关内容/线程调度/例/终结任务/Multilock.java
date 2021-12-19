@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test;
+package com.china.hcg.thread.study.interrupt;
 
 /**
  * 

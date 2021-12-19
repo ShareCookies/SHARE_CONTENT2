@@ -1,91 +1,151 @@
-终结任务：
-	1. 中断可以理解为线程的一个标识位属性,它表示一个运行中的线程是否被其他线程进行了中断操作。
-	其他线程通过调用该线程的interrupt()方法对其进行中断操作。
-		即把线程设置为中断状态
-	2. 中断异常InterruptedException：
-		sleep()会抛出中断异常了，是sleep的当前线程主动检测到被中断标识，清除标识然后抛出中断异常吗。
-			抛出异常后此时调用isInterrupted()方法将会返回false。
-		sleep()是本地方法 所以这异常会是Java虚拟机抛出的吗，还是本地c语言实现的
-	3. 中断的响应
-		线程在运行：被中断线程通过检查自身是否被中断(isInterrupted()方法等)来进行响应，或捕获中断异常，来结束线程。
-		线程阻塞状态：
-			被中断线程会立即退出阻塞状态！，且清除中断标识
-			为什么会退出了，谁实现的了
-				jvm实现的？
-	结束任务方法（中断）：
-		1.Thread.interrupt()
+https://blog.csdn.net/demon7552003/article/details/89020491
+中断：
+	中断用来终结任务，但非强制性的，而是由被中断的任务自己决定是否终结任务。
+	1. 中断是什么：
+		1. 
+		线程有中断一个标识属性,它表示一个运行中的线程是否被其他线程进行了中断操作。
+		当对线程进行中断操作后，线程的中断属性会被置为true。
+		2. 
+		java中断是一种协作机制，并不强制限制线程必须在什么时间点响应中断，什么时候响应，怎么响应由线程自行决定。
+	2. 如何中断线程：
+		其他线程通过调用该线程的interrupt()方法对其进行中断操作。即把线程设置为中断状态
 		例：
 			./案例/终结任务/
-		？
-		2.executorService.awaitTermination()！
-			当前线程阻塞，直到
-				等所有已提交的任务（包括正在跑的和队列中等待的）执行完
-				或者等超时时间到（那么已提交任务还会执行吗？）
-				或者线程被中断，抛出InterruptedException
-				然后返回true（所有任务在超时时间之前全部结束执行完毕）或false（已超时）
-				shuntdown()和awaitTermination()效果差不多，方法执行之后，都要等到提交的任务全部执行完才停。
-		3.executorService.shuntdownNow():
-			在Executor上调用shutdownNow,那么它将发送一个interrupt调用给它启动的所有线程。
-			这么做是有意义的，因为当你完成工程中的某个部分或者整个程序时，通常会希望同时关闭某个特定Executor的所有任务。
-		4.future.cancel(true):
-			使用Executor，有时也会希望只中断某个单一任务。
-			那么通过调用submit()而不是executor()来启动任务，就可以持有该任务的上下文。
-			submit()将返回一个泛型Future<?>,其中有一个未修饰的参数，因为你永远都不会在其上调用get(),持有这种Future的关键在于你可以在其上调用cancel(),并因此可以使用它来中断某个特定任务。
-			当你将true传递给cancel(),那么它就会拥有在该线程上调用interrupt()以停止这个线程的权限。因此，cancel()是一种中断由Executor启动的单个线程的方式。
-			例子：
-				Future<?> f =exec.submit(runnable);//runnable任务要处于阻塞状态
-				TimeUnit.MILLISECONDS.sleep(100);//延迟来确保任务处于阻塞
-				f.cancel(true);
-		
 		附：
-			1.新的concurrent类库似乎在避免对Thread对象的直接操作，转而尽量通过Executor来执行所有操作。
-			2.无法中断正在试图获取synchronized锁或试图执行I/O的线程
-			但可以用别的方式中断....？
-	检测中断：
-		interrupted()：
-			检测线程是否已经中断，且清除中断状态。
-			如果连续两次调用该方法，则第二次调用将放回false，因为中断状态在第一次已经清除掉。
-		isInterrupted()：
-			检测线程是否已经中断。不清除中断状态。
+			goto：线程池的中断
+	3. 中断的响应：
+		附：
+			中断异常InterruptedException：
+				中断异常介绍：
+					1. InterruptedException是受检异常
+					2. 被中断线程抛出该异常后，中断状态会被重置
+						if any thread has interrupted the current thread. 
+						The <i>interrupted status</i> of the current thread is cleared when this exception is thrown.
+				会抛出该异常的方法：sleep、wait（这些方法都是让线程进入等待状态）
+					调用sleep()进入睡眠状态的线程，
+					被其他线程中断后，会中断睡眠状态，并抛出该异常，
+					所以调用sleep要对该异常进行处理。
+		线程在运行状态：
+			中断操作jvm做了什么：
+				只会设置该线程的中断标志位
+			如何对中断进行响应：
+				被中断线程可以通过检查自身是否被中断(isInterrupted()方法等)来进行响应。
+			
+			附：
+				interrupted()：
+					检测线程是否已经中断，且清除中断状态。
+					如果连续两次调用该方法，则第二次调用将放回false，因为中断状态在第一次已经清除掉。
+				isInterrupted()：
+					检测线程是否已经中断。不清除中断状态。
+		线程在等待状态：
+			中断操作jvm做了什么：
+				中断操作对线程做了中断标记。
+				然后jvm发现是在等待状态，则让线程退出该状态，并清除了标记，等待进入运行状态 然后sleep()本地方法抛出中断异常。
+			如何对中断进行响应：
+				程序捕获中断异常，来进行响应。
+		线程在阻塞状态：
+			中断操作jvm做了什么：
+				当线程处于BLOCKED状态说明该线程由于竞争某个对象的锁失败而被挂在了该对象的阻塞队列上了。
+				那么此时发起中断操作不会对该线程产生任何影响，依然只是设置中断标志位。
+			如何对中断进行响应：
+				没法响应
+			附：
+			中断互斥所阻塞的线程：
+				1.synchronized
+					无法中断正在试图获取synchronized锁的线程.
+					如果你尝试着在一个对象上调用其synchronized方法,而这个对象的锁已经被其他任务获得，那么调用任务将被挂起(阻塞)，无法被中断，
+					直至这个锁被获得 才有可能在程序里判断状态然后由程序自己决定是否中断。
+					例：...
+				2.ReentrantLock
+					lock：
+						lock阻塞的任务不可以被中断。
+					lockInterruptibly：
+						ReentrantLock上,使用lockInterruptibly阻塞的任务可以被中断。
+						
+						为什么可以被中断：
+							因为ReentrantLock使用lockInterruptibly阻塞任务的线程是waiting状态。而不是不是阻塞状态
+							证明：
+								jps 获取java进程id。jstack进程id 查看进程的线程生命周期情况。
+							具体原理：
+								？
+						例：
+							InterruptMutex.java
+							关键代码：
+								private Lock lock=new ReentrantLock();
+								lock.lockInterruptibly();//获取锁
+								try {
+									...
+								} catch (InterruptedException e) {
+									System.out.println("reentrantLock被中断或出现异常");
+								}
+									//阻塞的ReentrantLock可以抛出中断异常
+		总结：
+			总之
+				线程处于等待状态jvm就让其退出等待状态，并让其抛出中断异常 给程序，由程序进行后续处理。
+				线程处于其他状态jvm就仅设置了线程的中断属性未做其余操作。
+		附:
+		中断的响应原理：？
+			可能是进行中断后，jvm会去判断被中断线程状态，
+			1. 如果是运行则通知被中端线程让被中断线程自己处理
+			1. 如果是阻塞状态:
+				...
+			1. 如果是睡眠状态：
+				则让线程退出该状态，并做了标记，等待进入运行状态 然后sleep()本地方法抛出中断异常吗
+				附：
+					sleep()是本地方法
+附：
+	1.被设计用来响应interrupt()的类通常,要在中断发生后，在代码后要跟try-finally子句，使得无论run()如何退出，清理都会发生。
+	？
+		中断后，不释放资源那么会被回收吗
+	2. 过期的终结方法stop
+		../过期的线程方法.txt
+		
+	
+附：
+	线程池的中断：
+		1.executorService.shuntdownNow():线程池中进行中断
+			在ExecutorService上调用shutdownNow,那么它将发送一个interrupt调用给它启动的所有线程。
+			意义：
+				这么做是有意义的，因为当你完成工程中的某个部分或者整个程序时，通常会希望同时关闭某个特定Executor的所有任务。
+		附：
+			executorService.awaitTermination()：等待终结
+				调用该方法的线程阻塞，直到以下某一条件满足才返回：
+					1. 等所有已提交的任务（包括正在跑的和队列中等待的）执行完
+					2. 或指定等超时时间到。
+						注：
+							并不会中断任务，仅仅是等待到时返回。
+							所以已提交任务还会执行。
+					3. 或者调用该方法的线程被中断
+				返回true
+					所有任务在超时时间之前全部结束执行完毕
+				返回false
+					超时返回
+					shuntdown()和awaitTermination()效果差不多，方法执行之后，都要等到提交的任务全部执行完才停。
+				附：
+					* Blocks until all tasks have completed execution after a shutdown request, or the timeout occurs, or the current thread is interrupted, whichever happens first.	
+		？		
+			future.cancel(true):
+				使用Executor，有时也会希望只中断某个单一任务。
+				那么通过调用submit()而不是executor()来启动任务，就可以持有该任务的上下文。
+				submit()将返回一个泛型Future<?>,其中有一个未修饰的参数，因为你永远都不会在其上调用get(),持有这种Future的关键在于你可以在其上调用cancel(),并因此可以使用它来中断某个特定任务。
+				当你将true传递给cancel(),那么它就会拥有在该线程上调用interrupt()以停止这个线程的权限。因此，cancel()是一种中断由Executor启动的单个线程的方式。
+				例子：
+					Future<?> f =exec.submit(runnable);//runnable任务要处于阻塞状态
+					TimeUnit.MILLISECONDS.sleep(100);//延迟来确保任务处于阻塞
+					f.cancel(true);
+			
+			附：
+				1.新的concurrent类库似乎在避免对Thread对象的直接操作，转而尽量通过Executor来执行所有操作。
+				2.无法中断正在试图获取synchronized锁或试图执行I/O的线程
+				但可以用别的方式中断....？
+附：
+	中断特殊阻塞：
+	1.
+		对在执行io的线程进行中断，只会让线程的中断状态变为0 而不会让其退出io状态(只有关闭io资源才能退出)。
 		例：
-			Thread.interrupted();
-			线程对象.isInterrupted();
-	中断特殊阻塞：？
-		
-		无法中断正在试图获取synchronized锁或试图执行I/O的线程。
-		
-		中断试图执行I/O的线程：
-			关闭任务上发生阻塞的底层资源。
-			先把线程设为中断状态，
-			再释放任务上发生阻塞的底层资源，来达到中断线程的目的。
-			例：
-				CloseResource.java
-		中断互斥所阻塞的线程：		
-			如果你尝试着在一个对象上调用其synchronized方法,而这个对象的锁已经被其他任务获得，那么调用任务将被挂起(阻塞)，直至这个锁可获得。
-			但ReentrantLock上阻塞的任务可以被中断。
-			例：
-				InterruptMutex.java
-				关键代码：
-					private Lock lock=new ReentrantLock();
-					lock.lock();//获取锁
-					try {
-						...
-					} catch (Exception e) {
-						// TODO: handle exception
-						System.out.println("reentrantLock被中断或出现异常");
-					}
+			CloseResource.java
 		注：
 			1.nio类提供了更人性化io中断，被阻塞的nio通道会自动响应中断。
 			即设置线程为中断状态，nio就会自动响应中断。
-	附：
-		1.任务的结束：退出run()方法即算任务结束。 
-		2.被设计用来响应interrupt()的类通常要建立一种策略，来确保它将保持一致性。
-		即中断发生后，某代码后要跟try-finally子句，使得无论run()如何退出，清理都会发生。
-	附：
-		过期的suspend()、resume()和stop()，线程的暂停、恢复和终止。
-		不建议使用的原因主要有：
-			以suspend()方法为例，在调用后，线程不会释放已经占有的资 源（比如锁），而是占有着资源进入睡眠状态，这样容易引发死锁问题。
-			同样，stop()方法在终结 一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会， 因此会导致程序可能工作在不确定状态下。
-		暂停和恢复操作可以用等待/通知机制来替代。
-	？
-		正常的中断，但不释放资源那么会被回收吗
+			原理：
+				？

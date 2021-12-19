@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test;
+package com.china.hcg.thread.study.interrupt;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,26 +27,45 @@ public class CloseResource {
 	 * @throws UnknownHostException 
 	 */
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
-		ServerSocket serverSocket=new ServerSocket(8181);
-		InputStream serverStream=new Socket("localhost", 8181).getInputStream();
-		
-		
+		//服务器连接流
+		InputStream serverStream=new Socket("localhost", 8080).getInputStream();
+
 		ExecutorService executorService=Executors.newCachedThreadPool();
 		executorService.execute(new IOBlocked(serverStream));
-		//executorService.execute(new IOBlocked(System.in));
 		TimeUnit.MICROSECONDS.sleep(100);
-		System.out.println("shutting down all threads");
-		executorService.shutdownNow();//把任务线程设为中断状态
-		
-		TimeUnit.MICROSECONDS.sleep(1);
-		System.out.println("closing"+serverStream.getClass().getName());
-		serverStream.close();//release blocked resources //释放特殊任务资源，
+		//把任务线程设为中断状态 //此操作是不会成功的，因为线程正在执行io，线程的中断状态?
 		executorService.shutdownNow();
-		TimeUnit.MICROSECONDS.sleep(1);
-		//System.out.println("closing"+System.in.getClass().getName());
-		//System.in.close();//release blocked resources  io输入流中断失败
 		
+		TimeUnit.MICROSECONDS.sleep(1);
+		System.out.println("关闭线程的io资源");
+		//释放io资源，
+		serverStream.close();
+		executorService.shutdownNow();
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
+		System.out.println("111");
 	}
 
 }
@@ -61,18 +80,18 @@ class IOBlocked implements Runnable{
 		// TODO Auto-generated method stub
 		
 		try {
-			System.out.println("waiting for read");
+			System.out.println("准备开始io读取");
 			in.read();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			if (Thread.currentThread().isInterrupted()) {
-				System.out.println("interrupt from I/O Blocked");
+				System.out.println("interrupt from I/O Blocked 从");
 			} else {
 				throw new RuntimeException(e);
 			}
 			
 		}
-		System.out.println("exiting I/O Blocked run ");
+		System.out.println("线程退出");
 	}
 	
 }
