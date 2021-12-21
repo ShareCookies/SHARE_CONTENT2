@@ -94,6 +94,11 @@ idea编程辅助：
 	IDEA同一个工程启动多个实例：
 		run/debug configuration -》新增application实例即可。
 	./idea编程辅助功能.txt
+	
+	类图：
+		选择类-》diagrams
+		展示子类：
+			类图中右击Show Implementations
 idea设置：
 	idea注释模板:
 			https://blog.csdn.net/sikefeng/article/details/80557265
@@ -162,3 +167,4 @@ idea快捷键：
 	撤销：
 		ctrl+z  恢复撤回代码：ctrl+shift+z
 	复制当前行：ctrl+d
+	格式化sql：选中sql -->格式化(Ctrl + Alt + L)

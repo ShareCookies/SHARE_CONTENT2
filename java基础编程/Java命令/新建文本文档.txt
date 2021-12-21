@@ -1,8 +1,16 @@
 https://www.cnblogs.com/wangcheng-blog/p/jvm_tools.html
+javac
+	javac是用来编译.java文件的。
+java
+	执行.class字节码文件
+	例：
+		java类/如何运行java文件.txt
 5.javap
 	javap是一个反编译工具，也可以查看class文件中的信息。
 	基本语法如下：javap [ options ] classes
-
+	例：
+		javap –v Synchronized.class
+		通过使用javap工具查看生成的class文件信息，来分析synchronized关键字的实现细节
 6.jdb
 	jdb是一个断点工具，便于在线调试。
 	...

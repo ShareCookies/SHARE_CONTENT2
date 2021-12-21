@@ -9,6 +9,19 @@ import java.lang.reflect.Proxy;
  * @autor hecaigui
  * @date 2020-1-31
  * @description
+使用：
+通过java反射的Proxy来创建代理
+Proxy：
+	Proxy provides static methods for creating dynamic proxy classes and instances
+	newProxyInstance参数
+		1. 目标对象类加载器
+		2. 目标对象的接口（目标对象没有实现接口了？或实现多个接口了）
+		3. 调用处理器
+			介绍：对代理的每个方法的调用都先经过该方法。
+附：
+java 动态代理 为什么在debug 时会多次执行invoke 内部方法：
+	https://blog.csdn.net/Java_HuiLong/article/details/85321828
+	debug时候，idea会调用“被代理类”的toString()方法	
  */
 public class ProxyTest {
     //生成目标对象的代理

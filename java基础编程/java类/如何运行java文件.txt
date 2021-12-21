@@ -1,14 +1,23 @@
 命令行运行java文件
-	1.首先确定电脑环境变量配置正确
-	2.cmd进入java文件路径下
-	3.编译成字节码.class文件 javac HelloWorld.java 
-	4.运行文件，使用-cp参数指定类文件搜索路径 java -cp D:\ajava\test HelloWorld 
+	1. 编写Hello.java 文件
+	2. 进入对应目录，输入 javac Hello.java 编译程序。
+		//编译成功后，系统生成 Hello.class 文件默认存放在与 Hello.java 同目录中。
+		//文件要迁移到对应包名目录下，com/test/Hello.class
+	3. 继续编译页面输入“java 包名.Hello”运行 Java 程序
+	原因：
+		？https://blog.csdn.net/ncc1995/article/details/84932759
+	
 	附：
 		编码GBK的不可映射字符
 			使用notpad++编辑器自带的转码功能
 			使用-encoding指令指定运行编码为UTF-8
 				javac -encoding UTF-8 XXX.java
+	？
+		编译成字节码.class文件 javac HelloWorld.java 
+		运行文件，使用-cp参数指定类文件搜索路径 java -cp D:\ajava\test HelloWorld 
 idea中运行java文件：
 	1.把java文件置于一个标注为source的文件夹下，此时main函数即会出现一个运行按钮。
 	注：
 		运行时会提示你标明输出的文件夹路径。
+		
+		

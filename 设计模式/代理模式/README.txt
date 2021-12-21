@@ -21,7 +21,7 @@
 				当代理的方法被调用时，代理会把这个调用转发给对应的InvocationHandler的invoke方法，
 				此时你就可以在这个方法中决定是否允许调用代理的方法。
 			例：
-				./动态代理例子/ProxyTest.java
+				SHARE_CONTENT/java基础编程/反射/javaJdk动态代理/jdkProxyUseCase/ProxyTest.java
 			附：
 				https://www.cnblogs.com/boboxing/p/8126046.html
 				如何运行时动态的创建类：
@@ -30,8 +30,5 @@
 					https://www.cnblogs.com/superxuezhazha/p/12356258.html
 
 
-附：
-	java 动态代理 为什么在debug 时会多次执行invoke 内部方法：
-		https://blog.csdn.net/Java_HuiLong/article/details/85321828
-		debug时候，idea会调用“被代理类”的toString()方法
+
 
