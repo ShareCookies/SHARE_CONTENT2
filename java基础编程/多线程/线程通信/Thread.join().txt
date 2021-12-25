@@ -1,9 +1,15 @@
 join介绍：
 	如果一个线程A执行了threadB.join()语句，其含义是：当前线程A等待threadB线程终止之后才 从threadB.join()返回。
 	附：
-		线程Thread除了提供join()方法之外，还提供了join(long millis)和join(long millis,int nanos)两个具备超时特性的方法。这两个超时方法表示，如果线程thread在给定的超时 时间里没有终止，那么将会从该超时方法中返回。
+		线程Thread除了提供join()方法之外，还提供了join(long millis)和join(long millis,int nanos)两个具备超时特性的方法。
+		这两个超时方法表示，如果线程thread在给定的超时 时间里没有终止，那么将会从该超时方法中返回。
+
+所以join原理就是：
+	1. 线程A会wait在threadB线程对象的monitor上
+	2. 我们要明白：当对应线程结束时，会调用自身的notifyAll方法，唤醒等待线程。
+	所以等待在线程b上的线程A就会被唤醒
 Thread.join()源码：
-	// 加锁当前线程对象 
+	// 加锁线程对象 
 	public final synchronized void join() throws InterruptedException { 
 		// 条件不满足，继续等待
 		//为什么要循环，避免什么情况了？
@@ -14,8 +20,6 @@ Thread.join()源码：
 		}// 条件符合，方法返回 
 	}
 	
-	当线程终止时，会调用线程自身的notifyAll()方法，会通知所有等待在该线程对象上的线程。？
+	注：当线程终止时，会调用线程自身的notifyAll()方法，会通知所有等待在该线程对象上的线程。
+	jvm实现的吧！
 	
-所以join原理就是：
-	1. wait等待在对应线程对象的monitor上
-	2. 当对于线程结束时，会调用自身的notifyAll方法，唤醒等待线程
