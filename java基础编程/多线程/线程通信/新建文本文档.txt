@@ -3,3 +3,6 @@ https://blog.csdn.net/JAYU_37/article/details/111144629?utm_medium=distribute.pc
 
 2.
 	synchronized还要再看遍
+	
+	
+管道输入输出流？
