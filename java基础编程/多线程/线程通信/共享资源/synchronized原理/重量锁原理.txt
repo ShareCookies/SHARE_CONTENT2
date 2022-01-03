@@ -1,0 +1,102 @@
+内核态和用户态：
+	?
+		重量锁每次获取和释放锁操作都会带来用户态和内核态的切换，从而增加系统性能开销。
+			?是每次吗，为什么，不是只有线程状态改变才要切换吗
+		因此，在锁竞争激烈的情况下，Synchronized同步锁在性能上就表现得非常糟糕，它也常被大家称为重量级锁。
+
+
+	https://blog.csdn.net/fall_hat/article/details/105571050
+	Java线程状态切换的代价：
+		java的线程是映射到操作系统原生线程之上的，
+			？操作系统没有线程了，java线程怎么办
+		如果要阻塞或唤醒一个线程就需要操作系统介入，需要操作系统在用户态与核心态之间切换，这种切换会消耗大量的系统资源。
+			？
+				大量系统资源，具体是多大量了 有办法判断吗，不然怎么衡量
+		
+		
+	系统的内核态和用户态：
+		CPU的两种工作状态：内核态和用户态。
+		内核态：
+			1.系统中既有操作系统的程序，也有普通用户程序。为了安全性和稳定性，操作系统的程序不能随便访问，这就是内核态。
+			即需要执行操作系统的程序就必须转换到内核态才能执行！
+			2. 内核态可以使用计算机所有的硬件资源！
+
+		用户态：
+			不能直接使用系统资源，也不能改变CPU的工作状态，并且只能访问这个用户程序自己的存储空间！
+
+		三种从“用户态”转换到“内核态”的最主要（触发）方式：
+			a.系统调用（用户进程主动发起的）：这是用户态进程“主动”要求切换到内核态的一种方式，用户态进程通过“系统调用”身子那个使用操作系统提供的服务城区完成工作！！
+			b.异常：当CPU执行运行在用户态下的程序时，发生了某些不可知的异常，这是会触发当前运行进程切换到处理此异常的内核程序中，也就转到了内核态，比如缺页异常！！
+			c.外围设备的中断：当外围设备完成用户请求的操作后，会向CPU发出相应的中断信号，这时CPU会暂停执行下一条即将要执行的指令转而去执行与中断信号对应的处理程序，如果先前执行的指令时用户态下的程序，那么这个转换过程自然也就发生了由用户态到内核态的切换。比如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后续操作等。
+
+重量锁原理：
+https://juejin.cn/post/6844903918653145102
+synchronized源码：
+	synchronized修饰方法，反编译可得：
+		可以看到 syncMethod 方法的 flags 包含 ACC_SYNCHRONIZED 标志位。
+
+		由图可得，有synchronized关键字的方法，flags多了ACC_SYNCHRONIZED标记。
+		即JVM通过在方法访问标识符(flags)中加入ACC_SYNCHRONIZED来实现同步功能。
+	synchronized作用于代码块，反编译可得：
+		由图可得，添加了synchronized关键字的代码块，代码块中多了两个指令monitorenter、monitorexit。
+		即JVM使用monitorenter和monitorexit两个指令实现同步。
+monitorenter、monitorexit、ACC_SYNCHRONIZED
+	附：
+		剥完第一层，反编译synchronized的方法以及代码块，我们已经知道synchronized是通过monitorenter、monitorexit、ACC_SYNCHRONIZED实现同步的，它们三作用都是啥呢。我们接着剥第二层
+	
+	介绍：
+		每个对象都与一个monitor 相关联。当且仅当被持有时，monitor才会被锁定。
+	monitorenter：
+		https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.monitorenter
+	
+	执行到monitorenter指令的线程，会尝试去获得对应的monitor，如下：
+		每个对象维护着一个记录着被锁次数的计数器, 对象未被锁定时，该计数器为0。
+		线程进入monitor（执行monitorenter指令）时，会把计数器设置为1.
+		当同一个线程再次获得该对象的锁的时候，计数器再次自增.
+		当其他线程想获得该monitor的时候，就会阻塞，直到计数器为0才能成功。
+
+	monitorexit：
+		monitor的拥有者线程才能执行 monitorexit指令。
+		线程执行monitorexit指令，就会让monitor的计数器减一。
+		如果计数器为0，表明该线程不再拥有monitor，释放monitor。其他线程就允许尝试去获得该monitor了。
+	ACC_SYNCHRONIZED：
+		方法级别的同步是隐式的，作为方法调用的一部分。同步方法的常量池中会有一个ACC_SYNCHRONIZED标志。
+		当调用一个设置了ACC_SYNCHRONIZED标志的方法，执行线程需要先获得monitor锁，然后开始执行方法，方法执行之后再释放monitor锁。
+			附：
+				当方法不管是正常return还是抛出异常都会释放对应的monitor锁。
+				(指的是抛出方法的异常，如果处理就不会释放)
+		在这期间，如果其他线程来请求执行方法，会因为无法获得监视器锁而被阻断住。
+monitor监视器：
+	附：
+		好的，剥到这里，我们还有一些不清楚的地方，
+		
+		monitor是什么呢，为什么它可以实现同步呢？对象又是怎样跟monitor关联的呢？
+管程：
+	介绍：
+		管程 (英语：Monitors，也称为监视器) 是一种程序结构，结构内的多个子程序（对象或模块）形成的多个工作线程互斥访问共享资源。
+
+	引入管程的原因
+		信号量机制的缺点：进程自备同步操作，P(S)和V(S)操作大量分散在各个进程中，不易管理，易发生死锁。
+	管程特点：
+		管程封装了同步操作，对进程隐蔽了同步细节，简化了同步功能的调用界面。
+
+	简单地说管程就是一个概念，任何语言都可以实现。目的就是为了简化同步调用的过程。
+	回想一下刚才我们说的Java中的实现ObjectMonitor。它具体干了什么事，其实就是说管程需要干哪些事。
+ObjectMonitor:
+	ObjectMonitor数据结构：
+		在Java虚拟机（HotSpot）中，Monitor（管程）是由ObjectMonitor实现的，其主要数据结构如下：
+		_count        = 0; // 记录个数
+		_WaitSet      = NULL;  // 处于wait状态的线程，会被加入到_WaitSet
+		_EntryList    = NULL ;  // 处于等待锁block状态的线程，会被加入到该列表
+		...
+	Java Monitor 的工作机理所示：
+		1. 想要获取monitor的线程,首先会进入_EntryList队列。
+		2. 当某个线程获取到对象的monitor后,进入_Owner区域，设置为当前线程,同时计数器_count加1。
+		3. 如果线程调用了wait()方法，则会进入_WaitSet队列。它会释放monitor锁，即将_owner赋值为null,_count自减1,进入_WaitSet队列阻塞等待。
+		4. 如果其他线程调用 notify() / notifyAll() ，会唤醒_WaitSet中的某个线程，该线程再次尝试获取monitor锁，成功即进入_Owner区域。
+		5. 同步方法执行完毕了，线程退出临界区，会将monitor的_count置0，owner设为null，并释放监视锁。
+	对象又是怎样跟monitor关联：
+		./对象又是怎样跟monitor关联.awebp
+?
+	所以monitor就是ObjectMonitor吧？它们也是个对象吧？
+	monitor存在jvm内存中吗？
