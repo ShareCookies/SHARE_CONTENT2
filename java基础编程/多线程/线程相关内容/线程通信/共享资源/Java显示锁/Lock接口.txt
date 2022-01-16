@@ -1,75 +1,130 @@
-Lock接口
+显示锁Lock：
 	背景：
-		Java SE 5之后，并发包中新增了Lock接口(以及相关实现类)用来实现锁功能。
+	
+		Java SE 5之后，并发包提供了种显式的互斥机制 Lock对象(显示锁功能)。
 		它提供了与synchronized关键字类似的同步功能,只是在使用时需要显式地获取和释放锁。
-		虽然它缺少了(通过synchronized块或者方法所提供的)隐式获取释放锁的便捷性,但是却拥有了锁获取与释放的可操作性。
-			可中断的获取锁以及超时获取锁等多种synchronized关键字所不具备的同步特性。
-
+		虽然它缺少了隐式获取释放锁的便捷性,但是却拥有了锁获取与释放的可操作性。
 	
 	介绍：
 		Lock是一个接口， 它定义了锁获取和释放的基本操作。
-		
-		Lock接口的API：
-			...pdf223
-			附：
-			Lock接口提供的synchronized关键字不具备的主要特性：
-				尝试非阻塞地获取锁
-					当前线程尝试获取锁，如果这一时刻锁没有被其他线程获取到，则成功获取并持有锁
-				能被中断地获取锁
-					与synchronized不同，获取到锁的线程能够响应中断，当获取到锁的线程被中断时，
-					中断异常将会被抛出，同时锁会被释放
-				超时获取锁
-					在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回
-			
+		显示锁(Lock对象)必须被显式地创建、锁定和释放。
 		附：
-			Lock接口的实现基本都是通过聚合了一个同步器的子类来完成线程访问控制的。
-		注：
-			释放一定要放到finally块中，不要将获取锁的过程写在try块中，否则可能会因为异常导致锁永远无法释放。
-			
-使用案例：		
-	2.可定时：
-		RenentrantLock.tryLock(long timeout, TimeUnit unit)
-		提供了一种以定时结束等待的方式，如果线程在指定的时间内没有获得锁，该方法就会返回false并结束线程等待。
-		// 可定时，超过指定时间为得到锁就放弃
-		try {
-			lock.tryLock(10, TimeUnit.SECONDS);
+			1. Lock接口的常见实现类有：
+				ReentrantLock，ReentrantReadWriteLock。
+			2. 显式锁优缺点
+				1. 更加灵活
+				2. 与内建的锁形式相比，代码缺乏优雅性。
+				需要显式的申请和释放
+				
+			3. 当然，当需要同步时请优先考虑更安全的更易用的隐式锁。	
+
+		
+		注：Lock锁使用的注意事项
+				1. 不要将获取锁的过程写在try块中，否则可能会因为异常导致锁永远无法释放。？？？
+				2. 其释放一定要放到finally块中。
+					因为：
+					显式锁不像内置锁那样会自动释放，使用显式锁一定要手动释放。
+					如果获取锁后由于异常的原因没有释放锁，那么这把锁将永远得不到释放！所以要将unlock()放在finally块中，保证无论发生什么都能够正常释放。			
+
+lock特性：	
+	Lock接口提供的synchronized关键字不具备的主要特性：
+		1.1 尝试非阻塞地获取锁
+			当前线程尝试获取锁，如果这一时刻锁没有被其他线程获取到，则成功获取并持有锁
+		1.2 超时获取锁
+			在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回
+		2. 能被中断地获取锁
+			与synchronized不同，获取到锁的线程能够响应中断，当获取到锁的线程被中断时，
+			中断异常将会被抛出，同时锁会被释放
+		3. 多条件队列（显示锁如何挂起和唤醒）
+					
+	1.可定时：(非阻塞)
+		介绍：
+			Look#tryLock()
+			Look#tryLock(long timeout, TimeUnit unit)
+			提供了一种以定时结束等待的方式，如果线程在指定的时间内没有获得锁，该方法就会返回false并结束线程等待。
+		例：
 			try {
-				// your code
-			}finally {
-				lock.unlock();
+				// 可定时，超过指定时间为得到锁就放弃
+				lock.tryLock(10, TimeUnit.SECONDS);
+				try {
+					// your code
+				}finally {
+					lock.unlock();
+				}
+			} catch (InterruptedException e1) {
+				// exception handling
 			}
-		} catch (InterruptedException e1) {
-			// exception handling
-		}
-	3.可中断：
-		你一定见过InterruptedException，很多跟多线程相关的方法会抛出该异常，这个异常并不是一个缺陷导致的负担，而是一种必须，或者说是一件好事。可中断性给我们提供了一种让线程提前结束的方式（而不是非得等到线程执行结束），这对于要取消耗时的任务非常有用。
-		对于内置锁，线程拿不到内置锁就会一直等待，除了获取锁没有其他办法能够让其结束等待。RenentrantLock.lockInterruptibly()给我们提供了一种可以中断结束等待的方式。
-		// 可中断，等待获取锁的过程中线程线程可被中断
-		try {
-			lock.lockInterruptibly();
+	2.可中断：
+		介绍：
+			Look#lockInterruptibly()
+			给我们提供了一种可以中断结束等待的方式。
+			附：
+				可中断性好处：
+					你一定见过InterruptedException，很多跟多线程相关的方法会抛出该异常，这个异常并不是一个缺陷导致的负担，而是一种必须，或者说是一件好事。
+					可中断性给我们提供了一种让线程提前结束的方式（而不是非得等到线程执行结束），这对于要取消耗时的任务非常有用。
+				附：
+					对于内置锁，线程拿不到内置锁就会一直等待，除了获取锁没有其他办法能够让其结束等待。
+				？
+					lock可中断实现原理？
+					是因为lock锁东西，是进入等待状态，而不是....?
+		例：
 			try {
-				// your code
-			}finally {
-				lock.unlock();
+				// 可中断，等待获取锁的过程中线程线程可被中断
+				lock.lockInterruptibly();
+				try {
+					// your code
+				}finally {
+					lock.unlock();
+				}
+			} catch (InterruptedException e) {
+				// exception handling
 			}
-		} catch (InterruptedException e) {
-			// exception handling
-		}					
-	4.条件队列(condition queue)：？
-		线程在获取锁之后，可能会由于等待某个条件发生而进入等待状态（内置锁通过Object.wait()方法，显式锁通过Condition.await()方法）。
-		进入等待状态的线程会挂起并自动释放锁，这些线程会被放入到条件队列当中。
-		synchronized对应的只有一个条件队列，而ReentrantLock可以有多个条件队列，多个队列有什么好处呢？请往下看。
+	3.多条件队列：(显示锁如何挂起和唤醒) 
 		https://www.cnblogs.com/CarpenterLee/p/7896361.html
-	5.条件谓词：？
-		线程在获取锁之后，有时候还需要等待某个条件满足才能做事情，这些条件被称作条件谓词。
-			比如生产者需要等到“缓存不满”才能往队列里放入消息，而消费者需要等到“缓存非空”才能从队列里取出消息。
-		线程需要先获取锁，然后判断条件谓词是否满足，如果不满足就不往下执行，相应的线程就会放弃执行权并自动释放锁。
+		3.1 条件队列(condition queue)：
+			线程在获取锁之后，可能会由于等待某个条件发生而进入等待状态.
+				（内置锁通过Object.wait()方法，显式锁通过Condition.await()方法）。
+			进入等待状态的线程会挂起并自动释放锁，这些线程会被放入到条件队列当中。
+			synchronized对应的只有一个条件队列，而ReentrantLock却可以有多个条件队列
+			
+		3.2 条件谓词：
+			什么是条件谓词：
+				线程在获取锁之后，有时候还需要等待某个条件满足才能做事情，这些条件被称作条件谓词。
+					比如：生产者需要等到“缓存不满”才能往队列里放入消息，而消费者需要等到“缓存非空”才能从队列里取出消息。
+				线程在获取锁之后，然后判断条件谓词是否满足，如果不满足就不往下执行，相应的线程就会放弃执行权并自动释放锁。
 		
-		使用同一把锁的不同的线程可能有不同的条件谓词，如果只有一个条件队列，当某个条件谓词满足时就无法判断该唤醒条件队列里的哪一个线程；
-		但是如果每个条件谓词都有一个单独的条件队列，当某个条件满足时我们就知道应该唤醒对应队列上的线程。
-			（内置锁通过Object.notify()或者Object.notifyAll()方法唤醒，显式锁通过Condition.signal()或者Condition.signalAll()方法唤醒）。
-		这就是多个条件队列的好处。
-		
+		3.3 条件谓词与条件队列：
+			多个条件队列的好处：
+				使用同一把锁的不同线程可能有不同的条件谓词，
+				当只有一个条件队列时，某个条件谓词满足时就无法判断该唤醒条件队列里的哪一个线程；
+				但是如果每个条件谓词都有一个单独的条件队列，当某个条件满足时我们就知道应该唤醒对应队列上的线程。
+			附：
+				内置锁通过Object.notify()或者Object.notifyAll()方法唤醒，显式锁通过Condition.signal()或者Condition.signalAll()方法唤醒。
+		例：显示锁条件队列的使用
+			介绍：
+				ArrayBlockingQueue.put()
+				阻塞队列put(E e)方法会以阻塞的方式向队列尾部放入元素，
+				如果队列缓存不满就立即放入，否则挂起等待直到缓存不满，这里的谓词就是“缓存不满”，这是生产者要调用的方法。
+			put方法的对应代码：
+				final ReentrantLock lock = new ReentrantLock();// 显式锁对象
+				private final Condition notFull = lock.newCondition();// put()方法的条件队列
+				private final Condition notEmpty = lock.newCondition();// take()方法的条件队列
+				...
+
+				public void put(E e) throws InterruptedException {
+					...
+					lock.lockInterruptibly();
+					try {
+						while (count == items.length)// 条件谓词“缓存不满”
+							notFull.await();// 1. 挂起到指定的条件队列进行等待，直到缓存非满
+						items[putIndex] = e;// 将元素放入缓存
+						putIndex = inc(putIndex);
+						++count;
+						notEmpty.signal();// 2. 唤醒指定条件队列的消费者线程
+					} finally {
+						lock.unlock();
+					}
+				}
 		
 ？：
 	lock对象锁住的是说什么了？也是monitor吗！
