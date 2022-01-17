@@ -20,11 +20,23 @@
 			队列同步器原理.txt
 		ReentrantLock源码分析.java
 		ReentrantReadWriteLock读写锁源码分析.txt
+		附：
+			LockSupport工具
+				介绍：
+					队列同步器中，当需要阻塞或唤醒一个线程的时候，都会使用LockSupport工具类来完成相应工作。
+					LockSupport定义了一组的公共静态方法,这些方法提供了最基本的线程阻塞和唤醒功能,
+					所以LockSupport成为构建同步组件的基础工具。
+				LockSupport提供的阻塞和唤醒方法：
+					pdf261
 		
+
 		
-附：
-	LockSupport工具？
-	Condition接口
+	
+	
+	
+
+	
+
 
 
 
