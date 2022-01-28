@@ -25,10 +25,13 @@ ReentrantLock重入锁
 				ReentrantLock源码分析.java goto：公平与非公平获取锁的实现
 			3. 公平与非公平获取锁的区别测试案例：
 				pdf251
-			
+				附：
+					优的具体原因，从源码分析：
+						因为非公平会在lock时进行一次cas快速尝试，所以同一个线程往往会更优先cas成功。
 			4. 公平锁优缺点：
 				事实上，公平的锁机制往往没有非公平的效率高，但是，并不是任何场景都是以TPS作为 唯一的指标，
 				公平锁能够减少“饥饿”发生的概率，等待越久的请求越是能够得到优先满足。
+			
 例：可重入锁使用案例
 	详：
 		./例/ReentrantLockTest
@@ -51,3 +54,22 @@ ReentrantLock重入锁
 
 
 
+ReentrantLock实现思路:
+	1. 加锁
+		怎么加锁
+			1. 快速cas改变状态，获取锁lock
+			2. 失败则1.快速cas2.判断是否是同一线程tryAcquire-》nonfairTryAcquire
+			2.1是则锁记录值增加
+			2.2否则(最终)调用统一同步器方法：
+				1. 构造节点放入同步队列addWaiter(Node.EXCLUSIVE)
+				2. 循环获取锁状态acquireQueued，是否在队列头后面，在则cas获取锁，不在则挂起			
+		为什么可重入
+		公平和非公平
+			tryAcquire-》fairTryAcquire
+			公平和非公平区别：
+			1. 非公平在lock时会尝试下cas。公平不会
+			2. 进入tryAcquire后，则区别是
+			在cas尝试时公平多了，当前节点是否有前驱节点的判断
+			3. 后续都一样
+	2. 解锁
+		主要就是做了锁记录的递减。

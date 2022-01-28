@@ -14,28 +14,27 @@
 	可重入读写锁：
 		ReentrantReadWriteLock读写锁.txt
 	附：
-		Lock接口的实现类基本都是通过聚合了一个同步器的子类来完成线程访问控制的。
-		队列同步器:
-			队列同步器.txt
-			队列同步器原理.txt
-		ReentrantLock源码分析.java
-		ReentrantReadWriteLock读写锁源码分析.txt
-		附：
-			LockSupport工具
-				介绍：
-					队列同步器中，当需要阻塞或唤醒一个线程的时候，都会使用LockSupport工具类来完成相应工作。
-					LockSupport定义了一组的公共静态方法,这些方法提供了最基本的线程阻塞和唤醒功能,
-					所以LockSupport成为构建同步组件的基础工具。
-				LockSupport提供的阻塞和唤醒方法：
-					pdf261
-		
+	锁实现分析：
+		介绍：
+			Lock接口的实现类基本都是通过聚合了一个同步器的子类来完成线程访问控制的。
+		队列同步器:AbstractQueuedSynchronizer
+			大佬已经写好了显示锁的大部分功能，开发只需继承改类并重写部分方法，就可实现自定义的显示锁。
+			详：
+				队列同步器.txt
+				队列同步器原理.txt
+		ReentrantLock源码分析：
+			ReentrantLock源码分析.java
+		ReentrantReadWriteLock源码分析：
+			ReentrantReadWriteLock读写锁源码分析.txt
+	附：
+		LockSupport工具
+			介绍：
+				队列同步器中，当需要阻塞或唤醒一个线程的时候，都会使用LockSupport工具类来完成相应工作。
+				LockSupport定义了一组的公共静态方法,这些方法提供了最基本的线程阻塞和唤醒功能,
+				所以LockSupport成为构建同步组件的基础工具。
+			LockSupport提供的阻塞和唤醒方法：
+				pdf261
 
-		
-	
-	
-	
-
-	
 
 
 

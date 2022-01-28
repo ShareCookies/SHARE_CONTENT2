@@ -1,25 +1,28 @@
-public class ReentrantLock ..{
-	public void lock() {
-        sync.lock();
-    }
-	//为什么锁要最终释放：
-		//但ReentrantLock中lock方法可以被同一线程多次调用，
-			重入锁对于同一线程获取会进行计数自增，
-				计数表示当前锁被重复获取的次数，
-		
-		//释放时，传给同步器的释放方法参数为1，即只进行一次释放
-			锁释放时当计数等于0时表示锁已经成功释放。
+重入锁：
+	public class ReentrantLock ..{
+		public ReentrantLock(boolean fair) {
+			sync = fair ? new FairSync() : new NonfairSync();
+		}
+		public void lock() {
+			sync.lock();
+		}
+		//为什么锁要最终释放：
+			//但ReentrantLock中lock方法可以被同一线程多次调用，
+				重入锁对于同一线程获取会进行计数自增，
+					计数表示当前锁被重复获取的次数，
 			
-		//所以lock的次数要与unlock的次数一样
-	public void unlock() {
-        sync.release(1);
-    }
-}
-	
+			//释放时，传给同步器的释放方法参数为1，即只进行一次释放
+				锁释放时当计数等于0时表示锁已经成功释放。
+				
+			//所以lock的次数要与unlock的次数一样
+		public void unlock() {
+			sync.release(1);
+		}
+	}
+抽象队列同步器：	
 	//抽象队列同步器
 	public abstract class AbstractQueuedSynchronizer .. {
-		// 独占式获取同步状态，
-			//即独占式让当前线程持有锁
+		// 独占式获取同步状态，//即独占式让当前线程持有锁
 		//抽象队列定义的模板方法
 		// 解析：AbstractQueuedSynchronizer队列同步器原理.txt goto：独占式同步状态获取与释放
 		public final void acquire(int arg) {
@@ -52,6 +55,7 @@ public class ReentrantLock ..{
 			throw new UnsupportedOperationException();
 		}
 	}
+重入锁实现的同步器：
 	/**
      * Base of synchronization control for this lock. Subclassed
      * into fair and nonfair versions below. Uses AQS state to
@@ -149,7 +153,7 @@ public class ReentrantLock ..{
     /**
      * Sync object for non-fair locks
      */
-	// 非公平同步器
+非公平同步器
     static final class NonfairSync extends Sync {
         private static final long serialVersionUID = 7316153563782823691L;
 
@@ -161,7 +165,7 @@ public class ReentrantLock ..{
         final void lock() {
 			//快速获取锁：通过cas尝试把状态设为1 成功则只能当前线程访问
             if (compareAndSetState(0, 1))
-				//？
+				// 就是标记下当前持有锁的线程是谁
                 setExclusiveOwnerThread(Thread.currentThread());
             else
                 acquire(1);
@@ -174,7 +178,7 @@ public class ReentrantLock ..{
     /**
      * Sync object for fair locks
      */
-	//公平同步器
+公平同步器
     static final class FairSync extends Sync {
         private static final long serialVersionUID = -3000897897090466540L;
 
@@ -212,4 +216,9 @@ public class ReentrantLock ..{
             }
             return false;
         }
+    }
+附：
+	protected final boolean compareAndSetState(int expect, int update) {
+        // See below for intrinsics setup to support this
+        return unsafe.compareAndSwapInt(this, stateOffset, expect, update);
     }

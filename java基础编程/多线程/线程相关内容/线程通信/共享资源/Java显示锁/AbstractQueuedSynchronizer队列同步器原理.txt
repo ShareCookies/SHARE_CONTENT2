@@ -96,6 +96,10 @@
                 cancelAcquire(node);
         }
     }
+	private final boolean parkAndCheckInterrupt() {
+        LockSupport.park(this);
+        return Thread.interrupted();
+    }
 	...
 	pdf235
 3.共享式同步状态获取与释放
