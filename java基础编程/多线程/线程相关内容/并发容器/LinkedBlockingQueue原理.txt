@@ -1,0 +1,80 @@
+实现思路：
+	LinkedBlockingQueue维护了2个锁，1个用来读 1个用来写。
+	所以该阻塞线程对应的阻塞为：
+	1. 写和读可以分别拥有1个线程在进行，因为读写锁是分开的。
+	2. 队列满或空的阻塞。
+
+源码分析：
+	private final int capacity;//默认为 Integer.MAX_VALUE
+    private final ReentrantLock takeLock = new ReentrantLock();
+
+    private final Condition notEmpty = takeLock.newCondition();
+
+    private final ReentrantLock putLock = new ReentrantLock();
+
+    private final Condition notFull = putLock.newCondition();
+	插入：
+    public void put(E e) throws InterruptedException {
+        if (e == null) throw new NullPointerException();
+        int c = -1;
+        Node<E> node = new Node<E>(e);
+        final ReentrantLock putLock = this.putLock;
+        final AtomicInteger count = this.count;
+		// 1. 写显示锁加锁(别的线程不能在调put方法了，因为写锁已经被占用了)
+        putLock.lockInterruptibly();
+        try {
+			//2. 当队列满后，生产者线程挂起到(写锁的)已满队列
+            while (count.get() == capacity) {
+					notFull.await();
+            }
+            enqueue(node);
+            c = count.getAndIncrement();
+            if (c + 1 < capacity)
+                notFull.signal();
+        } finally {
+            putLock.unlock();
+        }
+		//队列空的唤醒
+        if (c == 0)
+            signalNotEmpty();
+    }
+	读取：
+		public E take() throws InterruptedException {
+			E x;
+			int c = -1;
+			final AtomicInteger count = this.count;
+			final ReentrantLock takeLock = this.takeLock;
+			//1. 读锁加锁(别的线程不能在调用读方法了)
+			takeLock.lockInterruptibly();
+			try {
+				while (count.get() == 0) {
+					notEmpty.await();
+				}
+				x = dequeue();
+				c = count.getAndDecrement();
+				if (c > 1)
+					notEmpty.signal();
+			} finally {
+				takeLock.unlock();
+			}
+			//2. 这里是对写线程的唤醒.当队列是满的才进行唤醒操作。
+			if (c == capacity)
+				signalNotFull();
+			return x;
+		}
+		/**
+		 * Signals a waiting put. Called only from take/poll.
+		 */
+		private void signalNotFull() {
+			final ReentrantLock putLock = this.putLock;
+			putLock.lock();
+			try {
+				//？队列要拥有锁才能调
+				notFull.signal();
+			} finally {
+				putLock.unlock();
+			}
+		}
+
+
+

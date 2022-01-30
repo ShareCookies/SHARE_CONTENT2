@@ -76,7 +76,7 @@ await源码：AbstractQueuedSynchronizer.ConditionObject
         return findNodeFromTail(node);
     }
 	
-	
+
 LockSupport#park：
 	继续进入源码，发现，然后调用unsafe.park阻塞当前线程。 
 	public static void park(Object blocker) {
@@ -87,7 +87,7 @@ LockSupport#park：
 		unsafe.park(false, 0L); 
 		setBlocker(t, null); 
 	}
-unsafe#park： 
+unsafe#park：
 	public native void park(boolean isAbsolute, long time); 
 	park这个方法会阻塞当前线程，只有以下4种情况中的一种发生时，该方法才会返回： ·
 		1. 与park对应的unpark执行或已经执行时。
@@ -142,5 +142,7 @@ JVM是如何实现park方法：
 	看来在支持线程的系统中，最小调度单位就是线程。
 	那不支持了，java怎么模拟了，怎么与系统配合了
 
-？
+？唤醒会进入什么状态了？
 	为什么显示锁这些实际都是进入等待状态，而不是阻塞了
+	
+	

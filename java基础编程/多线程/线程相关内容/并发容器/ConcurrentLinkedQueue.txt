@@ -1,0 +1,98 @@
+ConcurrentLinkedQueue:
+	介绍：
+		ConcurrentLinkedQueue是一个基于链接节点的无界线程安全队列。
+		是一个适用于高并发场景下的线程安全队列，通过无锁的方式，实现了高并发状态下的高性能.
+		附：
+			该队列不允许null元素。
+
+	常用方法：
+		?
+	例：
+		...
+源码分析：pdf287...
+	offer入队实现思路：
+		1. 获取尾节点 2. 无限for循环 进行cas替换
+	入队操作：
+
+		//插入元素到队列的尾部
+		public boolean offer(E e) {
+			checkNotNull(e);
+			final Node<E> newNode = new Node<E>(e);
+
+			1. //p指向尾节点。该for为无限循环
+			for (Node<E> t = tail, p = t;;) {
+				Node<E> q = p.next;//q指向尾节点下个指针
+				//如果尾节点后无元素了。则其就是最后一个节点(附：避免for到if的这个过程中有别的线程产生新的尾节点)
+				if (q == null) {
+					2. // cas设置尾节点的下一个节点为新节点，设置成功则返回true；否则返回false
+					附：
+						//如果下一个节点是null则可成功插入e新节点
+						//如果失败说明有其他线程更新过尾节点，到else那步把p在置为尾节点
+					if (p.casNext(null, newNode)) {
+						// Successful CAS is the linearization point
+						// for e to become an element of this queue,
+						// and for newNode to become "live".
+						// 如果p != t，则将入队节点设置成tail节点
+						// 更新失败了也没关系，因为失败了表示有其他线程成功更新了tail节点
+							// 进行到上一步，尾部节点下个指针被更新了，那么其实只有当前线程能进行casTail了，别的会因为cas不成功一直在循环才对
+							?// 我想不到会有失败的场景？为什么失败了也没关系了？
+						if (p != t) // hop two nodes at a time
+							casTail(t, newNode);  // Failure is OK.
+						return true;
+					}
+					// Lost CAS race to another thread; re-read next
+				}
+				//?为什么会有这种情况。？为什么要考虑这种情况
+				else if (p == q)
+					// We have fallen off list.  If tail is unchanged, it
+					// will also be off-list, in which case we need to
+					// jump to head, from which all live nodes are always
+					// reachable.  Else the new tail is a better bet.
+					p = (t != (t = tail)) ? t : head;
+				else
+					// Check for tail updates after two hops.
+					p = (p != t && t != (t = tail)) ? t : q;
+					//当p t 指针不同且t 不为尾节点 则p赋为t
+						//为什么要有这种判断
+					//否则p指向q（尾节点下个指针）
+					
+					//？t != (t = tail)
+					//？直接赋q不好吗
+			}
+		}
+		boolean casNext(Node<E> cmp, Node<E> val) {
+			return UNSAFE.compareAndSwapObject(this, nextOffset, cmp, val);
+		}
+		private boolean casTail(Node<E> cmp, Node<E> val) {
+			return UNSAFE.compareAndSwapObject(this, tailOffset, cmp, val);
+		}
+		附：
+			public static void main(String[] args) {
+				Object tail = new Object();
+				Object t = tail;
+				Object p = t;
+				t = new Object();
+				System.out.println(t);
+				System.out.println(p);
+				System.out.println(tail);
+			}
+			public static void main(String[] args) {
+				Object t = new Object();
+				Object tail = new Object();
+				//http://www.java8.com/thread-5964-1-1.html
+				System.out.println(t != (t = tail));//t 值已经入栈，t又被重新赋值，相当于t与tail比较
+				System.out.println(t != (t = tail));//此时就是tail和tail比较了
+			}
+
+	出队操作了：？
+		如果没有元素线程会阻塞吗？
+废弃：
+	它是如何支持并发线程安全的：
+		https://blog.csdn.net/qq_38293564/article/details/80798310
+		它是通过cas操作的原子性，+ cas乐观锁思想 来实现并发安全的。
+		ConcurrentLinkedQueue 的非阻塞算法实现可概括为下面 5 点：
+			1.使用 CAS 原子指令来处理对数据的并发访问，这是非阻塞算法得以实现的基础。
+			2.head/tail 并非总是指向队列的头 / 尾节点，也就是说允许队列处于不一致状态。 这个特性把入队 / 出队时，原本需要一起原子化执行的两个步骤分离开来，从而缩小了入队 / 出队时需要原子化更新值的范围到唯一变量。这是非阻塞算法得以实现的关键。
+			3.由于队列有时会处于不一致状态。为此，ConcurrentLinkedQueue 使用三个不变式来维护非阻塞算法的正确性。
+			4.以批处理方式来更新 head/tail，从整体上减少入队 / 出队操作的开销。
+			5.为了有利于垃圾收集，队列使用特有的 head 更新机制；为了确保从已删除节点向后遍历，可到达所有的非删除节点，队列使用了特有的向后推进策略。

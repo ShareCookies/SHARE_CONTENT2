@@ -1,0 +1,54 @@
+实现思路：
+	1. 线程安全阻塞使用了lock来实现
+	2. 生产队列满或空的阻塞使用了，2种类型lock.Condition来实现。
+		即通知模式：
+			例：
+			生产者往满的队列里添加元素时会阻塞住生 产者.
+			当消费者消费了一个队列中的元素后，会通知生产者当前队列可用。
+
+源码分析：
+	private final Condition notFull;
+	private final Condition notEmpty;
+	public ArrayBlockingQueue(int capacity, boolean fair) { 
+		// 省略其他代码 
+		notEmpty = lock.newCondition(); 
+		notFull = lock.newCondition(); 
+	}
+	插入：
+		public void put(E e) throws InterruptedException { 
+			checkNotNull(e);
+			final ReentrantLock lock = this.lock;
+			//1. 加锁，然后插入。(整个)
+			lock.lockInterruptibly();
+			try {
+				//2. 当队列满的时候，满队列上挂起等待。
+				//附：具体在怎么等的：线程相关内容\线程通信\共享资源\Java显示锁\condition等待原理.txt   //？？？满队列上的挂起怎么释放锁的了
+				while (count == items.length) notFull.await();
+				insert(e); 
+			} finally { lock.unlock(); } 
+		}
+		private void insert(E x) {
+			//3. 插入到数组中。(所以这里其实就是数组当队列)
+			items[putIndex] = x; 
+			putIndex = inc(putIndex);
+			++count; 
+			//没有队列在挂起，唤醒也是没事的吧，即使后面有插入 也不会被这个提前唤醒影响吧？
+			//空队列唤醒。
+			notEmpty.signal(); 
+		}
+	读取：
+		public E take() throws InterruptedException {
+			// 1. 加锁。
+			final ReentrantLock lock = this.lock;
+			lock.lockInterruptibly(); 
+			
+			try {
+				// 2. 队列空了。空队列 挂起。
+				while (count == 0) notEmpty.await(); return extract(); 
+			} finally {
+				lock.unlock(); 
+			}
+		}
+
+
+
