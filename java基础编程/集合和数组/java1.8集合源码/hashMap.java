@@ -32,27 +32,28 @@
 		 * @return previous value, or null if none
 		 */
 		 
-		final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
-			boolean evict) {
+		final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
 				Node<K,V>[] tab; Node<K,V> p; int n, i;
-				// 为空，初始化hash表
+				// 1. 如果表为空，初始化hash表(就是一个数组)
 				if ((tab = table) == null || (n = tab.length) == 0)
 					n = (tab = resize()).length;
-				/*
-					tab[i = (n - 1) & hash] //找插入数据的hash在数组中位置(就是找当前要插入的数据应该在哈希表中的位置)
-						(n - 1) & hash 等于hash % n 
-						？
-						https://blog.csdn.net/argleary/article/details/100940228
-						https://blog.csdn.net/q2365921/article/details/96031412?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
-				*/
-				//当key对应位置无值时，插入元素。
+/*
+	tab[i = (n - 1) & hash] //找插入数据的hash在数组中位置(就是找当前要插入的数据应该在哈希表中的位置)
+		(n - 1) & hash 等于hash % n 
+		？？？
+		https://blog.csdn.net/argleary/article/details/100940228
+		https://blog.csdn.net/q2365921/article/details/96031412?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
+*/
+				//2 插入
+				//2.1 当key对应位置无值时，插入元素。
+				// 
 				if ((p = tab[i = (n - 1) & hash]) == null)
 					tab[i] = newNode(hash, key, value, null);
-				//当key对应位置有值时：
+				//2.2 当key对应位置有值时：
 				else {
 					Node<K,V> e; K k;
 					/*
-					if 如果key与旧key是一样的则覆盖插入。
+					2.2.1 if 如果key与旧key是一样的则覆盖插入。
 						如何判断是一样的：
 							两key的hash相等 且(两key内存地址一样或equal对比相等)
 						是否覆盖插入操作是在最后的if中。
@@ -61,29 +62,31 @@
 						((k = p.key) == key || (key != null && key.equals(k))))
 						e = p;
 					
-					// 如果是红黑树节点，则直接在树中插入 or 更新键值对(执行红黑树的添加操作)
+					//2.2.2 如果是红黑树节点，执行红黑树的添加操作(直接在树中插入 or 更新键值对)
 					else if (p instanceof TreeNode)
 						e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
 					
-					// 此时通过链表来解决hash冲突
+					//2.2.3 此时通过链表来解决hash冲突
 					else {
-						// 不断遍历链表
-						// 直到把节点往链表中插入 or 更新键值对，(当链表长度过长时，链表可能会转为红黑树)
+						// 不断遍历链表,直到把节点往链表中插入 or 更新键值对
+						// 当链表长度过长时，链表可能会转为红黑树
 						for (int binCount = 0; ; ++binCount) {
-							//p链节点下个节点为null则，元素插入到下个节点
-							if ((e = p.next) == null) { 
+							//插入 //p链节点下个节点为null则，元素插入到下个节点
+							if ((e = p.next) == null) {
 								p.next = newNode(hash, key, value, null);
-								
+								//扩容
 								//当链表长度大于树形阈值，扩容为红黑树
 								//static final int TREEIFY_THRESHOLD = 8;树形阈值
+								// 当前链?
 								if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
 									//替换给定哈希索引处 bin 中的所有链接节点，除非表太小，在这种情况下改为调整大小。
 									treeifyBin(tab, hash);
 								break;
 							}
-							//p下个链节点，key与旧key是同元素，则覆盖插入（跳出循环value在下面的if中赋值）。
-								//是否同元素判断同上
-								是否覆盖插入操作是在最后的if中。
+							//替换 
+							//p下个链节点，key与旧key是同元素，则覆盖插入。
+							//附1：覆盖插入代码指，跳出循环value在下面的if中赋值。
+							//附2：是否同元素判断同上
 							if (e.hash == hash &&
 								((k = e.key) == key || (key != null && key.equals(k))))
 								break;

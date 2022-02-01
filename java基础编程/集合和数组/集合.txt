@@ -290,24 +290,8 @@ Map接口：
 	
 	附：
 	其余Map实现类
-		Hashtable：
-			Hashtable大部分方法都使用了synchronized关键字，是线程安全的；
-			附：
-				HashMap没有考虑同步，是线程不安全的；
-			附：
-				Hashtable K/V都不允许为null；HashMap允许K/V都为null；
-？？？		ConcurrentHashMap：
-			ConcurrentHashMap和Hashtable的区别：
-				HashTable 在每次同步执行时都要锁住整个结构。 ConcurrentHashMap 锁的方式更细粒度的。
-
-			ConcurrentHashMap的工作原理：
-				ConcurrentHashMap在jdk 1.6和jdk 1.8实现原理是不同的。
-				jdk 1.7:
-					ConcurrentHashMap是线程安全的，但是与Hashtable相比，实现线程安全的方式不同。Hashtable是通过对hash表结构进行锁定，是阻塞式的，当一个线程占有这个锁时，其他线程必须阻塞等待其释放锁。ConcurrentHashMap是采用分离锁的方式，它并没有对整个hash表进行锁定，而是局部锁定，也就是说当一个线程占有这个局部锁时，不影响其他线程对hash表其他地方的访问。 
-					具体实现:ConcurrentHashMap内部有一个Segment.
-				jdk 1.8:
-					在jdk 8中，ConcurrentHashMap不再使用Segment分离锁，而是采用一种乐观锁CAS算法来实现同步问题，但其底层还是“数组+链表->红黑树”的实现。
-
+		Hashtable、ConcurrentHashMap：
+			并发容器
 		LinkedHashMap：！！！
 			介绍：
 				类似hashMap，仅比hashMap慢一点，但迭代访问时更快。
@@ -333,7 +317,7 @@ Collection接口：
 				
 			Set 接口常见的两种实现：
 				HashSet 和TreeSet。
-		HashSet：	
+		HashSet：
 			对象不可重复、无序。
 			原理：
 				基于HashMap开发，插入时是直接放入到hashMap的key上。

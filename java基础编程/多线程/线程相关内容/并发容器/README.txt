@@ -1,4 +1,4 @@
-并发队列：
+并发队列：(同步队列)
 	介绍：
 		1. 队列就是遵从先进先出规则的一种数据结构。
 		
@@ -12,8 +12,10 @@
 			实现方式是使用阻塞算法。
 			使用一个锁（入队和出队用同一把锁）或两个锁（入队和出队用不同的锁）等方式来实现。
 
-非阻塞式队列：
-	ConcurrentLinkedQueue:
-		./ConcurrentLinkedQueue.txt
-阻塞式队列：
-	./阻塞队列.txt
+	非阻塞式队列：
+		ConcurrentLinkedQueue:
+			./ConcurrentLinkedQueue.txt
+	阻塞式队列：
+		./阻塞队列.txt
+其余并发容器:(同步容器)
+	ConcurrentHashMap.txt

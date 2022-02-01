@@ -14,7 +14,7 @@
 - 线程通信(或叫线程协作，线程之间互相进行协作)
   - 等待/通知(wait、notify),Thread.join
   - 共享资源(同步、显示锁、volatile、线程本地存储)
-  - (同步队列、线程协作模型)
+  - (并发容器、线程协作模型)
   - 
 
 ## [线程池(了解线程的复用。)](https://github.com/yuyumyself/SHARE_CONTENT2/blob/master/java%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E6%B1%A0.txt)
