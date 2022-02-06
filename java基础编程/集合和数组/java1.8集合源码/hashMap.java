@@ -1,3 +1,50 @@
+前言：
+	什么是Hash表：
+		1. 哈希表是基于哈希函数建立的一种映射表。
+			就当作它是一个数组就好
+		2. hash函数根据key(hashCode)计算出应该存储在哈希表上那个位置.
+			就是hash值取余 数组大小 得到的值就是这个元素要存在数组的那个位置
+总结：
+	新增：（简版）
+		1. 获取key的hash。
+		
+		2. 找key在哈希表数组上的位置
+			tab[i = (n - 1) & hash] //找插入数据的hash在数组中位//(n - 1) & hash 等于hash % n 
+				
+		2.1 当key对应位置无值时，插入元素。
+		2.2 当key对应位置有值时：
+			1. if 如果key与旧key是一样的则覆盖插入。
+				如何判断是一样的：两key的hash相等 且(两key内存地址一样或equal对比相等)
+				if (p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k))))
+			2. else if // 如果旧节点是红黑树节点，则直接在树中插入(or更新键值对)
+				else if (p instanceof TreeNode)
+					// 如果当前的bucket里面已经是红黑树的话，执行红黑树的添加操作
+					e = ((TreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);						
+				
+			3. else // 把节点往链表中插入 or 更新键值对，
+			//(当链表长度过长时，链表可能会转为红黑树)
+			
+				for (int binCount = 0;; ++binCount)
+				{
+					//下个链节点为空插入
+					if ((e = p.next) == null)
+					{
+						p.next = newNode(hash, key, value, null);
+						// 扩容或红黑树化
+						if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+							treeifyBin(tab, hash);
+						break;
+					}
+					//和下个链接点等则替换
+					if (e.hash == hash && ((k = e.key) == key || (key != null && key.equals(k))))
+						break;
+					p = e;
+				}
+
+
+	附：
+		hashmap知识点总结.txt
+源码：		
 新增：
 	public V put(K key, V value) {
 		return putVal(hash(key), key, value, false, true);
@@ -115,7 +162,117 @@
 				return null;							
 			}
 附：
-hashmap扩容：
+红黑树解决hash冲突：
+    /**
+     * The table, initialized on first use, and resized as necessary. 
+	 When allocated, length is always a power of two.
+     * (We also tolerate length zero in some operations to allow
+     * bootstrapping mechanics that are currently not needed.)
+     */
+	 //节点数组，hashmap中用他来存放元素
+    transient Node<K,V>[] table;
+	/**
+     * The smallest table capacity for which bins may be treeified.
+     * (Otherwise the table is resized if too many nodes in a bin.)
+     * Should be at least 4 * TREEIFY_THRESHOLD to avoid conflicts
+     * between resizing and treeification thresholds.
+     */
+    static final int MIN_TREEIFY_CAPACITY = 64;
+    /**
+	 * 替换给定哈希索引处 bin 中的所有链接节点，除非表太小，在这种情况下改为调整大小。
+     * Replaces all linked nodes in bin at index for given hash unless
+     * table is too small, in which case resizes instead.
+     */
+    final void treeifyBin(Node<K,V>[] tab, int hash) {
+        int n, index; Node<K,V> e;
+		//链表长度大于8且hashtable的长度大于64
+        if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
+            resize();
+		//链表红黑树化
+        else if ((e = tab[index = (n - 1) & hash]) != null) {
+			// do while走完仅是把链表上节点替换为树节点
+			// hd根节点 // t1 保存前置节点的
+            TreeNode<K,V> hd = null, tl = null;
+            do {
+				//生成树节点
+                TreeNode<K,V> p = replacementTreeNode(e, null);
+                if (tl == null)
+                    hd = p;
+                else {
+                    p.prev = tl;
+                    tl.next = p;
+                }
+                tl = p;
+            } while ((e = e.next) != null);
+			//红黑树化
+            if ((tab[index] = hd) != null)
+                hd.treeify(tab);
+        }
+    }
+	TreeNode<K,V> replacementTreeNode(Node<K,V> p, Node<K,V> next) {
+        return new TreeNode<>(p.hash, p.key, p.value, next);
+    }
+	static final class TreeNode<K,V> extends LinkedHashMap.Entry<K,V> {
+        TreeNode<K,V> parent;  // red-black tree links
+        TreeNode<K,V> left;
+        TreeNode<K,V> right;
+        TreeNode<K,V> prev;    // needed to unlink next upon deletion
+        boolean red;
+        TreeNode(int hash, K key, V val, Node<K,V> next) {
+            super(hash, key, val, next);
+        }
+	}
+	/**
+	?
+	 * Forms tree of the nodes linked from this node.
+	 ？HashMap红黑树树化过程
+						https://www.cnblogs.com/finite/p/8251587.html
+			
+
+	 */
+	final void treeify(Node<K,V>[] tab) {
+		TreeNode<K,V> root = null;
+		for (TreeNode<K,V> x = this, next; x != null; x = next) {
+			next = (TreeNode<K,V>)x.next;
+			x.left = x.right = null;
+			if (root == null) {
+				x.parent = null;
+				x.red = false;
+				root = x;
+			}
+			else {
+				K k = x.key;
+				int h = x.hash;
+				Class<?> kc = null;
+				for (TreeNode<K,V> p = root;;) {
+					int dir, ph;
+					K pk = p.key;
+					if ((ph = p.hash) > h)
+						dir = -1;
+					else if (ph < h)
+						dir = 1;
+					else if ((kc == null &&
+							  (kc = comparableClassFor(k)) == null) ||
+							 (dir = compareComparables(kc, k, pk)) == 0)
+						dir = tieBreakOrder(k, pk);
+
+					TreeNode<K,V> xp = p;
+					if ((p = (dir <= 0) ? p.left : p.right) == null) {
+						x.parent = xp;
+						if (dir <= 0)
+							xp.left = x;
+						else
+							xp.right = x;
+						root = balanceInsertion(root, x);
+						break;
+					}
+				}
+			}
+		}
+		moveRootToFront(tab, root);
+	}
+
+hashmap扩容：？
 	/**
 	 * The table, initialized on first use, and resized as
 	 * necessary. When allocated, length is always a power of two.
@@ -268,94 +425,3 @@ https://blog.csdn.net/u014683368/article/details/81124138
         return newTab;
     }
 
-红黑树解决hash冲突：
-    /**
-     * The table, initialized on first use, and resized as necessary. 
-	 When allocated, length is always a power of two.
-     * (We also tolerate length zero in some operations to allow
-     * bootstrapping mechanics that are currently not needed.)
-     */
-	 //节点数组，hashmap中用他来存放元素
-    transient Node<K,V>[] table;
-	/**
-     * The smallest table capacity for which bins may be treeified.
-     * (Otherwise the table is resized if too many nodes in a bin.)
-     * Should be at least 4 * TREEIFY_THRESHOLD to avoid conflicts
-     * between resizing and treeification thresholds.
-     */
-    static final int MIN_TREEIFY_CAPACITY = 64;
-    /**
-	 * 替换给定哈希索引处 bin 中的所有链接节点，除非表太小，在这种情况下改为调整大小。
-     * Replaces all linked nodes in bin at index for given hash unless
-     * table is too small, in which case resizes instead.
-     */
-    final void treeifyBin(Node<K,V>[] tab, int hash) {
-        int n, index; Node<K,V> e;
-        if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
-            resize();
-		//链表红黑树化
-        else if ((e = tab[index = (n - 1) & hash]) != null) {
-			// do while走完仅是把链表上节点替换为树节点
-			// hd根节点 // t1 保存前置节点的
-            TreeNode<K,V> hd = null, tl = null;
-            do {
-				//生成树节点
-                TreeNode<K,V> p = replacementTreeNode(e, null);
-                if (tl == null)
-                    hd = p;
-                else {
-                    p.prev = tl;
-                    tl.next = p;
-                }
-                tl = p;
-            } while ((e = e.next) != null);
-			//红黑树化
-            if ((tab[index] = hd) != null)
-                hd.treeify(tab);
-        }
-    }
-	/**
-	?
-	 * Forms tree of the nodes linked from this node.
-	 */
-	final void treeify(Node<K,V>[] tab) {
-		TreeNode<K,V> root = null;
-		for (TreeNode<K,V> x = this, next; x != null; x = next) {
-			next = (TreeNode<K,V>)x.next;
-			x.left = x.right = null;
-			if (root == null) {
-				x.parent = null;
-				x.red = false;
-				root = x;
-			}
-			else {
-				K k = x.key;
-				int h = x.hash;
-				Class<?> kc = null;
-				for (TreeNode<K,V> p = root;;) {
-					int dir, ph;
-					K pk = p.key;
-					if ((ph = p.hash) > h)
-						dir = -1;
-					else if (ph < h)
-						dir = 1;
-					else if ((kc == null &&
-							  (kc = comparableClassFor(k)) == null) ||
-							 (dir = compareComparables(kc, k, pk)) == 0)
-						dir = tieBreakOrder(k, pk);
-
-					TreeNode<K,V> xp = p;
-					if ((p = (dir <= 0) ? p.left : p.right) == null) {
-						x.parent = xp;
-						if (dir <= 0)
-							xp.left = x;
-						else
-							xp.right = x;
-						root = balanceInsertion(root, x);
-						break;
-					}
-				}
-			}
-		}
-		moveRootToFront(tab, root);
-	}

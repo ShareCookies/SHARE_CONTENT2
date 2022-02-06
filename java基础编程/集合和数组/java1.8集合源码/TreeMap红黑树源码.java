@@ -1,3 +1,33 @@
+总结：
+	1. 插入key到指定的叶位置(或替换)。
+		把key从根节点开始对比，小在比左边，大在比右，一样大则覆盖value。
+		一直对比到叶节点。
+		public V put(K key, V value) {
+			Entry<K,V> t = root;
+			...
+			do {
+				parent = t;
+				cmp = k.compareTo(t.key);
+				if (cmp < 0)
+					t = t.left;
+				else if (cmp > 0)
+					t = t.right;
+				else
+					return t.setValue(value);
+			} while (t != null);
+		}
+		Entry<K,V> e = new Entry<>(key, value, parent);
+		if (cmp < 0)
+			parent.left = e;
+		else
+			parent.right = e;
+	2. 插入后维护红黑色性质。
+		fixAfterInsertion(e);
+		./红黑树源码插入修复总结.txt
+	附：
+		hashmap知识点总结.txt
+源码：
+新增：
 public V put(K key, V value) {
 	Entry<K,V> t = root;
 	// 初始化根节点
@@ -67,7 +97,8 @@ private void fixAfterInsertion(Entry<K,V> x) {
 	//这里怎么没有红黑树叶节点的概念了？红黑树叶节点干嘛用了？
 	x.color = RED;
 	//修复性质4
-	while (x != null && x != root && x.parent.color == RED) {// 父节点为红破坏了红下2黑性质
+	// 父节点为红破坏了红下2黑性质
+	while (x != null && x != root && x.parent.color == RED) {
 		if (parentOf(x) == leftOf(parentOf(parentOf(x)))) {//z的父节点为左节点的修复方式
 			Entry<K,V> y = rightOf(parentOf(parentOf(x)));
 			if (colorOf(y) == RED) { //z的叔父节点为红时
@@ -82,7 +113,7 @@ private void fixAfterInsertion(Entry<K,V> x) {
 				x = parentOf(parentOf(x));
 			} else {
 				if (x == rightOf(parentOf(x))) {
-				//此时情况：z红且为右节点，父为左节点且红，z叔父节点为黑(或空？)
+				//此时情况：z红且为右节点，父为左节点且红，z叔父节点为空
 				//修复策略：
 					// z节点指针上升到父节点并左旋。
 					//（
@@ -96,7 +127,7 @@ private void fixAfterInsertion(Entry<K,V> x) {
 				}
 				//此时情况：z红且为左节点，父为左节点且红，z叔父节点为空。祖父黑
 					//此时一定为 祖父黑 父左红 z左红 这种情况
-				//修复策略：夫变黑，祖父变红，祖父右旋。（首先颜色变后右旋修正了红下2黑，并且夫是以黑（同颜色）替换了祖父的未知。所以维持了红黑树性质。）
+				//修复策略：夫变黑，祖父变红，祖父右旋。（颜色变是为了修复红下两黑性质(为什么祖父要红 因为黑高性质多个黑就要少个黑啊)。右旋是为了维持黑高一致性质。）
 				setColor(parentOf(x), BLACK);
 				setColor(parentOf(parentOf(x)), RED);
 				rotateRight(parentOf(parentOf(x)));
