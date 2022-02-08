@@ -24,8 +24,7 @@
 	2. 插入后维护红黑色性质。
 		fixAfterInsertion(e);
 		./红黑树源码插入修复总结.txt
-	附：
-		hashmap知识点总结.txt
+
 源码：
 新增：
 public V put(K key, V value) {

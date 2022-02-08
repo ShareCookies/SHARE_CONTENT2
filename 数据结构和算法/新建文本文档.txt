@@ -1,3 +1,7 @@
+LinkedHashMap 最近最少使用(LRU)算祛
+LinkedList 链表遍历
+
+
 Θ
 Ω
 ∪

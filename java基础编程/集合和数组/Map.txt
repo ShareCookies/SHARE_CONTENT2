@@ -1,0 +1,92 @@
+Map接口：
+	介绍：
+		1. Map是一键值对容器，即把一对象与其他对象进行关联映射的容器。
+			map容器的每一个元素都包含一对，键对象和值对象。 
+		2. Map 接口常见的实现：HashMap , TreeMap.
+
+	map常见操作：
+		新增、修改：
+			新增put
+			修改put
+				map修改值,重新.put就可以。
+				因为相同key的键值对会覆盖。
+		判断是否包含某个键或值：
+			containsKey()
+			containsValue()
+		获取所有key值：
+			.keySet()
+		获取map的所有键值对条目：
+			entrySet() 方法返回一个Set，该Set的元素为实现Map.Entry 接口的对象集合。
+				即集合中每个对象都是底层 Map 中的一个键值对。
+			通过这个集合迭代，您可以获得每一条目的键或值并对值进行更改。
+			
+			附：？
+				如果底层 Map 在Map.Entry 接口的setValue() 方法外部被修改，此条目集就会变得无效，并导致迭代器行为未定义。
+	附：
+		1.HashMap与TreeMap区别：
+			在Map 中插入、删除和定位元素，HashMap 是最好的选择。但如果您要按顺序遍历键，那么TreeMap 会更好。
+				因为HashMap根据关键字定位能耗时能达到常数O(1),而TreeMap要O(lgn).
+				但散列方法的存储对关键字是随机的，不便于顺序查找关键字，也不适合于范围查找，或最大值最小值查找。
+		2.Map优化：
+			为了优化 HashMap 空间的使用，您可以调优初始容量和负载因子？。
+			TreeMap 没有调优选项，因为该树总处于平衡状态。				
+	
+HashMap实现类：
+	介绍：
+		基于哈希表实现。
+	HashMap的实现原理：
+		./java1.8集合源码/hashMap.txt
+		附：
+			https://blog.csdn.net/chenssy/article/details/18323767
+	附：
+		初始容量、加载因子：构造函数
+			HashMap(int initialCapacity, float loadFactor)：
+			构造一个带指定初始容量和加载因子的空 HashMap。
+				initialCapacity初始容量：
+					数组初始容量(散列表初始容量)。
+				loadFactor加载因子：?
+					用来扩容用。
+					HashMap默认的加载因子是0.75，最大容量是16，因此可以得出HashMap的默认容量是：0.75*16=12。
+					那么当 HashMap 中有 12 个元素时，HashMap 就会进行扩容。
+		新增put：
+			1. 允许插入重复的key
+				插入重复的key，会覆盖掉对应的key，value，并返回被覆盖的value。
+			2. HashMap允许使用 null 值和 null 键
+TreeMap实现类：
+	介绍：
+		基于红黑树实现。
+		附：
+			红黑树一种平衡二叉查找树。
+			二叉查找树操作耗时O(h) 红黑树高至多lgn 所以红黑树操作耗时O(lgn)
+	特性：
+		1. TreeMap要求存放的键值对的键必须实现Comparable接口.
+		因为要根据键元素进行对比，然后插入到红黑树中。
+		2. TreeMap不允许使用null键，插入null会报错，因为key要用来对比插入。	
+	TreeMap的实现原理：
+		新增：
+			./新建文件夹/TreeMap红黑树源码.java
+		附：
+			https://zhuanlan.zhihu.com/p/105377431
+其余Map实现类
+	Hashtable、ConcurrentHashMap：
+		/java基础编程\多线程\线程相关内容\线程通信\并发容器
+	LinkedHashMap：
+		介绍：
+			类似hashMap，仅比hashMap慢一点，但迭代访问时更快。
+				注：为了提高速度，LinkedHashMap散列化所有的元素，但又使用了链表保存了顺序。
+			迭代遍历它时，取得键值对的顺序是其插入顺序，因为其用链表维护了内部顺序。
+		注：
+			1.可以在构造器中设定LinkedHashMap,使之采用基于访问的最近最少使用(LRU)算祛，
+			于是没有被访问过的(可被看作需要删除的)元素就会出现在队列的前面。
+			对于需要定期清理元素以节省空间的程序来说，此功能使得程序很容易得以实现。
+		例：
+			./案例/LinkedHashMapDemo.java
+		原理：？
+	WeakHashMap：
+		...
+	IdentityHashMap：
+		...
+		HashMap
+			if (e.hash == hash && ((k = e.key) == key || key.equals(k))) 
+		IdentityHashMap
+			而IdentityHashMap，他只承认key==e.key的结果为true时，才认为是相同的Entry。
