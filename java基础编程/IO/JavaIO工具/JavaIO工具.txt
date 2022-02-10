@@ -1,0 +1,153 @@
+磁盘操作
+	IO的实用工具类:
+		FileInputStream：
+			输入流之文件输入流，是个实用工具流，
+				它的read方法具体实现了从文件中读取数据，
+				不像别的输入流仅操作别的输入流
+			附：read方法
+				* A <code>FileInputStream</code> obtains input bytes from a file in a file system. 
+				/**
+				 * Reads a byte of data from this input stream. This method blocks
+				 * if no input is yet available.
+				 *
+				 * @return     the next byte of data, or <code>-1</code> if the end of the
+				 *             file is reached.
+				 * @exception  IOException  if an I/O error occurs.
+				 */
+				public int read() throws IOException {
+					return read0();//是个本地方法
+				}
+			附：
+				所以其他流仅是一些装饰流，装饰流通过操作一些别的流来实现一些特有功能，
+				比如BufferedInputStream 操作别的InputStream，实现了缓存功能
+			例：
+				./案例\文件操作
+		FileReader：
+			FileReader操作的其实也是FileInputStream，
+			只是FileReader会通过StreamDecoder来操作流 来实现数据的读取，
+			所以字符流只能处理字符类型的数据，且默认的是16Unicode编码。
+			附：
+				Reader有提供按行读取功能
+					.readLine();
+			例：
+				./案例\文件操作
+		附：
+			java.io.File：
+				1. File类是java对文件或目录的抽象表示，即一个file表示一个文件或目录
+					* An abstract representation of file and directory pathnames.
+				附：
+					与流体系无直接继承关系，但FileReader或FileInputStream参数通常都是File, 然后获取到文件的流。
+				2. File类也是一个工具类，它可以用来处理文件或文件集（文件夹）。
+				例：判断是否是文件、获取目录下所有文件路径
+
+		
+	NIO:
+		FileChannel的获取：
+			1. 从文件流中获取
+				例：
+					FileInputStream#getChannel
+					FileOutputStream#getChannel
+					区别：？
+						文件通道的状态与从那种流中获取的，是密切相关的。
+						输出流获取的通道只可写，不可读：writable = true readable = false append = false
+						输入流获取的通道只可写，不可读：writable = false readable = true append = false
+					？如何获取全行的了
+				附：
+					旧I/0类库中有三个类被修改了，用以产生FileChannel。
+                        FileInputStream、 FileOutputStream以及用于既读又写的RandomAccessFile.
+                    这些是字节操纵流，与低层的nio性质一致。Reader和Writer这种字符模式类不能用于产生通道.
+			2. 通过特定文件工具类RandomAccessFile：
+				RandomAccessFile#getChannel
+			3.  通过文件通道的静态open()方法
+				例：FileChannel  inChannel = FileChannel.open(Paths.get("D:\\6.jpg"), StandardOpenOption.READ);
+			4. 工具类Files?
+				JDK1.7中的NIO.Files工具类的newByteChannel()
+			5. Channels工具类：
+				...
+	
+		附：
+			FileChannelImpl：
+				FileChannel只是一个抽象类，FileChannelImpl是FileChannel的实现类。
+				fileChannle.write()的实现就是由FileChannelImpl来的。
+				...
+			Path接口：代表类
+				1. Path类也是java对文件或目录的抽象表示，即一个Path表示一个文件或目录
+				 * An object that may be used to locate a file in a file system. 
+				 It will ypically represent a system dependent file path.
+				附：
+				Path创建：
+					1. Path path = FileSystems.getDefault().getPath("logs", "access.log");
+
+					2. Paths
+						工具类。
+						返回由string或uri转换而来的path
+		例：
+			./案例\文件操作
+	附：
+	RandomAccessFile类:
+		自我独立的类。
+		RandomAccessFile是一个完全独立的类(与io流体系接口没有任何继承关系)，从头开始编写其所有的方法(大多数都是本地的)。
+		这么做是因为RandomAccessFile拥有和别的I/O类型本质不同的行为，因为我们可以在一个文件内向前和向后移动。
+		注：
+			在JDK 1.4中，RandomAccessFile的大多 数功能(但不是全部)由nio存 储映射文件所取代。
+	
+	附：		 
+		FileDescriptor	 
+		 * Instances of the file descriptor class serve as an opaque handle
+		 * to the underlying machine-specific structure representing an
+		 * open file, an open socket, or another source or sink of bytes.
+		 * The main practical use for a file descriptor is to create a
+		 * {@link FileInputStream} or {@link FileOutputStream} to contain it.
+		 *
+		 * <p>Applications should not create their own file descriptors.
+		 *
+		 * @author  Pavani Diwanji
+		 * @since   JDK1.0d
+		 */	
+		 代表linux(系统)的文件描述符类（打开的文件，打开的套接字等），由系统返回。
+
+网络操作：
+	IO:
+		ServerSocketChannel
+		SocketChannel
+		例、源码：
+			./案例\网络操作\tcp\io
+		？
+			java基础编程\IO\通信\Socket\ServerAndClientOfSocket
+	NIO:
+		ServerSocket
+		Socket
+		例、源码：
+			./案例\网络操作\tcp\nio
+标准IO:（System.in、System.out、System.err）
+	标准I/O这个术语参考的是Unix中“程序所使用的单一信息流”这个概念。
+	程序的所有输人都可以来自于标准输入，它的所有输出也都可以发送到标准输出，以及所有的错误信息都可以发送到标准错误。
+	标准I/O的意义在于:我们可以很容易地把程序串联起来，一个程序的标准输出可以成为另-程序的标准输入。
+	标准IO是一个强大的工具。
+	
+	按照标准I/O模型，Java提供了System.in、System.out和System.err。 
+	System.out、System.err能将数据写出到标准输出，且System.out、System.err已经事先被包装成了printStream对象。
+	但System.in却是 一个没有被包装过的未经加工的InputStream.
+	这意味尽管我们可以立即使用System.out和System.err,但是在读取System.in之前必须对其进行包装。
+	例：
+		从标准输入中读取：
+			...
+	标准IO重定向：
+		...
+		
+		
+	？：
+		https://www.cnblogs.com/zhengchenhui/p/6008618.html
+进程控制：(ProcessBuilder)
+	...
+
+压缩：
+	p568
+对象序列化：
+	p572
+xml：
+	p586
+Preference:
+	p588
+
+

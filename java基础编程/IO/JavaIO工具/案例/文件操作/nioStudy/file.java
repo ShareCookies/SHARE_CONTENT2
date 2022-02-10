@@ -1,12 +1,12 @@
-package com.china.hcg.io.nio;
+package com.china.hcg.io.nioStudy;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
+
 
 /**
  * @autor hecaigui

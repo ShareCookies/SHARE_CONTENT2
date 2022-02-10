@@ -1,0 +1,88 @@
+Selector只能做服务端时应用吗？
+Selector在实际开发中什么时候用？
+	https://www.zhihu.com/question/439681246/answer/1693588792
+Selector的重要属性:
+	每个选择器中管理着三个SelectionKey集合：
+		keys：该集合中保存了所有注册到当前选择器上的通道的SelectionKey对象；
+			当我们调用Channel的register方法将通道注册到选择器时，一个SelectionKey对象会被加入到keys集合；
+		selectedKeys：该集合中保存了上一次Selector选择(selector.select();)期间，发生了就绪事件的通道的SelectionKey对象集合，它始终是keys的子集。
+			选择器做选择操作时，具有就绪事件的SelectionKey对象会被加入到selectedKeys集合中。
+
+		cancelledKeys：该集合保存了已经被取消但其关联的通道还未被注销(?)的SelectionKey对象集合，它始终是keys的子集。
+			调用通道的Close方法或直接调用选择器的cancel方法则会将一个SelectionKey对象添加到cancelledKeys集合，选择器下一次做选择操作时，将会清空cancelledKeys中保存的选择键，并从keys集合中删除；
+
+	每个Selector中还维护了publicKeys和publicSelectedKeys两个视图...
+Selection操作
+	Selector中提供了3种类型的selection操作：
+
+		select()：该方法会一直阻塞直到至少一个channel中有感兴趣的事件发生，除非当前线程发生中断或selector的wakeup方法被调用；
+
+		select(long timeout)：该方法与select()类似，会一直阻塞直到至少一个channel中有感兴趣的事件发生，除非下面3种情况任意一种发生：1 设置的超时时间到达；2 当前线程发生中断；3 selector的wakeup方法被调用；
+
+		selectNow()：该方法不会发生阻塞，无论是否有channel发生就绪事件，都会立即返回。
+
+	当我们调用Selector的select方法时，selectedKeys集合会被更新，通过遍历selectedKeys，就可以找到已经就绪的通道，从而处理各种I/O事件。
+	select操作的大概过程如下：
+
+		检查cancelledKeys集合，如果它非空，从keys集合中移除所有存在于cancelledKeys集合中的SelectionKey对象，并将注销其通道，同时清空cancelledKeys；
+		向内核发起一个系统调用进行查询，以确定选择器上注册的每个通道所关心的事件是否就绪。如果没有通道已经准备好，线程可能会一直阻塞、阻塞指定时间，或立即返回，这主要依赖于特定select方法的调用；
+		系统调用返回，再次检查cancelledKeys集合；
+		系统调用返回后，对于那些没有就绪事件的通道将不会有任何的操作，对于那些已经有就绪事件的通道，将执行以下两种操作的一种： 
+			如果通道的SelectionKey还未加入selectedKeys集合，将其添加到selectedKeys集合中，并修改ready集合，以便准确地标识该通道当前有哪些准备好的操作。先前记录在ready集合中的任何就绪信息都会被抛弃；
+			否则，通道的SelectionKey已经存在于selectedKeys集合，修改ready集合，以便准确地标识该通道当前有哪些准备好的操作。所有之前记录在ready集合中已经不再是就绪状态的操作不会被清除。事实上，所有的比特位都不会被清理。由操作系统决定的ready集合是与之前的ready集合按位分离的，一旦键被放置于选择器的已选择的键的集合中，它的ready集合将是累积的。比特位只会被设置，不会被清理。
+		select操作返回的值是ready集合在步骤2中被修改的键的数量，而不是selectedKeys集合中的通道总数。返回值不是已准备好的通道的总数，而是从上一个select( )调用之后进入就绪状态的通道的数量。之前的调用中就绪的，并且在本次调用中仍然就绪的通道不会被计入，而那些在前一次调用中已经就绪但已经不再处于就绪状态的通道也不会被计入。这些通道可能仍然在已选择的键的集合中，但不会被计入返回值中。返回值可能是0。
+
+	Selector唤醒
+		Selector中提供了使线程从被阻塞的select( )方法中优雅地退出的能力：
+			public abstract Selector wakeup();
+		如果一个线程在调用select()或select(long)方法时被阻塞，调用wakeup()会使线程立即从阻塞中唤醒；
+		如果调用wakeup()期间没有select操作，下次调用select相关操作会立即返回。
+		在Select期间，多次调用wakeup()与调用一次效果是一样的。
+		
+		关于wakeup()的实现原理：
+			可参见文章Java NIO Selector的wakeup实现原理。
+			...
+	Selector关闭
+		当我们调用Selector的close()方法时，会首先执行wakeup操作，任何一个在选择操作中阻塞的线程都将被唤醒。同时会注销绑定在选择器上的所有通道，释放与此选择器相关联的任何其他资源。
+
+		如果选择已经处于关闭状态，再次调用close()方法不会由任何作用。
+		若调用该选择器除close()和wakeup()之外的操作都会导致ClosedSelectorException异常。
+		
+SelectionKey
+	SelectionKey对象代表着一个Channel和它注册的Selector间的关系。
+	其channel( )方法可返回与该键相关的SelectableChannel对象，而selector( )则返回相关的Selector对象。
+	
+	此外，SelectionKey中包含两个重要属性，两个以整数形式进行编码的比特掩码：
+
+		interestOps：代表对注册Channel所感兴趣的事件集合。interest集合是使用注册通道时给定的值初始化的，可以通过调用键对象的interestOps( int ops)方法修改。同时，可以调用键对象的interestOps()方法获取当前interest集合。当相关的Selector上的select( )操作正在进行时改变键的interest集合，不会影响那个正在进行的选择操作。所有更改将会在select( )的下一个调用中体现出来；
+		readyOps：代表interest集合中从上次调用select( )以来已经就绪的事件集合，它是interestOps的子集。注册通道时，初始化为0，只有在选择器选择操作期间可能被更新。可以调用键对象的readyOps()方法获取当前ready集合。需注意的是ready集合返回的就绪状态只是一个提示，不是保证。底层的通道在任何时候都会不断改变。其他线程可能在通道上执行操作并影响它的就绪状态。
+	SelectionKey中使用了四个常量来代表事件类型：
+
+		SelectionKey.OP_READ：通道已经准备好进行读取；
+
+		SelectionKey.OP_WRITE：通道已经准备好写入；
+
+		SelectionKey.OP_CONNECT：通道对应的socket已经准备好连接；
+
+		SelectionKey.OP_ACCEPT：通道对应的server socket已经准备好接受一个新连接。
+
+		注册通道时，如果我们不止对一种操作感兴趣，可以用“位或”操作符将多个常量连接起来？。
+		如下：
+
+			socketChannel.register(selector, SelectionKey.OP_CONNECT|SelectionKey.OP_READ|SelectionKey.OP_WRITE);
+			在一次selection之后，我们可以使用以下几个方法来检测channel中什么事件已经就绪：
+	检测就绪状态：
+		selectionKey.isAcceptable()：是否已准备好接受新连接；
+		selectionKey.isConnectable()：是否已准备好连接；
+		selectionKey.isReadable()：是否已准备好读取；
+		selectionKey.isWritable()：是否已准备好写入。
+		
+		我们也可以使用相关的比特掩码来检测就绪状态...
+	
+	一个selectionKey被创建后将保持有效，调用selectionKey的cancel()方法或关闭其通道?或关闭其选择器将导致其失效。
+	我们可以调用isValid( )方法来检查selectionKey是否仍然有效。
+	当我们调用selectionKey的cancel()方法后，它将被放在相关的选择器的cancelledKeys集合中。注册关系不会立即被取消，但是selectionKey会立即失效。当再次调用select()方法时（或者一个正在进行的select()调用结束时），cancelledKeys中的被取消的键将被清理掉。
+
+	selectionKey除了维护Channel和Selector的注册关系外，还提供了保存“附件”的功能，并提供方法访问它。这是一种允许我们将任意对象与键关联的便捷方法。这个对象可以引用任何对象，例如业务对象、会话句柄、其他通道等等。当我们在遍历与选择器相关的键时，可以使用附加在selectionKey上的对象句柄来获取相关的上下文。attach( )方法将在selectionKey中保存所提供的对象的引用，attachment( )方法则用来获取与selectionKey关联的附件句柄。
+
+	关于SelectionKey还有最后一点需要注意，SelectionKey是线程安全的。修改interest集合的操作是通过Selector对象进行同步的，而选择器所使用的锁策略是依赖于具体实现的。因此如果Selector正在进行选择操作，则读取或写入interest集可能会阻塞不确定的时间。

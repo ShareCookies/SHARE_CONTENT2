@@ -1,0 +1,16 @@
+
+	
+channel是如何实现可中断的？
+
+
+
+向buffer插入数据
+	手动向buffer插入数据：
+		put(byte b)
+		put(byte[] b)
+		ByteBuffer也方便地提供了几种写入基本类型的put方法：
+			putChar(char val)、putShort(short val)、putInt(int val)、putFloat(float val)、putLong(long val)、putDouble(double val)。
+		执行这些写入方法之后，就会以当前的position位置作为起始位置，写入对应长度的数据，并在写入完毕之后将position向后移动对应的长度。下图就表示了分别向ByteBuffer中写入1个字节的byte数据和4个字节的Integer数据的结果：
+	channel向buffer插入数据：
+		.channel.read(buffer);
+		附：channel也是调了buffer的put方法进行插入

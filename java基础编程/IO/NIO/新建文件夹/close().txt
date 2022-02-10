@@ -1,0 +1,15 @@
+https://zhidao.baidu.com/question/813806462184804332.html 最后一个
+close()作用：？
+	所有实现Closeable的类都带有close方法。
+	一般而言，Closeable接口用于标记系统资源的占用。？
+close()实现：
+	资源类
+		JDK自带的Closeable的实现类几乎都是资源工具类，都需要调用close方法。
+
+		而流式输出的资源通常也实现一个Flushable接口，通常Flushable的实现类也都继承Closeable，都要在调用close之前调用一次flush。
+	内存模拟资源：
+		但是有些特殊的工具类虽然实现了Closeable却不需要调用close，实现了Flushable却不需要调用flush。不需要Close的工具类一般是在Java堆中用内存模拟资源。如StringWriter、StringReader、ByteArrayOutputStream、ByteArrayInputStream，都是不需要关闭的。不需要flush的类是非缓存的工具类，FileOutputStream，FileWriter虽然实现了Flushable，却是不需要flush的。
+	再看FileChannel，要不要关闭是由资源的实际实现方式决定的。FileChannel使用的是文件资源，而不是内存资源，所以FileChannel需要关闭。
+总结：
+	如果在函数形参传入一个流，怎么知道它是文件资源还是内存资源呢？怎样知道它是不是有缓存的资源类呢？这是无法得知的。这种情况下如果有必要，应该对任何传入的流都调用close，或者在外部处理。
+	对一个内存模拟的资源调用close方法会发生什么？事实上内存模拟的资源实现了一个空的close函数，是否调用并不会对运行状况造成什么变化。建议是对内存模拟的资源也调用close。同样的，实现了Flushable的非缓存类也只实现一个空的flush函数。因此只要实现了Flushable的类，不论是否是内存资源，都调用flush。实现了Closeable的类，不论是否是内存资源，都调用close。

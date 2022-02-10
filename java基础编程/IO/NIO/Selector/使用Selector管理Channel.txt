@@ -2,20 +2,30 @@
 	1.创建选择器：
 		Selector selector = Selector.open();
 	2.将通道注册到选择器上
+		//2.1 
+		1.新建服务器tcp监听通道
+		2. 服务器tcp监听通道 必须配置为非阻塞模式，否则使用选择器就没有任何意义了，
+			//因为如果通道在某个事件上被阻塞，那么服务器就不能响应其它事件，必须等待这个事件处理完毕才能去处理其它事件，显然这和选择器的作用背道而驰。
+			//？原理、源码
+
+		Selector就可以继续轮询其它 Channel，找到 IO 事件已经到达的 Channel 执行。			
+			
 		ServerSocketChannel ssChannel = ServerSocketChannel.open();
 		ssChannel.configureBlocking(false);
-		//通道必须配置为非阻塞模式，否则使用选择器就没有任何意义了，
-			因为如果通道在某个事件上被阻塞，那么服务器就不能响应其它事件，必须等待这个事件处理完毕才能去处理其它事件，显然这和选择器的作用背道而驰。
+
+		//2.2 将通道注册到选择器上
 		ssChannel.register(selector, SelectionKey.OP_ACCEPT);
 		附：
-			在将通道注册到选择器上时，还需要指定要注册的具体事件：
-				这是一个“interest set”，意思是在通过Selector监听Channel时对什么事件感兴趣。
+			1. 在将通道注册到选择器上时，还需要指定要注册的具体事件：
+				1. register第二个参数是一个int (The interest set for the resulting key？)
+				意思是指明，在通过Selector监听Channel时，selector对什么事件感兴趣。
+				
 				可以监听四种不同类型的事件：
 					Connect
 					Accept
 					Read
 					Write
-				通道触发了一个事件则意味着该事件已经就绪。
+				2. 通道完成某个事件后，就会触发对应事件：
 					连接就绪：
 						某个channel成功连接到另一个服务器称为“连接就绪”。
 					接收就绪:
@@ -24,7 +34,7 @@
 						一个有数据可读的通道可以说是“读就绪”。
 					写就绪：
 						等待写数据的通道可以说是“写就绪”。
-				附：
+				附：？
 					如果你对不止一种事件感兴趣，那么可以用“位或”操作符将常量连接起来
 						例：
 						int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;
@@ -37,8 +47,9 @@
 						例如：
 							int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;		
 			SelectionKey？
-				在当向Selector注册Channel时，register()方法会返回一个SelectionKey对象。
-				这个对象代表了注册到该Selector的通道。可以通过SelectionKey的selectedKeySet()方法访问这些对象。
+				介绍：
+					在当向Selector注册Channel时，register()方法会返回一个SelectionKey对象。
+					这个对象代表了注册到该Selector的通道。可以通过SelectionKey的selectedKeySet()方法访问这些对象。
 				SelectionKey对象包含的一些属性：
 					interest集合
 						interest集合是你所选择的感兴趣的事件集合。可以通过SelectionKey读写interest集合。
@@ -73,34 +84,33 @@
 							还可以在用register()方法向Selector注册Channel的时候附加对象：
 								SelectionKey key = channel.register(selector, SelectionKey.OP_READ, theObject);
 
-			注：
-				与Selector一起使用时，Channel必须处于非阻塞模式下。
-				这意味着不能将FileChannel与Selector一起使用，因为FileChannel不能切换到非阻塞模式。
-				而套接字通道都可以。
-	3.通过Selector获取通道：
-		1.监听事件：(阻塞到有通道准备就绪)
-			int num = selector.select();
-			使用 select() 来监听到达的事件，它会一直阻塞直到有至少一个事件到达。
-			附：
-				Selector注册了一或多个通道后，就可以调用几个重载的select()方法。这些方法返回你所感兴趣的事件已经准备就绪的那些通道。
-					例：如果你对“读就绪”的通道感兴趣，select()方法会返回读事件已经就绪的那些通道。
-				select()方法：
-					int select()
-						select()阻塞到至少有一个通道在你注册的事件上就绪了。
-						select()方法返回的int值表示有多少通道已经就绪。
-						附：
-							如果调用select()方法，因为有一个通道变成就绪状态，返回了1。
-							若再次调用select()方法，如果另一个通道就绪了，它会再次返回1。
-							如果对第一个就绪的channel没有做任何操作，现在就有两个就绪的通道。
-					int select(long timeout)
-						select(long timeout)和select()一样，多了最长会阻塞timeout时间(毫秒)。
-					int selectNow()
-						此方法执行非阻塞的选择操作。如果自从前一次选择操作后，没有通道变成可选择的，则此方法直接返回零。
-		2.获取到达的事件：(获取准备就绪的通道)
-			调用了select()方法，并且返回值表明有一个或更多个通道就绪了。然后可以通过调用selector的selectedKeys()方法，访问“selected key set”中的就绪通道。
+	3.通过Selector获取就绪的通道：
+		1.监听到达事件：(阻塞到有通道准备就绪)
 			例：
-				Set selectedKeys = selector.selectedKeys();//可以遍历这个已选择的键集合来访问就绪的通道。
-				Iterator keyIterator = selectedKeys.iterator();//这个循环遍历已选择键集中的每个键，并检测各个键所对应的通道的就绪事件。
+				int num = selector.select();
+				使用 select() 来监听到达的事件，它会一直阻塞直到有至少一个事件到达。
+			附：select()方法：
+				Selector的select()方法，这些方法返回你所感兴趣的事件已经准备就绪的那些通道。
+				int select()
+					select()阻塞到至少有一个通道在你注册的事件上就绪了。
+					select()方法返回的int值表示有多少通道已经就绪。
+					附：
+						如果调用select()方法，因为有一个通道变成就绪状态，返回了1。
+						若再次调用select()方法，如果另一个通道就绪了，它会再次返回1。
+						如果对第一个就绪的channel没有做任何操作，现在就有两个就绪的通道。
+				int select(long timeout)
+					select(long timeout)和select()一样，多了最长会阻塞timeout时间(毫秒)。
+				int selectNow()
+					此方法执行非阻塞的选择操作。如果自从前一次选择操作后，没有通道变成可选择的，则此方法直接返回零。
+		2.获取到达的事件：(获取准备就绪的通道)
+			介绍：
+				调用了select()方法，并且返回值表明有一个或更多个通道就绪了。
+				然后就可以调用selector的selectedKeys()方法，访问“selected key set”中的就绪通道。
+			例：
+				/获取已选择的key集合。通过这些key集合能获取到已就绪的通道
+				Set selectedKeys = selector.selectedKeys();
+				//检测各个键所对应的通道的就绪事件。
+				Iterator keyIterator = selectedKeys.iterator();
 				while(keyIterator.hasNext()) {
 					SelectionKey key = keyIterator.next();
 					if(key.isAcceptable()) {
@@ -112,9 +122,13 @@
 					} else if (key.isWritable()) {
 						// a channel is ready for writing
 					}
-					keyIterator.remove();//注意每次迭代末尾的keyIterator.remove()调用。Selector不会自己从已选择键集中移除SelectionKey实例。必须在处理完通道时自己移除。下次该通道变成就绪时，Selector会再次将其放入已选择键集中。
+					//注意每次迭代末尾要调用keyIterator.remove()。
+					//Selector不会自动从已选择键集中移除SelectionKey实例。必须在处理完通道时自己移除。
+					//下次该通道变成就绪时，Selector会再次将其放入已选择键集中。
+					keyIterator.remove();
 				}
-				SelectionKey.channel()方法返回的通道需要转型成你要处理的类型，如ServerSocketChannel或SocketChannel等。
+				//方法返回的通道需要转型成你要处理的类型，如ServerSocketChannel或SocketChannel等。
+				//SelectionKey.channel()
 		例：
 			//因为一次 select() 调用不能处理完所有的事件，并且服务器端有可能需要一直监听事件，因此服务器端处理事件的代码一般会放在一个死循环内。
 			while (true) {

@@ -1,0 +1,79 @@
+https://my.oschina.net/7001?tab=newest&catalogId=5693156
+
+
+...
+
+
+select操作：
+	Selector中最重要的就是select操作，它负责向内核发起系统调用，以确定选择器上注册的每个通道所关心的事件是否就绪，从而更新selectedKeys集合。
+	然后上层应用代码通过遍历selectedKeys，可以找到已经就绪的通道，从而处理各种I/O事件。
+
+	select操作会调用doSelect
+	doSelect中最核心的操作是调用poll()向内核发起一个系统调用进行查询，然后更新selectedKeys集合
+
+
+...
+
+selector的创建：
+	https://www.cnblogs.com/jiangxiewei/p/13280863.html#selector-open%E6%B5%81%E7%A8%8B
+	?博主的类图怎么整出来的
+	Selector.open()：
+
+		Selector.class
+			public static Selector open() throws IOException {
+				return SelectorProvider.provider().openSelector();
+			}
+		\jre\lib\rt.jar!\java\nio\channels\spi\SelectorProvider.class	
+			public static SelectorProvider provider() {
+				synchronized (lock) {
+					if (provider != null)
+						return provider;
+					return AccessController.doPrivileged(
+						new PrivilegedAction<SelectorProvider>() {
+							public SelectorProvider run() {
+									//从系统环境变量中"java.nio.channels.spi.SelectorProvider"加载Provider实现.？
+									if (loadProviderFromProperty())
+										return provider;
+									//通过JAVA SPI加载Provider的实现?
+									if (loadProviderAsService())
+										return provider;
+									//默认Provider	
+									//DefaultSelectorProvider在不同的rt包实现不一样.所以通过这种方式会因为不同的操作系统得到不一样的结果.
+
+									provider = sun.nio.ch.DefaultSelectorProvider.create();
+									return provider;
+								}
+							});
+				}
+			}
+		public class DefaultSelectorProvider {
+			private DefaultSelectorProvider() {
+			}
+
+			public static SelectorProvider create() {
+				return new WindowsSelectorProvider();
+			}
+		}
+		public class WindowsSelectorProvider extends SelectorProviderImpl {
+			public WindowsSelectorProvider() {
+			}
+
+			public AbstractSelector openSelector() throws IOException {
+				return new WindowsSelectorImpl(this);
+			}
+		}
+		Provider模式：
+			https://www.cnblogs.com/fanfan-90/p/13473173.html
+			https://zhuanlan.zhihu.com/p/20295483
+		？window选择器的创建工作做了什么	
+		WindowsSelectorImpl(SelectorProvider var1) throws IOException {
+			super(var1);
+			this.wakeupSourceFd = ((SelChImpl)this.wakeupPipe.source()).getFDVal();
+			SinkChannelImpl var2 = (SinkChannelImpl)this.wakeupPipe.sink();
+			var2.sc.socket().setTcpNoDelay(true);
+			this.wakeupSinkFd = var2.getFDVal();
+			this.pollWrapper.addWakeupSocket(this.wakeupSourceFd, 0);
+		}
+...
+
+
