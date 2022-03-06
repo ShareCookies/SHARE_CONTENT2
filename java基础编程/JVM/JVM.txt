@@ -10,22 +10,9 @@ JVM:(JavaVirtualMachine)
 				如果一个方法被频繁调用，或方法中有效循环次数很多，将会分别触发标准编译和OSR（栈上替换）编译动作。
 				通过编译器与解释器恰当地协同工作，可以在最优化的程序响应时间与最佳执行性能中取得平衡，而且无须等待本地代码输出才能执行程序，
 				即时编译的时间压力也相对减小，这样有助于引入更多的代码优化技术，输出质量更高的本地代码。
-		在2006年的JavaOne大会上，Sun公司宣布最终会把Java开源，并在随后的一年，陆续将JDK的各个部分（其中当然也包括了HotSpot VM）在GPL协议下公开了源码，并在此基础上建立了OpenJDK。这样，HotSpot VM便成为了Sun JDK和OpenJDK两个实现极度接近的JDK项目的共同虚拟机。
 		附：
-			在2008年和2009年，Oracle公司分别收购了BEA公司和Sun公司，这样Oracle就同时拥有了两款优秀的Java虚拟机：JRockit VM和HotSpot VM。
-			Oracle公司宣布在不久的将来（大约应在发布JDK 8的时候）会完成这两款虚拟机的整合工作，使之优势互补。
-			整合的方式大致上是在HotSpot的基础上，移植JRockit的优秀特性，譬如使用JRockit的垃圾回收器与MissionControl服务，
-			使用HotSpot的JIT编译器与混合的运行时系统。
-
-	jvm监控工具：(jvisualvm)
-		jdk自带监控程序jvisualvm在JDK_HOME/bin下。
-		jvisualvm远程监控
-			配置
-				需要进行远程jvm查看时，需要在启动项目中配置以下内容。
-
-				-Djava.rmi.server.hostname=... -Dcom.sun.management.jmxremote.port=8080 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
-			连接
-				在打开的工具中输入上一步骤中配置的hostname及port进行连接。			
+			在2006年的JavaOne大会上，Sun公司宣布最终会把Java开源，并在随后的一年，陆续将JDK的各个部分（其中当然也包括了HotSpot VM）在GPL协议下公开了源码，并在此基础上建立了OpenJDK。这样，HotSpot VM便成为了Sun JDK和OpenJDK两个实现极度接近的JDK项目的共同虚拟机。
+			
 JVM内存区域：
 	./JVM内存.txt
 JVM类加载机制：
@@ -42,3 +29,13 @@ GC：（Garbage Collector 垃圾收集）
 			而且关闭也可以帮助你冲刷数据到硬盘吧。
 	jvm执行代码的原理了？
 		如一个实例的方法，为什么可以被多个线程调用了
+附：
+	jvm监控工具：(jvisualvm)
+		jdk自带监控程序jvisualvm在JDK_HOME/bin下。
+		jvisualvm远程监控
+			配置
+				需要进行远程jvm查看时，需要在启动项目中配置以下内容。
+
+				-Djava.rmi.server.hostname=... -Dcom.sun.management.jmxremote.port=8080 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false
+			连接
+				在打开的工具中输入上一步骤中配置的hostname及port进行连接。
