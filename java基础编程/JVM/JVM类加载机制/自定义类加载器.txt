@@ -1,13 +1,14 @@
 自定义ClassLoader步骤:
 	1.编写一个类继承自ClassLoader抽象类。
 	2.复写它的findClass()方法。
-	3.在findClass()方法中调用defineClass()。
-	
+		3. 在findClass()中我们主要把类信息转化为二进制信息 然后调用defineClass()
 		defineClass
 			能将class二进制内容转换成Class对象,如果不符合要求的会抛出各种异常。
-		附:
-			自定义一个ClassLoader创建时如果没有指定parent,那么它的parent默认就是AppClassLoader。
-			因为这样就能够保证它能访问系统内置加载器加载成功的class文件。
+		？
+			这个是有编码要求的吧 
+	附:
+		自定义一个ClassLoader创建时如果没有指定parent,那么它的parent默认就是AppClassLoader。
+		因为这样就能够保证它能访问系统内置加载器加载成功的class文件。
 	附：
 		自定义加载器作用：
 			BootStrapClassLoader、ExtClassLoader、AppClassLoader都是加载指定路径下的jar包。
