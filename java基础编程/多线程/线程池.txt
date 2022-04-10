@@ -102,18 +102,22 @@ Executor框架：（执行器(者)框架）
 			threadFactory:线程工厂，提供创建新线程的功能。
 				ThreadFactory是一个接口，要重写其newThread方法。
 			RejectedExecutionHandler：任务拒绝策略
-				 <dt>Rejected tasks</dt>
-				 1. <dd>New tasks submitted in method {@link #execute(Runnable)} will be <em>rejected</em> when the Executor has been shut down, and also when the Executor uses finite bounds for both maximum threads and work queue capacity, and is saturated.  
-				 2. In either case, the {@code execute} method invokes the {@link RejectedExecutionHandler#rejectedExecution(Runnable, ThreadPoolExecutor)} method of its {@link RejectedExecutionHandler}.  
-				 3. Four predefined handler policies are provided:		
+				介绍：
+					有以下情况发生时任务提交时会被拒接，1. 线程池已经被关闭。2. 任务队列已饱和
+				有以下四种拒接策略：
 					AbortPolicy:
-						为java线程池默认的阻塞策略，不执行此任务，而且直接抛出一个运行时异常，切记ThreadPoolExecutor.execute需要try catch，否则程序会直接退出.
+						为java线程池默认的阻塞策略，不执行此任务，而且直接抛出一个运行时异常。
+						切记ThreadPoolExecutor.execute需要try catch，否则程序会直接退出.
+						！
+							如果未捕获，仅指提交该任务线程会异常退出吧
 					DiscardPolicy:
 						直接抛弃，任务不执行，空方法
 					DiscardOldestPolicy:
 						从队列里面抛弃head的一个任务，并再次execute此task。
 					CallerRunsPolicy:
-						在调用execute的线程里面执行此command，会阻塞入
+						在调用execute的线程里面执行此command，会阻塞入。！
+						例：
+							...
 					用户自定义拒绝策略:
 						实现RejectedExecutionHandler，并自己定义策略模式				 
 		例：
@@ -128,10 +132,40 @@ Executor框架：（执行器(者)框架）
 				1.当线程中有问题出现时，用自定义的线程池可以便于根据线程名查找异常在哪，而Executors创建的线程池不行。
 				2.Executors创建的线程池都各有各的限制和问题
 		
-			执行器框架原理：
-				ThreadPoolExecutor实现了一个线程池。
-				其内部维护着一个容器存放线程private final HashSet<Worker> workers。
-				用户可通过execute(Runnable)等方法让线程池中的一个线程执行任务。
+执行器框架原理：
+	线程池：
+		ThreadPoolExecutor内部维护着一个容器存放线程。
+			private final HashSet<Worker> workers。
+	用户可通过execute(Runnable)等方法让线程池中的一个线程执行任务。
+	？
+		如何实现运行完任务，而不终结线程了
+	？
+		非核心线程如何关闭了
+
+注：
+	局部创建的线程池不手动关闭会内存泄露：
+		例：https://www.cnblogs.com/it-deepinmind/p/13072054.html
+		1. 一个线程的run方法执行完毕这个线程就会被自动销毁的。
+			https://bbs.csdn.net/topics/370206774
+		2. Java线程池是如何实现线程复用的？
+			https://blog.csdn.net/weixin_48509270/article/details/106795567
+		附：
+			jvm查看线程数量？
+			https://blog.csdn.net/u010271462/article/details/70171553?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5.control
+附：
+	为什么使用线程池：
+		线程池的作用是重用已有线程，
+
+		public void test(){
+			//那么如果我是在一个方法里，创建了线程池
+			//且只执行一个任务
+			//那么我觉得线程池是没什么意义的，因为我认为线程池创建的时候是一次性预先创建所需的线程的！
+			// 注1：如果是执行大量任务，还是有意义的，可以复用线程。
+			// 注2：如何这个方法会并发了，那么你不久一次性要创建多个线程了，要考虑到这个情况。
+			// 所以推荐，在类属性上等就创建好线程池
+		}
+	线程池与@Async相比！
+附：
 	Executors（执行器工厂方法类）：
 		介绍：
 			Executors静态工厂方法类提供了一系列工厂方法用于快速创建(线程池)执行器，
@@ -159,25 +193,3 @@ Executor框架：（执行器(者)框架）
 			阿里巴巴开发手册：
 				【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 
 				说明：Executors 返回的线程池对象的弊端如下： 1）FixedThreadPool 和 SingleThreadPool: 允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。 2）CachedThreadPool 和 ScheduledThreadPool: 允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
-附：
-为什么使用线程池：
-	线程池的作用是重用已有线程，
-
-	public void test(){
-		//那么如果我是在一个方法里，创建了线程池
-		//且只执行一个任务
-		//那么我觉得线程池是没什么意义的，因为我认为线程池创建的时候是一次性预先创建所需的线程的！
-		// 注1：如果是执行大量任务，还是有意义的，可以复用线程。
-		// 注2：如何这个方法会并发了，那么你不久一次性要创建多个线程了，要考虑到这个情况。
-		// 所以推荐，在类属性上等就创建好线程池
-	}
-线程池与@Async相比！
-局部创建的线程池不手动关闭会内存泄露：
-	例：https://www.cnblogs.com/it-deepinmind/p/13072054.html
-	1. 一个线程的run方法执行完毕这个线程就会被自动销毁的。
-		https://bbs.csdn.net/topics/370206774
-	2. Java线程池是如何实现线程复用的？
-		https://blog.csdn.net/weixin_48509270/article/details/106795567
-	附：
-		jvm查看线程数量？
-		https://blog.csdn.net/u010271462/article/details/70171553?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5.control

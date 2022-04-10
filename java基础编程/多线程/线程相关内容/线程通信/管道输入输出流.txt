@@ -8,4 +8,5 @@
 例：
 	创建printThread，它用来接受main线程的输入，
 	任何 main线程的输入均通过PipedWriter写入，而printThread在另一端通过PipedReader将内容读出 并打印。
-	Piped.java
+	？Piped.java
+	

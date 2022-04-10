@@ -29,7 +29,7 @@
 					WaitNotify.java
 			wait(long)
 				超时等待一段时间， 这里的参数时间是毫秒，也就是等待长达n毫秒，如果没有通知就超时返回
-			wait(long, int)?
+			wait(long, int)
 				对于超时时间更细粒度的控制，可以达到纳秒
 		通知:
 			notify()
@@ -43,6 +43,10 @@
 					2. 在调用此方法的时候，并不能确切的唤醒某一个等待状态的线程，而是由JVM确定唤醒哪个线程，而且不是按优先级。	
 				例：
 					WaitNotify.java
+				附：
+					如果2个等待线程了，只通知一个，只会有一个线程被唤醒，那么整个程序是永久不会结束的。所以要notice2次。
+					例：
+						TwoWaitOneNotify.java
 			notifyAll()
 				通知所有等待在该对象上的线程
 				注:
@@ -61,10 +65,16 @@
 							WaitNotifyForBlockedThereadCompeteMonitor.java
 					
 				
-		附：
+		注：
 			1.使用wait()、notify()和notifyAll()时需要先对调用对象加锁。
 			如果在没有拥有锁的情况下，调用等待通知方法会报java.lang.IllegalMonitorStateException异常。
 			例：
 				WaitNotifyForNotHasMonitor.java
+			附：！
+				所以调用了等待也会释放对应对象的锁吧，不然通知也要锁 它就没办法被通知啊。
+等待/通知原理是什么了？
+	为什么它需要持有对象的锁才能进行等待？
+
+附：
 等待/通知的经典范式：
 	pdf197

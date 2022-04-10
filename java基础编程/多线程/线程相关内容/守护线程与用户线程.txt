@@ -11,7 +11,7 @@
 			即：用户线程都结束了，jvm就结束。
 				例：
 					./案例/Daemon/DaemonWithThreadRelation.java
-		3. 设置守护线程：	
+		3. 设置守护线程：
 				Thread daemon=new Thread(new Task());
 				//Daemon属性需要在启动线程之前设置，不能在启动线程之后设置。
 				daemon.setDaemon(true);//must call before start()
@@ -27,4 +27,7 @@
 				JVM也提供了很多守护线程，像垃圾收集器线程就是守护线程。
 	附：
 		1. 最好不要用守护线程去访问固有资源，比如读写操作或者计算逻辑。因为它会在任何时候甚至在一个操作的中间发生中断。
-		2. Java自带的多线程框架，比如ExecutorService，会将守护线程转换为用户线程，所以如果要使用后台线程就不能用Java的线程池。
+		?
+			中断为造成什么问题了
+	注: 	
+		Java自带的多线程框架，比如ExecutorService，会将守护线程转换为用户线程，所以如果要使用后台线程就不能用Java的线程池。
