@@ -12,11 +12,11 @@ https://www.cnblogs.com/fengsehng/p/6048610.html
 			线程池的出现让线程可进行复用。
 	
 Executor框架：（执行器(者)框架）
-	Java 5引入了Executor框架，来简化并发编程的操作。
+	Java 5引入了Executor框架(线程池框架)，来简化并发编程的操作。
 	Executor框架的内容包括：
 		规范接口：
 			Executor接口、ExecutorService接口
-		线程池实现类：（通过该类可以创建线程池。规范接口实现类。）
+		线程池实现类：（规范接口实现类。）(通过该类可以创建线程池。)
 			ThreadPoolExecutor类
 		线程池工具类：
 			Executors，工厂方法类，通过该类可以快速创建线程池。
@@ -24,13 +24,13 @@ Executor框架：（执行器(者)框架）
 	Executor（规范接口）：
 		介绍：
 			规范接口，我称其为任务执行器(者)。
-			让用户可以仅通过该接口实现类的execute(Runnable command)就可执行所提交的Runnable任务，
-			使用户从线程的创建、线程池的复杂调用（使用）等中脱身出来。
-			附：
-				通常Executor的实现类，其内部都实现线程池机制。
+			该接口作用是让用户可以仅通过该接口实现类的execute(Runnable command)就可执行所提交的Runnable任务，
+			使用户从复杂的线程创建、线程池的调用等中脱身出来。
+			附：为什么execute()可以执行任务
+				通常Executor的实现类，其内部都实现线程池机制(即持有一个线程池)。
 				所以一旦Runnable任务传递到execute()方法，该方法便会自动将一任务放到一个线程上执行。
 				goto：ThreadPoolExecutor
-			附：
+			闲：
 				比较Executor和new Thread()
 				new Thread的弊端如下：
 					a. 每次new Thread新建对象性能差。
@@ -40,7 +40,7 @@ Executor框架：（执行器(者)框架）
 					a. 重用存在的线程，减少对象创建、消亡的开销，性能佳。
 					b. 可有效控制最大并发线程数，提高系统资源的使用率，同时避免过多资源竞争，避免堵塞。
 					c. 提供定时执行、定期执行、单线程、并发数控制等功能。
-			附：	
+			闲：	
 				配合源码注释来理解。	
 				An object that executes submitted {@link Runnable} tasks. 
 					This interface provides a way of decoupling task submission from the mechanics of how each task will be run, including details of thread use, scheduling, etc.  
@@ -61,20 +61,28 @@ Executor框架：（执行器(者)框架）
 					 1. The {@link #shutdown} method will allow previously submitted tasks to execute before terminating, 
 					 2. while the {@link #shutdownNow} method prevents waiting tasks from starting and attempts to stop currently executing tasks.
 				 * Upon termination, an executor has no tasks actively executing, no tasks awaiting execution, and no new tasks can be submitted.  
-				 An unused {@code ExecutorService} should be shut down to allow reclamation of its resources.			
-			附：
-				...
+				 An unused {@code ExecutorService} should be shut down to allow reclamation of its resources.
+		线程池的生命周期：？
 				https://blog.csdn.net/u010412719/article/details/52132601?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control
 				线程是有多种执行状态的，同样管理线程的线程池也有多种状态。
-				线程池的生命周期不只有：RUNNING、SHUTDOWN、STOP/TERMINATED四种状态，还有一个TIDYING状态。
-					？STOP/TERMINATED、TIDYING
+				线程池的状态有：
+					1、RUNNING
+					2、SHUNDOWN
+					3、STOP
+					4、TIDYING
+					5、TERMINATED
+					这几个状态的转化关系为：
+						1、调用shundown()方法线程池的状态由RUNNING——>SHUTDOWN
+						2、调用shutdowNow()方法线程池的状态由RUNNING——>STOP
+						3、当任务队列和线程池均为空的时候 线程池的状态由STOP/SHUTDOWN——–>TIDYING
+						4、当terminated()方法被调用完成之后，线程池的状态由TIDYING———->TERMINATED状态				
 				ExecutorService提供的管理线程池生命周期方法：
 					shutdown()：
 						方法在终止前允许执行以前提交的任务。即线程将在，Executor中的任务完成之后，尽快退出
 					shutdownNow()：
-						方法阻止等待任务启动并试图停止当前正在执行的任务。
-			附：
-				执行异步任务方法：
+						方法阻止等待任务启动并试图停止当前正在执行的任务。			
+		线程池常见操作：
+			执行异步任务方法：？
 				<T> Future<T> submit(Callable<T> task);
 					Callable异步任务可用ExecutorService的submit(Callable task) 方法来执行并跟踪。
 				<T> Future<T> submit(Runnable task, T result);
@@ -82,7 +90,7 @@ Executor框架：（执行器(者)框架）
 	ThreadPoolExecutor：（ExecutorService的实现类）
 		介绍：
 			ExecutorService的实现类，其内部实现了线程池机制。
-			所以用户可以通过改类的execute(Runnable command)等就可让线程池执行所提交的Runnable任务，该方法便会自动将任务放到一个线程上执行。
+			所以用户可以通过该类的execute(Runnable command)等就可让线程池执行所提交的Runnable任务，该方法便会自动将任务放到一个线程上执行。
 			
 		构造方法参数介绍：
 			corePoolSize:核心线程数。
@@ -91,35 +99,148 @@ Executor框架：（执行器(者)框架）
 			maximumPoolSize:线程池所能容纳的最大线程数。
 				超过这个数的线程将被阻塞。
 				当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效。？
+				默认值：Integer.MAX_VALUE
 			keepAliveTime:
 				非核心线程的闲置超时时间，超过这个时间就会被回收。
+				默认值：
+					0L，意味着多余 的空闲线程会被立即终止。
+					https://blog.csdn.net/weixin_44742132/article/details/112210944
 			unit:
 				指定keepAliveTime的单位，如TimeUnit.SECONDS。
 			workQueue:线程池中的任务队列.
-				常用的有三种队列，SynchronousQueue,LinkedBlockingDeque,ArrayBlockingQueue。
-				？
-					LinkedBlockingQueue
-			threadFactory:线程工厂，提供创建新线程的功能。
-				ThreadFactory是一个接口，要重写其newThread方法。
+				常用的有三种队列，ArrayBlockingQueue,LinkedBlockingDeque,SynchronousQueue。
+			threadFactory:线程工厂
+				1. 线程池会用这个工厂来创建线程。
+				2. ThreadFactory是一个接口，要重写其newThread方法。
+				例：
+					new ThreadFactory() {
+						@Override
+						public Thread newThread(Runnable r) {
+							Thread t = new Thread(r);
+							t.setName("post请求消息中心接口用的线程池");
+							System.out.println("创建线程：" + t);
+							return t;
+						}
+					}
 			RejectedExecutionHandler：任务拒绝策略
 				介绍：
 					有以下情况发生时任务提交时会被拒接，1. 线程池已经被关闭。2. 任务队列已饱和
 				有以下四种拒接策略：
 					AbortPolicy:
-						为java线程池默认的阻塞策略，不执行此任务，而且直接抛出一个运行时异常。
-						切记ThreadPoolExecutor.execute需要try catch，否则程序会直接退出.
-						！
-							如果未捕获，仅指提交该任务线程会异常退出吧
+						为java线程池默认的阻塞策略，不执行此任务，而且直接抛出一个运行时异常RejectedExecutionException。
+						注：
+							切记ThreadPoolExecutor.execute需要try catch.
+							如果未捕获，则提交该任务到线程池的线程会异常退出。
 					DiscardPolicy:
 						直接抛弃，任务不执行，空方法
+					
+					CallerRunsPolicy:
+						在调用execute的线程里面执行此任务。
 					DiscardOldestPolicy:
 						从队列里面抛弃head的一个任务，并再次execute此task。
-					CallerRunsPolicy:
-						在调用execute的线程里面执行此command，会阻塞入。！
-						例：
-							...
 					用户自定义拒绝策略:
-						实现RejectedExecutionHandler，并自己定义策略模式				 
+						实现RejectedExecutionHandler，并自己定义策略模式
+				例：拒接策略的切换
+					https://blog.csdn.net/jgteng/article/details/54411423
+					new ThreadPoolExecutor.AbortPolicy();
+					
+				例：AbortPolicy拒接策略
+					ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 5L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1), new ThreadFactory() {
+						@Override
+						public Thread newThread(Runnable r) {
+							return new Thread(r,"线程池"+r.toString());
+						}
+					});
+					//线程池中执行
+					executor.execute(new Runnable() {
+						@Override
+						public void run() {
+							while (true){System.err.println(Thread.currentThread().getName()+"正在运行");
+								try {
+									Thread.sleep(5000L);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+						}
+					});
+					//线程池队列中等待
+					executor.execute(new Runnable() {
+						@Override
+						public void run() {
+							while (true){System.err.println(Thread.currentThread().getName()+"正在运行");}
+						}
+					});
+					//线程池任务队列已饱和
+					try {
+						executor.execute(new Runnable() {
+							@Override
+							public void run() {
+								while (true){}
+							}
+						});
+					} catch (RejectedExecutionException e){
+						e.printStackTrace();
+					}
+					System.err.println("未捕获，则线程退出，此处未执行");
+				例：CallerRunsPolicy拒绝策略
+					ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 5L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1), new ThreadFactory() {
+						@Override
+						public Thread newThread(Runnable r) {
+							return new Thread(r,"线程池"+r.toString());
+						}
+					},new ThreadPoolExecutor.CallerRunsPolicy());
+					executor.execute(()->{});
+					executor.execute(()->{});
+					executor.execute(new Runnable() {
+						@Override
+						public void run() {
+							System.err.println("阻塞入调用线程。就是程序正常顺序执行代码");
+						}
+					});
+					while (true){
+						System.err.println(11);
+						Thread.sleep(1000L);
+					}				
+				例：线程池抛异常-线程池中线程运行后不管抛出错误还是运行时异常，调用线程都不受影响。因为它抛出的异常，调用线程根本捕获不到
+					ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 5L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1), new ThreadFactory() {
+						@Override
+						public Thread newThread(Runnable r) {
+							return new Thread(r,"线程池"+r.toString());
+						}
+					});
+
+					//try {
+						executor.execute(new Runnable() {
+							@Override
+							public void run() {
+								throw new RuntimeException("线程池中抛出运行时异常，调用线程池的线程是否还会正常运行");
+								//throw new Error("线程池中抛出错误时，调用线程池的线程是否还会正常运行");
+							}
+						});
+					//}catch (Exception e){}
+					System.err.println("此处执行");
+					Thread.sleep(2000L);
+					System.err.println("此处执行。线程池中线程运行后不管抛出错误还是运行时异常，调用线程都不受影响。因为它抛出的异常，掉用线程根本捕获不到");
+				例：线程抛异常-同线程池抛异常
+					//try {
+						new  Thread(new Runnable() {
+							@Override
+							public void run() {
+								throw new RuntimeException("线程中抛出运行时异常，调用线程的线程是否还会正常运行");
+								//throw new Error("线程池中抛出错误时，调用线程池的线程是否还会正常运行");
+							}
+						}).start();
+					//}catch (Exception e){}
+					System.err.println("此处执行");
+					Thread.sleep(2000L);
+					System.err.println("此处执行。线程运行后不管抛出错误或运行时异常，调用线程都不受影响。因为它抛出的异常，调用线程根本捕获不到");				
+				附：
+					RejectedExecutionHandler：
+						 <dt>Rejected tasks</dt>
+						 1. <dd>New tasks submitted in method {@link #execute(Runnable)} will be <em>rejected</em> when the Executor has been shut down, and also when the Executor uses finite bounds for both maximum threads and work queue capacity, and is saturated.  
+						 2. In either case, the {@code execute} method invokes the {@link RejectedExecutionHandler#rejectedExecution(Runnable, ThreadPoolExecutor)} method of its {@link RejectedExecutionHandler}.  
+						 3. Four predefined handler policies are provided:						
 		例：
 			自定义线程池：
 			通过ThreadPoolExecutor类可以快速创建(自定义的线程池)执行器。
@@ -132,6 +253,7 @@ Executor框架：（执行器(者)框架）
 				1.当线程中有问题出现时，用自定义的线程池可以便于根据线程名查找异常在哪，而Executors创建的线程池不行。
 				2.Executors创建的线程池都各有各的限制和问题
 		
+	
 执行器框架原理：
 	线程池：
 		ThreadPoolExecutor内部维护着一个容器存放线程。
@@ -143,8 +265,43 @@ Executor框架：（执行器(者)框架）
 		非核心线程如何关闭了
 
 注：
-	局部创建的线程池不手动关闭会内存泄露：
-		例：https://www.cnblogs.com/it-deepinmind/p/13072054.html
+	局部创建的线程池不手动关闭很可能会内存泄露：
+		例：
+			案例中main方法局部的线程池，在启动后(运行一个线程)因为存在核心线程，所以该线程池中线程永不会被回收。即内存泄漏
+				线程池中核心线程：即线程永不会自动结束
+				线程池中核心线程与非核心线程区别：就是运行后是否会自动结束，线程的创建都是需要时才创建。
+			
+			public static void main(String[] args) throws InterruptedException {
+				ThreadPoolExecutor excutor = new ThreadPoolExecutor(1, 1, 5L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1), new ThreadFactory() {
+					@Override
+					public Thread newThread(Runnable r) {
+						return new Thread(r,"线程池"+r.toString());
+					}
+				});
+				excutor.execute(new Runnable() {
+					@Override
+					public void run() {
+
+					}
+				});
+				// 只要存在在运行的用户线程，那么程序就永不会结束		
+				//        new Thread(new Runnable() {
+				//            @Override
+				//            public void run() {
+				//                while (true){}
+				//            }
+				//        }).start();
+				System.err.println(11);
+			}	
+		例：
+			https://www.cnblogs.com/it-deepinmind/p/13072054.html
+			https://blog.csdn.net/weixin_34278190/article/details/94041425?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-1-94041425.pc_agg_new_rank&utm_term=java+%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%BA%BF%E7%A8%8B%E6%B1%A0%E4%BC%9A%E4%B8%8D%E4%BC%9A%E8%A2%AB%E9%87%8A%E6%94%BE&spm=1000.2123.3001.4430
+			分析：
+				这里就得去看线程池的执行原理，总之线程池的线程不通过shutdown 是不会停止的。
+				所以根据gc root节点，线程池中对象是无法被回收的。
+			解决方案：
+				1. 线程池是为了线程复用，所以一般是作为全局存在的。
+				2. 局部线程池执行完一定要调用shutdown()
 		1. 一个线程的run方法执行完毕这个线程就会被自动销毁的。
 			https://bbs.csdn.net/topics/370206774
 		2. Java线程池是如何实现线程复用的？
@@ -152,6 +309,9 @@ Executor框架：（执行器(者)框架）
 		附：
 			jvm查看线程数量？
 			https://blog.csdn.net/u010271462/article/details/70171553?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-5.control
+			
+
+
 附：
 	为什么使用线程池：
 		线程池的作用是重用已有线程，
@@ -193,3 +353,17 @@ Executor框架：（执行器(者)框架）
 			阿里巴巴开发手册：
 				【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 
 				说明：Executors 返回的线程池对象的弊端如下： 1）FixedThreadPool 和 SingleThreadPool: 允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。 2）CachedThreadPool 和 ScheduledThreadPool: 允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
+附：
+为什么使用线程池：
+	线程池的作用是重用已有线程，
+
+	public void test(){
+		//那么如果我是在一个方法里，创建了线程池
+		//且只执行一个任务
+		//那么我觉得线程池是没什么意义的，因为我认为线程池创建的时候是一次性预先创建所需的线程的！
+		// 注1：如果是执行大量任务，还是有意义的，可以复用线程。
+		// 注2：如何这个方法会并发了，那么你不久一次性要创建多个线程了，要考虑到这个情况。
+		// 所以推荐，在类属性上等就创建好线程池
+	}
+线程池与@Async相比？
+

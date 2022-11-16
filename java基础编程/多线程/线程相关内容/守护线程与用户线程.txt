@@ -3,8 +3,25 @@
 	用户线程：
 		用户线程即创建的普通线程。
 		例：
-			Thread t=new Thread(new Task());
-			t.start();
+            public static void main(String[] args) throws InterruptedException {
+                Thread t=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true){
+                            System.err.println("用户线程存活着");
+                            try {
+                                Thread.sleep(100L);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                //t.setDaemon(true);
+                t.start();
+                Thread.sleep(1000L);
+                System.err.println("main用户线程走完");
+            }
 	守护线程：
 		1. Daemon线程是一种支持型线程，因为它主要被用作程序中后台调度以及支持性工作。
 		2. 当一个Java虚拟机中不存在非Daemon线程的时候，Java虚拟机将会退出。

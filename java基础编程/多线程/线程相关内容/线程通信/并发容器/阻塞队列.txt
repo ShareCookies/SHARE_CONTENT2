@@ -2,12 +2,17 @@
 	https://www.cnblogs.com/aspirant/p/8657801.html
 	介绍：
 		什么是阻塞队列，即从队列中新增或获取数据时可能会被阻塞的队列。
-		附：这里的阻塞主要是指：
+		注：这里的阻塞是指：
 			1. 满或空时会被阻塞：
 				新增时如果队列满那么阻塞（新增线程）直到可插入，获取时空则阻塞直到有数据获取。
-			2. 阻塞队列为什么是线程安全的:
+				注：
+				    部分方法才会阻塞
+				    例：put方法是队列满时阻塞当前线程。add方法队列队列满时抛IllegalStateException: Deque full
+			2. 阻塞队列是线程安全的:
 				操作里加了lock对象来实现并发安全。
-				lock对象下获取不到数据，就阻塞不释放吗？那别的线程也进不来啊，怎么继续最佳元素？即如何实现阻塞效果了？
+
+				附：lock对象下获取不到数据，就阻塞不释放吗.那别的线程也进不来啊，怎么继续最佳元素.即如何实现阻塞效果了.
+				    1.  是的lock对象获取不到锁，当前线程就会进入等待队列，阻塞住，直到获取到锁。
 	
 BlockingQueue接口的核心方法：
 	./BlockingQueue接口api.png
@@ -35,18 +40,19 @@ JDK提供的阻塞队列：
 			一个常用的阻塞队列。
 		源码分析：
 			ArrayBlockingQueue原理.txt
+		特性附：
+			默认情况下非公平性访问队列：
+				ArrayBlockingQueue使用的是可重入锁实现的。
+				默认情况下不保证线程公平的访问队列。
 		附：
 			读写无法同时并行：
 				ArrayBlockingQueue在生产者放入数据和消费者获取数据，都是共用同一个锁对象，由此也意味着两者无法真正并行运行，这点尤其不同于LinkedBlockingQueue；
 				按照实现原理来分析，ArrayBlockingQueue完全可以采用分离锁，从而实现生产者和消费者操作的完全并行运行。
 				Doug Lea之所以没这样去做，也许是因为ArrayBlockingQueue的数据写入和获取操作已经足够轻巧，以至于引入独立的锁机制，除了给代码带来额外的复杂性外，其在性能上完全占不到任何便宜。 
-			默认情况下非公平性访问队列：
-				ArrayBlockingQueue使用的是可重入锁实现的。
-				默认情况下不保证线程公平的访问队列。
+			
 			如何使用数组当作队列：
-				除了一个定长数组外，
-				ArrayBlockingQueue内部还保存着两个整形变量，分别标识着队列的头部和尾部在数组中的位置。
-
+				除了一个定长数组外，ArrayBlockingQueue内部还保存着两个整形变量，分别标识着队列的头部和尾部在数组中的位置。
+				？头尾在那
 　　2. LinkedBlockingQueue
 		介绍：
 			一个由链表结构组成的有界阻塞队列。
@@ -58,15 +64,30 @@ JDK提供的阻塞队列：
 			附：
 				读写锁如何分离：
 					就是维护2个显示锁来分离读写方法。
-　	4. PriorityBlockingQueue
+　	7. LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列。
+		LinkedBlockingDeque是一个由链表结构组成的双向阻塞队列。
+		
+		1. 所谓双向队列指的是可以 从队列的两端插入和移出元素。
+		2. 双向队列因为多了一个操作队列的入口，在多线程同时入队 时，也就减少了一半的竞争。
+		3. 相比其他的阻塞队列，LinkedBlockingDeque多了addFirst、offerFirst、 addLast、offerLast 等方法。
+		
+		注：
+			1. 在初始化LinkedBlockingDeque时可以设置容量防止其过度膨胀。
+			1. 另外，插入方法add等同于addLast，移除方法remove等效于 removeFirst。
+			2. 但是take方法却等同于takeFirst，不知道是不是JDK的bug，使用时还是用带有First 和Last后缀的方法更清楚。 
+		附：
+			
+			？
+				双向阻塞队列可以 运用在“工作窃取”模式中。
+	4. PriorityBlockingQueue
 		一个支持优先级排序的无界阻塞队列。
 		优先级排序：
-			1. 默认情况下元素采取自然顺序升序排列。
+			1. 默认情况下元素采取自然顺序升序排列。？
 			2. 也可以自定义类实现compareTo()方法来指定元素排序规则，或者初始化 PriorityBlockingQueue时，指定构造参数Comparator来对元素进行排序。
 			3. 需要注意的是不能保证同优先级元素的顺序。
 　	3. DelayQueue
 		介绍：
-			一个支持延时获取元素的无界阻塞队列。
+			一个支持元素延时获取的无界阻塞队列。
 			队列中的元素必须实现Delayed接口，在创建元素时可以指定多久才能从队列中获取当前元素。 只有在延迟期满时才能从队列中提取元素。
 		实现Delayed接口：
 			pdf300
@@ -79,53 +100,51 @@ JDK提供的阻塞队列：
 　　	附：
 			延时阻塞队列实现：
 				pdf301
-　　5. SynchronousQueue(同步阻塞队列)
+　　6. LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。 ·
+		介绍：
+			LinkedTransferQueue是一个由链表结构组成的无界阻塞TransferQueue队列。
+			
+		特性附：
+			相对于其他阻 塞队列，LinkedTransferQueue多了tryTransfer和transfer方法。
+
+			（1）transfer方法 
+				如果当前有消费者正在等待接收元素（消费者使用take()方法或带时间限制的poll()方法 时），transfer方法可以把生产者传入的元素立刻transfer（传输）给消费者。
+				如果没有消费者在等 待接收元素，transfer方法会将元素存放在队列的tail节点，并等到该元素被消费者消费了才返 回。
+				
+				transfer方法的关键代码：
+					...
+			（2）tryTransfer方法 
+				tryTransfer方法是用来试探生产者传入的元素是否能直接传给消费者。
+				如果没有消费者等 待接收元素，则返回false。
+				和transfer方法的区别是tryTransfer方法无论消费者是否接收，方法 立即返回，而transfer方法是必须等到消费者消费了才返回。
+				
+				tryTransfer（E e，long timeout，TimeUnit unit）:
+					试图把生产者传入 的元素直接传给消费者，但是如果没有消费者消费该元素则等待指定的时间再返回，如果超 时还没消费元素，则返回false，如果在超时时间内消费了元素，则返回true。				
+	5. SynchronousQueue(同步阻塞队列)
 	　 	
 		介绍：
 			SynchronousQueue是一个不存储元素的阻塞队列。
 			每一个put操作必须等待一个take操作， 否则不能继续添加元素。
-			
-		附：
+		例：
+		    SynchronousQueue synchronousQueue = new SynchronousQueue();
+			//synchronousQueue.add(111);//add无法使用 //IllegalStateException: Queue full
+			synchronousQueue.put(111);//put一插入当前就阻塞
+			System.err.println(222222);
+		特性附：
 			默认情况下线程采用非公平性策略访问队列。
 			使用以下构造方法 可以创建公平性访问的SynchronousQueue，如果设置为true，则等待的线程会采用先进先出的顺序访问队列。
 		附：
 			队列本身并不存储任何元素，非常适合传递性场景。
 			类似于无中介的直接交易，有点像原始社会中的生产者和消费者，生产者拿着产品去集市销售给产品的最终消费者，而消费者必须亲自去集市找到所要商品的直接生产者，如果一方没有找到合适的目标，那么对不起，大家都在集市等待。
 			
-			优略势：？SynchronousQueue的吞吐量高于 LinkedBlockingQueue和ArrayBlockingQueue。
-				相对于有缓冲的BlockingQueue来说，少了一个中间经销商的环节（缓冲区），
-				如果有经销商，生产者直接把产品批发给经销商，而无需在意经销商最终会将这些产品卖给那些消费者，由于经销商可以库存一部分商品，因此相对于直接交易模式，总体来说采用中间经销商的模式会吞吐量高一些（可以批量买卖）；但另一方面，又因为经销商的引入，使得产品从生产者到消费者中间增加了额外的交易环节，单个产品的及时响应性能可能会降低。
-	6. LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。 ·
-		介绍：
-			LinkedTransferQueue是一个由链表结构组成的无界阻塞TransferQueue队列。
-			相对于其他阻 塞队列，LinkedTransferQueue多了tryTransfer和transfer方法。
-
-
-		（1）transfer方法 
-			如果当前有消费者正在等待接收元素（消费者使用take()方法或带时间限制的poll()方法 时），transfer方法可以把生产者传入的元素立刻transfer（传输）给消费者。
-			如果没有消费者在等 待接收元素，transfer方法会将元素存放在队列的tail节点，并等到该元素被消费者消费了才返 回。
-			
-			transfer方法的关键代码：
-				...
-		（2）tryTransfer方法 
-			tryTransfer方法是用来试探生产者传入的元素是否能直接传给消费者。
-			如果没有消费者等 待接收元素，则返回false。
-			和transfer方法的区别是tryTransfer方法无论消费者是否接收，方法 立即返回，而transfer方法是必须等到消费者消费了才返回。
-			
-			tryTransfer（E e，long timeout，TimeUnit unit）:
-				试图把生产者传入 的元素直接传给消费者，但是如果没有消费者消费该元素则等待指定的时间再返回，如果超 时还没消费元素，则返回false，如果在超时时间内消费了元素，则返回true。				
-		
-	7. LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列。
+			优略势：
+				相对于有缓冲的BlockingQueue来说，少了一个中间经销商的环节（缓冲区）。
+				如果有经销商，生产者直接把产品批发给经销商，而无需在意经销商最终会将这些产品卖给那些消费者，由于经销商可以库存一部分商品，因此相对于直接交易模式，总体来说采用中间经销商的模式会吞吐量高一些（可以批量买卖）；
+				但另一方面，又因为经销商的引入，使得产品从生产者到消费者中间增加了额外的交易环节，单个产品的及时响应性能可能会降低。
+				所以单产品，且有足够消费者者情况下，SynchronousQueue的吞吐量高于 LinkedBlockingQueue和ArrayBlockingQueue。
 	
-		LinkedBlockingDeque是一个由链表结构组成的双向阻塞队列。
 		
-		1. 所谓双向队列指的是可以 从队列的两端插入和移出元素。
-		2. 双向队列因为多了一个操作队列的入口，在多线程同时入队 时，也就减少了一半的竞争。?
-		3. 相比其他的阻塞队列，LinkedBlockingDeque多了addFirst、 addLast、offerFirst、offerLast、peekFirst和peekLast等方法。
+	
+
+
 		
-		注：
-			1. 另外，插入方法add等同于addLast，移除方法remove等效于 removeFirst。
-			2.？但是take方法却等同于takeFirst，不知道是不是JDK的bug，使用时还是用带有First 和Last后缀的方法更清楚。 
-		附：
-			在初始化LinkedBlockingDeque时可以设置容量防止其过度膨胀。
-			？另外，双向阻塞队列可以 运用在“工作窃取”模式中。
