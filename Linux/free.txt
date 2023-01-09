@@ -1,0 +1,22 @@
+free命令
+	free是监控Linux内存使用状况最常用的指令。
+	free命令输出中显示了系统的各种内存状态，具体包括物理内存和Swap.
+	物理内存中又分为：
+		已使用内存（used）、空闲内存（free）、共享内存（shared）、系统缓存（buff/cache）和目前可用内存（available）。
+		附1：
+			通过查看available列的值即可知道目前系统还有多少可用的物理内存。
+			所以若要查看内存是否充足，只需要关注available一列即可。
+			
+			？
+				通过available和buff/cache两列值的对比可以看出，available是在buff/cache基础上减去了shared以及buffer内存损耗剩下的内存资源，这部分内存资源可以留给应用程序使用.
+				所以cache的部分也不是全都能拿来用？
+		附2：
+			Used+free+buff/cache=total
+			可见，Linux是最大限度地将物理内存映射到缓存，待需要使用内存的时候，可以以最快的速度获取内存并使用。
+			buff 缓冲，cache 缓存。
+		附3：
+			共享内存？
+		注：
+			一般有这样一个经验：available内存 >70%时，表示系统内存资源非常充足，不影响系统性能；
+			available内存< 20%时，表示系统内存资源紧缺，需要增加系统内存；
+			20%<available内存 <70%时，表示系统内存资源基本能满足应用需求，暂时不影响系统性能。

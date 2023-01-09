@@ -157,54 +157,7 @@
 			https://zhuanlan.zhihu.com/p/75975041
 			https://blog.csdn.net/duzilonglove/article/details/80111753
 			top命令经常用来监控Linux的系统状况，比如cpu、内存。
-			参数：
-				第一行load average：？
-					load average后面的三个数分别是1分钟、5分钟、15分钟的负载情况。
-					
-						
-
-					如何评估性能需求中合理的Load Average：
-						一般来说，Load Average是与机器内核数有关的。
-						
-						所以，对于单核机器来说，Load Average要小于1。同理，对于双核处理器来说，Load Average要小于2。
-					
-					负载情况具体是指什么了：？
-						https://www.cnblogs.com/kevingrace/p/6668149.html
-						介绍：
-							1）系统load高不一定是性能有问题。
-								因为Load高也许是因为在进行cpu密集型的计算
-  
-							2）系统Load高不一定是CPU能力问题或数量不够。
-							因为Load高只是代表需要运行的队列累计过多了。但队列中的任务实际可能是耗Cpu的，也可能是耗i/0、内存不足或者其他因素的。
-						例：
-							以一个单核的机器为例，
-							load=0.5表示CPU还有一半的资源可以处理其他的线程请求，
-							load=1表示CPU所有的资源都在处理请求，没有剩余的资源可以利用了，
-							而load=2则表示CPU已经超负荷运作，另外还有一倍的线程正在等待处理。
-				第三行%Cpu(s):
-					us（user cpu time）：
-						用户态使用的cpu时间比。该值较高时，说明用户进程消耗的 CPU 时间比较多，比如，如果该值长期超过 50%，则需要对程序算法或代码等进行优化。
-					sy（system cpu time）：
-						系统态使用的cpu时间比。
-					ni（user nice cpu time）：
-						用做nice加权的进程分配的用户态cpu时间比
-					id（idle cpu time）：
-						空闲的cpu时间比。如果该值持续为0，同时sy是us的两倍，则通常说明系统则面临着 CPU 资源的短缺。
-					wa（wait）：
-						等待使用CPU的时间。
-					hi（hardware irq）：
-						硬中断消耗时间
-					si（software irq）：
-						软中断消耗时间
-					st（steal time）：
-						虚拟机偷取时间
-					以上解释的这些参数的值加起来是100%
-				第三、四行 内存:
-				第7行后 各进程（任务）的状态监控:
-					TOP命令 cpu(s) 与%CPU的区别：
-						CPU(s)是系统所有用户进程占用整个CPU的平均值，由于每个核心占用的百分比不同，所以按平均值来算比较有参考意义。
-						%CPU显示的是进程占用一个核的百分比，而不是整个cpu（8核）的百分比，有时候可能大于100，那是因为该进程启用了多线程占用了多个核心，所以有时候我们看该值得时候会超过100%，但不会超过总核数*100。
-					
+				./top.txt
 	查看内存情况：
 		https://www.cnblogs.com/zhuiluoyu/p/6154898.html
 		查看进程内存使用：

@@ -1,3 +1,5 @@
 某ip:8080
 为什么ping不通，却能用网页访问到了？
 
+怎么看懂Linux命令行帮助【转】：
+	https://www.cnblogs.com/sisimi/articles/7737371.html
