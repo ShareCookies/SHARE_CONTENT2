@@ -1,3 +1,5 @@
+https://blog.csdn.net/weixin_40734030/article/details/125558689
+
 top命令经常用来监控Linux的系统状况，比如cpu、内存。
 top输出解释：
 	第一行load average：
@@ -33,7 +35,15 @@ top输出解释：
 			1）系统load高不一定是性能有问题。?
 				因为Load高也许是因为在进行cpu密集型的计算
 
-
+	第二行：
+		例：
+		Tasks: 265 total,   2 running, 263 sleeping,   0 stopped,   0 zombie
+		Tasks：任务，也就是进程
+		265 total：当前总共有265个任务，也就是265个进程
+		2 running：2个进程正在运行
+		263 sleeping：263个进程正在休眠
+		0 stopped：0个停止的进程
+		0 zombie：1个僵尸进程
 		
 	第三行%Cpu(s):
 		us（user cpu time）：
@@ -47,7 +57,7 @@ top输出解释：
 			空闲的cpu时间比。
 			如果该值持续为0，同时sy是us的两倍，则通常说明系统则面临着 CPU 资源的短缺。？
 		wa（wait）：
-			等待使用CPU的时间。
+			等待输入输出的CPU时间百分比。
 		hi（hardware irq）：
 			硬中断消耗时间
 		si（software irq）：
@@ -55,10 +65,31 @@ top输出解释：
 		st（steal time）：
 			虚拟机偷取时间
 		以上解释的这些参数的值加起来是100%
-	第三、四行 内存:
+	第四、五行 内存:
+		例：内存
+			MiB Mem :  15508.4 total,   3858.4 free,   3369.3 used,   828.07 buff/cache
+			MiB：单位
+			15508.4 total：物理内存总量
+			3858.4 free：空闲内存量
+			3369.3 used：已使用的内存量
+			828.07 buff/cache：用作内核缓存和缓冲的内存量
+		例：交换空间
+			交换空间即虚拟内存，当内存不足的时候，把一部分硬盘空间虚拟成内存使用
+			MiB Swap:   4096.0 total,   3855.1 free,    240.9 used.  10823.7 avail Mem
+			4096.0 total：交换区总量
+			3855.1 free：空闲交换区总量
+			240.9 used：使用的交换区总量
+			10823.7 avail Mem：可用于启动一个新应用的内存（物理内存），和free不同，它计算的是可回收的page cache和memory slab
+				available  = free + 回收cache(+可利用buffer？)
+		第四行和第五行输出信息，等同于使用free -m命令。
+
 	第7行后 各进程（任务）的状态监控:
 		
 		附：
 		TOP命令 cpu(s) 与%CPU的区别：
 			CPU(s)是系统所有用户进程占用整个CPU的平均值，由于每个核心占用的百分比不同，所以按平均值来算比较有参考意义。
 			%CPU显示的是进程占用一个核的百分比，而不是整个cpu（8核）的百分比，有时候可能大于100，那是因为该进程启用了多线程占用了多个核心，所以有时候我们看该值得时候会超过100%，但不会超过总核数*100。
+		内存了？？？
+4.top交互命令
+	top命令在执行过程中可以使用一些交互功能：
+	M键	按下M键，根据驻留内存大小（RES）排序？

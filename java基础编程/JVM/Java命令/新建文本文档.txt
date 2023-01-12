@@ -23,7 +23,7 @@ java
 		如果要查看运行的JVM的main方法传入的参数可以输入jps -m
 		如果要查看运行的JVM的各个参数，可以输入jps -v
 		如果要只要查看运行的进程ID，可以输入jps -q
-8.jstat
+8.jstat？
 	jstat用于查看运行的JVM实例的运行数据。基本语法如下：
 9.jstatd
 	jstatd同样用于监控JVM实例，不同于jstat的是它通过RMI方式
