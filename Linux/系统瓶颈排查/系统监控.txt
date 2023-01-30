@@ -1,4 +1,12 @@
-监控大致可分为：系统的指标监控、业务监控
+为什么监控：
+	1. 为了系统的稳定性，提前预警等
+	2. 便于排查异常和收集信息
+监控：
+	监控大致分类：
+		根据监控的内容不同，监控大致可分为，
+		系统的指标监控、业务监控。
+	常见的运维监控工具：
+		goto: 6.1.1 常见的运维监控工具
 prometheus-监控系统指标
 	https://www.zhihu.com/question/27075747
 	Prometheus（普罗米修斯）做监控和告警。
@@ -6,19 +14,61 @@ prometheus-监控系统指标
 	prometheus架构图：
 		https://pic1.zhimg.com/80/v2-45af1f5290ab3413068bf73b8e813123_720w.webp?source=1940ef5c
 		总体而言，prometheus的核心是在于Server，我们要接入prometheus的话，实际上就是开放接口给prometheus拉取数据，然后在web-ui下配置图形化界面进而实现监控的功能。
-
+		
 	prometheus环境搭建:
 		prometheus的环境搭建:
 			...
-		prometheus.yml:
-			新建prometheus的配置文件prometheus.yml(这份配置其实就是告诉prometheus要去哪个端口中拉取对应的监控数据)
 			
-elk-业务指标监控？
+			1. 安装包的拉取：
+				dockers：-这里拉取的docker镜像分别有：
+					cadvisor 用于获取docker容器的指标
+					node-exporter 用户获取服务器的指标
+					grafana 监控的web-ui好用的可视化组件
+					alertmanager 告警组件（目前暂未用到)
+					prometheus 核心监控组件
+			2. prometheus的环境配置：
+				prometheus.yml:
+					...
+					新建prometheus的配置文件prometheus.yml(这份配置其实就是告诉prometheus要去哪个端口中拉取对应的监控数据)
+			3.服务的启动：
+				dockers：
+					随后在目录下docker-compose up -d启动，一个docker-compose起了5个服务器，真好使！
+					
+					于是我们就可以分别访问：
+						http://ip:9100/metrics( 查看服务器的指标)
+						http://ip:8899/metrics（查看docker容器的指标）
+						http://ip:9090/(prometheus的原生web-ui)
+						http://ip:3000/(Grafana开源的监控可视化组件页面)
+			附：4. web-ui的配置：-Grafana配置监控
+				...
+			5、Java系统指标
+				Java程序的JVM相关的监控得支棱起来
+				1. 配置Java的监控:	
+					1. 配置Java的监控也特别简单，只要我们在项目中多引入两个pom依赖（SpringBoot自带的监控组件actuator）
+					2. yml加上actuator对应的配置，并且可以让prometheus拉取配置
+					...
+				2. 让prometheus采集到Java应用的数据
+					...
+			附：06、压测
+				actutor监控的http是什么来着？
+				prometheus显然数据是有明显的波动的，而数据貌似跟我们压测的对不太上？
+				在我个人的理解下：prometheus是每隔N秒（可配置）去拉取暴露的数据，而在界面上配置的可视化也是按N秒（可配置）去执行一次Query。
+				基于这种架构下，我们是很难得出某一时刻（秒）对应的数值。所以在prometheus体系下，它只能看到一个时间段内的值，这对于QPS和RT这些指标并不太友好。
+			7告警
+				alertmanager 告警组件的集成？
+elk-业务指标监控
+	业务监控就是指业务日志。
+	从上面我配置了docker的监控、服务器的监控、SpringBoot应用程序的监控。但可以发现的是，这大多数都是系统的指标监控。
+	我们也是可以实现自定义指标监控给到prometheus进行采集的，但如果系统本身如果接入了类ELK的系统，那我们更偏向于把业务指标数据在ELK上做掉。
+	毕竟ELK面向的是日志数据，只要我们记录下了日志就可以把日志数据清洗出来做业务指标面板监控。
 
-druid
+附：
+	druid是属于系统监控吧，是阿里数据库连接池附带的一个监控功能，并不是完全为监控开发的。
+	当然其数据应该可以到监控平台里，因为其sql等监控还是很有价值的。
 
 
 
+附：
 6.1 运维监控平台选型以及设计思路
 
 6.1.1 常见的运维监控工具
