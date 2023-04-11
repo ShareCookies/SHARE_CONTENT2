@@ -11,8 +11,17 @@
 		稍等片刻即可完成测试，测试完成后会显示从你的电脑连接到这些节点服务器的下载速度、上传速度、Ping值等信息
 		（Ping值越低越好，下载和上传速度除以8为我们常说的速度，可以多次测试以求准确）。
 		Speedtest常见问题：http://www.speedtest.net/support.php
-推荐vpn：
-	surfshark 每个月2美元要买24个月
-	https://surf-chinaz.com/zh
-	surfshark介绍：
-		https://www.webhostingsecretrevealed.net/zh-CN/blog/web-tools/surfshark-review/
+
+free：
+    https://ikuuu.dev/user#
+    https://github.com/getlantern/lantern
+    https://github.com/freefq/free
+temporay：
+    https://down.woccloud.org/https://down.woccloud.org/
+    https://sakuracat.link/#/register?code=hwb0WGUNhttps://sakuracat.link/#/register?code=hwb0WGUN
+    https://xn--4gq62f52gdss.com/#/register?code=ADrqY0hX
+discard：
+    surfshark 每个月2美元要买24个月
+        https://surf-chinaz.com/zh
+        surfshark介绍：
+            https://www.webhostingsecretrevealed.net/zh-CN/blog/web-tools/surfshark-review/

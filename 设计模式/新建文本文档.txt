@@ -1,0 +1,5 @@
+门面模式也称作外观模式：？
+	https://blog.csdn.net/zhangyong01245/article/details/123108848
+	
+	slf4j-api是门面模式？
+23种设计模式？

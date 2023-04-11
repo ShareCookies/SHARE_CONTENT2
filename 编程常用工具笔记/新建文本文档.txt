@@ -1,0 +1,37 @@
+常用打包命令：
+	前端运行项目：
+		npm run dev
+	前端安装依赖：
+		yarn install --no-lockfile
+	前端发布包：
+		注：每次提交代码后，就发布一下。
+		yarn run publ
+		等价于 "npm publish --registry=http://192.168.210.139:8081/repository/npm-releases/”
+		注：
+			第一次发布时要设置...
+			新建的项目要登入：
+				yarn run login
+					Username: 
+					Password:
+					Email: (this IS public) 123342@qq.com
+	前端webpack打包：
+		yarn run  deploy:build
+	注：
+		以上前端的run后对应的命令，均在package.json文件的scripts字段中
+	后端发布包：
+		deploy -Dmaven.test.skip=true  跳过测试，发布包到私服。
+	后端maven打包：
+		clean package spring-boot:repackage -Dmaven.test.skip=true --update-snapshots
+	linux部署并运行项目：
+		source /etc/profile
+		lsof -i:6051 -t|xargs kill -9   https://www.cnblogs.com/sparkbj/p/7161669.html
+		cd /work2/zjsgy/backend
+		nohup java -Xmx512m -Xms256m -jar -Dspring.profiles.active=dev -Dfile.encoding=UTF-8 client-web.jar  >> nohup.log 2>&1 &
+	注：
+		二、IDEA更新快照？
+
+		1）Settings->Maven中勾选Always update snapshots
+
+		2）Checksum policy选择warn
+
+		3）注意删除不同版本的老JAR包 

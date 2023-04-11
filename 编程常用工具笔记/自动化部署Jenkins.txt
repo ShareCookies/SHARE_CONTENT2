@@ -1,0 +1,6 @@
+Jenkins，一款自动化部署工具.
+
+GitlabCI与JenkinsCI对比：
+    https://blog.csdn.net/wanger5354/article/details/122274052
+    天生与gitlab集成，方便集成、使用方便。
+    JenkinsCI功能更多更强、可定制化程度高。

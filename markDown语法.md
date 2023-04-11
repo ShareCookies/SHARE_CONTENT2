@@ -1,3 +1,22 @@
+> md教程：https://tool.4xseo.com/a/28019.html
+
+# 目录
+- [可跳转到对应标题的位置，gitub上有效](#二级分级标题)
+    - [一个tab键，缩进为二级目录](#三级分级标题)
+    
+```text
+1. [toc]
+    介绍：如果md阅读工具支持toc命令，那么只需要添加 [TOC] 符号，那么就会自动生成目录(凡是以 # 定义的标题都会被编排到目录中)。
+2. 自动生成目录
+    全局安装doctoc插件:  npm i doctoc -g //install 简写 i
+    假如你的markdown文件在work/demo.md文件下，只需要cd work 切换到当前文件目录下，执行doctoc demo.md文件，即可在文档中自动生成目录。
+    介绍：
+        标准markdown不支持[TOC]生成目录，如github、gitee、vscode，改用a标签和列表的方法。
+https://www.cnblogs.com/RainFate/p/15723607.html
+https://blog.csdn.net/Kelvin_Yan/article/details/105112635?spm=1001.2101.3001.6650.14&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14-105112635-blog-99176024.235%5Ev27%5Epc_relevant_default_base1&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14-105112635-blog-99176024.235%5Ev27%5Epc_relevant_default_base1&utm_relevant_index=19
+```
+
+
 # 一级分级标题。
 ## 二级分级标题。
 ### 三级分级标题。（一直能到六级。3级开始没下划线）
@@ -37,7 +56,6 @@
 例：兼容md与txt排版
                     11
 
-#	 				11
 
 # 说明(段落、引用)
 > 引用1：对部分内容做说明或引用某某的话等。        
@@ -75,8 +93,4 @@
 [插入图像的3种方式](https://www.jianshu.com/p/280c6a6f2594)  
 
 
-# 目录
-- [目录的制作，可跳转到二级标题的位置，gitub上有效](#二级分级标题)
-    - [一个tab键，缩进为二级目录](#三级分级标题)
-        - 三级目录 
 

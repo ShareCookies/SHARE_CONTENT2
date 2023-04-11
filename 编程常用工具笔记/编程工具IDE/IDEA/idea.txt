@@ -138,6 +138,12 @@ idea操作：
 		https://blog.csdn.net/weixin_39835887/article/details/84834934
 	看代码是谁提交的：
 		idea 对应行上右击，选 annotate，可看到代码是谁提交的。
+		
+	idea过滤控制台输出日志：
+		https://blog.csdn.net/weixin_42139757/article/details/116521018
+		Preferences- Editor-General-Console-Fold console lines that contain
+
+
 idea快捷键：
 	搜索窗口：
 		https://blog.csdn.net/gnail_oug/article/details/78281354
