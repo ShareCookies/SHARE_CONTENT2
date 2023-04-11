@@ -11,6 +11,15 @@
             <url>http://192.168.0.40:8081/repository/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
-	
+
+distributionManagement：
+    https://blog.csdn.net/xiaozhuangyumaotao/article/details/107416098
+	distributionManagement的作用是"分发构件至远程仓库"。
+    mvn install 会将项目生成的构件安装到本地Maven仓库，mvn deploy 用来将项目生成的构件分发到远程Maven仓库。本地Maven仓库的构件只能供当前用户使用，在分发到远程Maven仓库之后，所有能访问该仓库的用户都能使用你的构件。
+    我们需要配置POM的distributionManagement来指定Maven分发构件的位置。
 ？
 	maven项目子项目依赖父项目，版本号无法继承
+
+
+maven发布源码：
+	https://blog.csdn.net/xixingzhe2/article/details/83012506

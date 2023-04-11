@@ -1,7 +1,8 @@
 dependencies与dependencyManagement:
 	<dependencyManagement>：
-		统一管理项目的版本号.
-			确保应用的各个项目的依赖版本一致，才能保证测试的和发布的是相同的成果
+		统一管理项目的版本号。
+        在dependencyManagement元素中声明所依赖的jar包的版本号等信息，那么所有子项目再次引入此依赖jar包时则无需显式的列出版本号。
+        Maven会沿着父子层级向上寻找拥有dependencyManagement 元素的项目，然后使用它指定的版本号。
 		注：
 			如果某个子项目需要另外一个版本号时，只需要在dependencies中声明一个版本号即可。子类就会使用子类声明的版本号，不继承于父类版本号。
 		使用：
@@ -48,6 +49,12 @@ dependencies与dependencyManagement:
 	<exclusion>：
 		用maven管理库依赖，有个好处就是连同库的依赖的全部jar文件一起下载，免去手工添加的麻烦，但同时也带来了同一个jar会被下载了不同版本的问题。
 		好在pom的配置里面允许用<exclusion>来排除一些不需要的依赖。
+<properties>
+    https://www.cnblogs.com/cuiqq/p/11023886.html
+    属性标签，只要在properties节点配置了自定义属性即可在任意地方使用，形式如${x}。
+    便于统一维护
+
+
 插件：
 	maven-source-plugin：
 		https://blog.csdn.net/u014515854/article/details/79696894

@@ -25,3 +25,10 @@ maven命令：
 				package命令完成了项目编译、单元测试、打包功能，但没有把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库和远程maven私服仓库
 				install命令完成了项目编译、单元测试、打包功能，同时把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库，但没有布署到远程maven私服仓库
 				deploy命令完成了项目编译、单元测试、打包功能，同时把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库和远程maven私服仓库
+
+打包：
+    1. maven-compiler-plugin打包时，没有将依赖包打进来：
+        https://blog.csdn.net/vcj1009784814/article/details/122963905
+        maven打包时，默认不会将第三方依赖包打进来。可以在pom.xml中添加maven-assembly插件实现… 打出的包里 xxxx-with-dependencies.jar 就是包含依赖包的。
+    2. springboot maven多模块打包：
+        ./maven多模块管理项目.txt#maven多模块打包
