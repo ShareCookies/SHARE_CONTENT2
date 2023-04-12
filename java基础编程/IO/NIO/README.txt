@@ -263,7 +263,8 @@ Selector选择器:
 		2. NIO 实现了 IO 多路复用中的 Reactor 模型。
 		所以一个线程 Thread 可以使用一个选择器 Selector 通过轮询的方式去监听多个通道 Channel 上的事件，从而让一个线程就可以处理多个事件。
 			即：通过Selector找到 IO 事件已经到达的 Channel 执行。
-		
+		？
+		    Reactor 模型
 	使用Selector管理Channel:
 		通过Selector能够管理多个 Channel，应用非阻塞特性实现非阻塞IO。
 		详：

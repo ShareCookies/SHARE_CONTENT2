@@ -138,5 +138,42 @@ Socket编程：
 		网络层的“ip地址”可以唯一标识网络中的主机，而传输层的“协议+端口”可以唯一标识主机中的应用程序（进程）。
 	协议关系图：
 		协议关系图.png
-	
-	
+附：
+HTTP、Socket、TCP之间的关系与区别
+	https://blog.csdn.net/qq_44918331/article/details/121294618
+	应用层：
+		1. 应用层协议是规定了数据的格式，所以你自己也可以定义个属于自己的应用层协议。
+		2. 	在java里面，http协议的底层实现方式也是socket吗
+			是的，不仅是java，也不仅是http，其他应用层协议的底层也都是socket。
+			例2：
+				自己动手实现HTTP协议
+				https://blog.csdn.net/qq_17776287/article/details/78047450/
+				我们知道HTTP协议是应用层解析内容的，只需要按照它的报文的格式封装和解析数据就可以了，具体的传输还是使用的Socket。
+			例1：
+				对HttpClients代码跟踪能发现其底层也是通过socket实现的
+				CloseableHttpClient#execute(new HttpGet(url));
+				RetryExec#execute(route, request, context, execAware);
+				ProtocolExec#execute(route, request, context, execAware);
+				MainClientExec#execute(route, request, context, execAware);
+				AbstractConnPool#getPoolEntryBlocking(final T route, final Object state,final long timeout, final TimeUnit timeUnit,final Future<E> future);
+				AbstractConnPool#ensureOpen();
+				LoggingManagedHttpClientConnection#getSocketOutputStream(final Socket socket)
+		http：
+			http1.0 http1.1 http2.0 https
+		Socket：
+			Socket是一组调用接口（API），是应用层与TCP/IP协议族通信(传输层、网络层)的中间软件抽象层。
+			通过Socket，我们可以便捷使用TCP/IP协议。Socket把复杂的TCP/IP协议族隐藏在Socket接口后面，对用户来说，一组简单的接口就是全部，让Socket去组织数据，以符合指定的协议。
+			java中的Socket编程是通过调用操作系统的对应Socket函数来实现的。
+			例：
+				\SHARE_CONTENT\java基础编程\IO\通信\Socket\ServerAndClientOfSocket\NIOTcpServer.java
+	传输层、网络层：
+		传输层、网络层对应协议都是由对应底层系统实现了其功能，传输的数据都是一个包。
+		？
+			那http文件传输怎么分辨那些数据是这个文件的，或则说文件传输怎么实现的。
+	网络接口层：
+		定义如何使用实际网络（如Ethernet、Serial Line等）来传送数据，系统通过驱动等来使用网络接口层。
+
+
+
+？
+    什么抓包工具能抓到tcp包

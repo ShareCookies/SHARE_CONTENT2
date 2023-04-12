@@ -1,2 +1,10 @@
 selector源码
 socketio 、socketnio 源码 
+nio与netty：
+	https://www.cnblogs.com/xing901022/p/8678869.html
+	
+nio 还有空轮询bug	
+	https://juejin.cn/post/6844903491505242119
+	https://www.cnblogs.com/luoxn28/p/11872858.html
+
+

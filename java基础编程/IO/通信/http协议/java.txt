@@ -1,0 +1,7 @@
+http1.0、http1.1和http2.0的区别
+    https://blog.csdn.net/weixin_39975261/article/details/115022075
+
+Java对HTTP2的支持
+    https://www.cnblogs.com/lizm166/p/16820976.html
+java8中okHttp发送http2请求
+    https://www.cnblogs.com/king0207/p/16566303.html
