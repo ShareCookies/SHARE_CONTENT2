@@ -98,8 +98,15 @@ Executor框架：（执行器(者)框架）
 				即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为true。
 			maximumPoolSize:线程池所能容纳的最大线程数。
 				超过这个数的线程将被阻塞。
-				当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效。？
 				默认值：Integer.MAX_VALUE
+				注：
+				    https://my.oschina.net/u/241305/blog/1933229
+				    ThreadPoolExecutor 的 execute 方法，只有当满足下面的两个条件之一时，才会新建线程：
+                        1. 当前存活的线程数小于 corePoolSize；（新建 core 线程）
+                        2. 往 workQueue 添加元素失败；（新建非 core 线程）
+				附：
+				    当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效。
+				    线程池常用的阻塞队列有：SynchronousQueue、LinkedBlockingQueue
 			keepAliveTime:
 				非核心线程的闲置超时时间，超过这个时间就会被回收。
 				默认值：
@@ -124,9 +131,9 @@ Executor框架：（执行器(者)框架）
 					}
 			RejectedExecutionHandler：任务拒绝策略
 				介绍：
-					有以下情况发生时任务提交时会被拒接，1. 线程池已经被关闭。2. 任务队列已饱和
+					有以下情况发生时任务提交时会被拒接，1. 线程池已经被关闭。2. 任务队列已饱和(指maximumPoolSize饱和且workQueue饱和)
 				有以下四种拒接策略：
-					AbortPolicy:
+					AbortPolicy: - 默认
 						为java线程池默认的阻塞策略，不执行此任务，而且直接抛出一个运行时异常RejectedExecutionException。
 						注：
 							切记ThreadPoolExecutor.execute需要try catch.
@@ -144,7 +151,7 @@ Executor框架：（执行器(者)框架）
 					https://blog.csdn.net/jgteng/article/details/54411423
 					new ThreadPoolExecutor.AbortPolicy();
 					
-				例：AbortPolicy拒接策略
+				例：AbortPolicy拒接策略-不执行超过的任务 而且直接抛出一个运行时异常RejectedExecutionException
 					ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 5L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1), new ThreadFactory() {
 						@Override
 						public Thread newThread(Runnable r) {
@@ -183,7 +190,7 @@ Executor框架：（执行器(者)框架）
 						e.printStackTrace();
 					}
 					System.err.println("未捕获，则线程退出，此处未执行");
-				例：CallerRunsPolicy拒绝策略
+				例：CallerRunsPolicy拒绝策略-在调用execute的线程里面执行此任务
 					ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 5L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1), new ThreadFactory() {
 						@Override
 						public Thread newThread(Runnable r) {
@@ -202,7 +209,17 @@ Executor框架：（执行器(者)框架）
 						System.err.println(11);
 						Thread.sleep(1000L);
 					}				
-				例：线程池抛异常-线程池中线程运行后不管抛出错误还是运行时异常，调用线程都不受影响。因为它抛出的异常，调用线程根本捕获不到
+				例：DiscardPolicy拒绝策略-抛弃掉超过的任务，并且不会报错
+				    ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 5L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1),new ThreadPoolExecutor.DiscardPolicy());
+					executor.submit(()->{try {Thread.sleep(2000L);} catch (InterruptedException e) {e.printStackTrace(); }System.err.println(1);});
+					Future<?> future2 = executor.submit(()->{try {Thread.sleep(2000L);} catch (InterruptedException e) {e.printStackTrace(); }System.err.println(2);});
+					Future<?> future3 = executor.submit(()->{try {Thread.sleep(2000L);} catch (InterruptedException e) {e.printStackTrace(); }System.err.println(3);});
+					Thread.sleep(2000L);
+					System.err.println(4);
+				runnable任务里抛异常：
+				
+				例1：线程池执行runnable抛异常-线程池中线程运行后不管抛出错误还是运行时异常，调用线程都不受影响。因为它抛出的异常，调用线程根本捕获不到
+					
 					ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 5L, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1), new ThreadFactory() {
 						@Override
 						public Thread newThread(Runnable r) {
@@ -222,7 +239,8 @@ Executor框架：（执行器(者)框架）
 					System.err.println("此处执行");
 					Thread.sleep(2000L);
 					System.err.println("此处执行。线程池中线程运行后不管抛出错误还是运行时异常，调用线程都不受影响。因为它抛出的异常，掉用线程根本捕获不到");
-				例：线程抛异常-同线程池抛异常
+				例2：线程抛异常-同线程池抛异常。
+					
 					//try {
 						new  Thread(new Runnable() {
 							@Override
@@ -235,6 +253,40 @@ Executor框架：（执行器(者)框架）
 					System.err.println("此处执行");
 					Thread.sleep(2000L);
 					System.err.println("此处执行。线程运行后不管抛出错误或运行时异常，调用线程都不受影响。因为它抛出的异常，调用线程根本捕获不到");				
+				例3：线程抛错对应线程会结束调。但线程池中的线程抛错任务会结束，但线程却还在,如何实现的？
+				    附：此时线程池中核心线程处于waiting on condition，等待唤醒
+					public static void main(String[] args) throws InterruptedException {
+						executorService.scheduleWithFixedDelay(new Runnable() {
+
+							@Override
+							public void run() {
+								System.err.println("线程1");
+								System.err.println(Thread.currentThread().getId());
+								throw new RuntimeException("");
+				//  想要任务不结束要进行捕获
+				//                try {
+				//                    System.err.println(1);
+				//                    throw new RuntimeException("");
+				//                }catch (Exception e){
+				//
+				//                }
+
+							}
+						},0L,1L,TimeUnit.SECONDS);
+
+						executorService.scheduleWithFixedDelay(new Runnable() {
+
+							@Override
+							public void run() {
+								System.err.println("线程2");
+								System.err.println(Thread.currentThread().getId());
+							}
+						},0L,1L,TimeUnit.SECONDS);
+					}				
+				
+				futureTask任务里抛异常：
+					线程池和线程执行futureTask任务，futureTask任务里抛异常 异常都会经过ExecutionException包裹并返回。
+					例：线程创建之Callable.txt#特性附#接收异常
 				附：
 					RejectedExecutionHandler：
 						 <dt>Rejected tasks</dt>
@@ -367,3 +419,6 @@ Executor框架：（执行器(者)框架）
 	}
 线程池与@Async相比？
 
+?
+    execute、submit
+    https://blog.csdn.net/happyyear1/article/details/122378013

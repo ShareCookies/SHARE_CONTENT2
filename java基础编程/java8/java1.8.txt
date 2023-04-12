@@ -207,7 +207,20 @@ Stream 流
 
 
 Java8 中 List 转 Map(Collectors.toMap) 使用技巧
-	https://zhangzw.com/posts/20191205.html
-	userList.stream().collect(Collectors.toMap(User::getId, User::getName));
-
+	https://blog.csdn.net/qq_43842093/article/details/120390920
+	1. 
+		userList.stream().collect(Collectors.toMap(User::getId, User::getName));
+	2. 
+		如果希望得到 Map 的 value 为对象本身时，可以这样写：
+		userList.stream().collect(Collectors.toMap(User::getId, t -> t));
  
+Java8使用流抽取List<T>集合中T的某个属性
+	https://blog.csdn.net/qq_38524629/article/details/90139780
+	List<Long> userIds2 = userList.stream().map(User::getId).collect(Collectors.toList());
+
+
+
+？
+	https://zhuanlan.zhihu.com/p/47478339
+	https://blog.csdn.net/QiuHaoqian/article/details/120942134
+	https://www.jianshu.com/p/7eaa0969b424

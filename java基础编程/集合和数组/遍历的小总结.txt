@@ -87,3 +87,9 @@
 	多线程删除：https://blog.csdn.net/mayongzhan_csdn/article/details/79309722
 	poll()方法和remove()方法区别？
 		poll() 和 remove() 都是从队列中取出一个元素，但是 poll() 在获取元素失败的时候会返回空，但是 remove() 失败的时候会抛出异常。
+
+附：
+    按索引从Collection中获取元素；
+        https://www.codenong.com/1047957/
+        Collection应该避免讨论索引，因为它对于特定集合可能没有意义。例如，List表示某种形式的排序，而Set则不包括。
+        是的，您可以遍历它们，这就是toArray(和其他函数)的工作方式,但是迭代顺序不一定是固定的。

@@ -1,3 +1,8 @@
+？？？
+	https://zhuanlan.zhihu.com/p/71742961
+	verbose GC log,
+	既然是 heap 问题, 那就做了一个 heap dump, 同时做了一个 thread dump. 对 heap dump 使用 MAT 进行分析, 发现大量 io.netty.buffer.PoolThreadCache, 占用了一半多的 heap 空间, 而这些对象实例都是 ThreadLocal 的对象.
+
 《深入理解 Java 虚拟机》《深入理解Java虚拟机：JVM高级特性与最佳实践(第2版)》
 
 

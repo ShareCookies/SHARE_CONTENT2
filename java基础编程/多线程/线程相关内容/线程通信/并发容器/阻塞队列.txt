@@ -79,6 +79,28 @@ JDK提供的阻塞队列：
 			
 			？
 				双向阻塞队列可以 运用在“工作窃取”模式中。
+	5. SynchronousQueue(同步阻塞队列)
+		介绍：
+			SynchronousQueue是一个不存储元素的阻塞队列。
+			每一个put操作必须等待一个take操作， 否则不能继续添加元素。
+		例：
+		    SynchronousQueue synchronousQueue = new SynchronousQueue();
+			//synchronousQueue.add(111);//add无法使用 //IllegalStateException: Queue full
+			synchronousQueue.put(111);//put一插入当前就阻塞
+			System.err.println(222222);
+		特性附：
+			默认情况下线程采用非公平性策略访问队列。
+			使用以下构造方法 可以创建公平性访问的SynchronousQueue，如果设置为true，则等待的线程会采用先进先出的顺序访问队列。
+		附：
+			队列本身并不存储任何元素，非常适合传递性场景。
+			类似于无中介的直接交易，有点像原始社会中的生产者和消费者，生产者拿着产品去集市销售给产品的最终消费者，而消费者必须亲自去集市找到所要商品的直接生产者，如果一方没有找到合适的目标，那么对不起，大家都在集市等待。
+
+			优略势：
+				相对于有缓冲的BlockingQueue来说，少了一个中间经销商的环节（缓冲区）。
+				如果有经销商，生产者直接把产品批发给经销商，而无需在意经销商最终会将这些产品卖给那些消费者，由于经销商可以库存一部分商品，因此相对于直接交易模式，总体来说采用中间经销商的模式会吞吐量高一些（可以批量买卖）；
+				但另一方面，又因为经销商的引入，使得产品从生产者到消费者中间增加了额外的交易环节，单个产品的及时响应性能可能会降低。
+				所以单产品，且有足够消费者者情况下，SynchronousQueue的吞吐量高于 LinkedBlockingQueue和ArrayBlockingQueue。
+
 	4. PriorityBlockingQueue
 		一个支持优先级排序的无界阻塞队列。
 		优先级排序：
@@ -120,29 +142,7 @@ JDK提供的阻塞队列：
 				
 				tryTransfer（E e，long timeout，TimeUnit unit）:
 					试图把生产者传入 的元素直接传给消费者，但是如果没有消费者消费该元素则等待指定的时间再返回，如果超 时还没消费元素，则返回false，如果在超时时间内消费了元素，则返回true。				
-	5. SynchronousQueue(同步阻塞队列)
-	　 	
-		介绍：
-			SynchronousQueue是一个不存储元素的阻塞队列。
-			每一个put操作必须等待一个take操作， 否则不能继续添加元素。
-		例：
-		    SynchronousQueue synchronousQueue = new SynchronousQueue();
-			//synchronousQueue.add(111);//add无法使用 //IllegalStateException: Queue full
-			synchronousQueue.put(111);//put一插入当前就阻塞
-			System.err.println(222222);
-		特性附：
-			默认情况下线程采用非公平性策略访问队列。
-			使用以下构造方法 可以创建公平性访问的SynchronousQueue，如果设置为true，则等待的线程会采用先进先出的顺序访问队列。
-		附：
-			队列本身并不存储任何元素，非常适合传递性场景。
-			类似于无中介的直接交易，有点像原始社会中的生产者和消费者，生产者拿着产品去集市销售给产品的最终消费者，而消费者必须亲自去集市找到所要商品的直接生产者，如果一方没有找到合适的目标，那么对不起，大家都在集市等待。
-			
-			优略势：
-				相对于有缓冲的BlockingQueue来说，少了一个中间经销商的环节（缓冲区）。
-				如果有经销商，生产者直接把产品批发给经销商，而无需在意经销商最终会将这些产品卖给那些消费者，由于经销商可以库存一部分商品，因此相对于直接交易模式，总体来说采用中间经销商的模式会吞吐量高一些（可以批量买卖）；
-				但另一方面，又因为经销商的引入，使得产品从生产者到消费者中间增加了额外的交易环节，单个产品的及时响应性能可能会降低。
-				所以单产品，且有足够消费者者情况下，SynchronousQueue的吞吐量高于 LinkedBlockingQueue和ArrayBlockingQueue。
-	
+
 		
 	
 

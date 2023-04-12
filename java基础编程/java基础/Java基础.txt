@@ -34,7 +34,7 @@
 						
 						
 					int：
-						大小:int用4个字节存储。范围为-2,147,483,648 (-2^31)到2,147,483,647 (2^31-1)。
+						大小:int用4个字节存储。范围为-2,147,483,648 (-2^31)到2,147,483,647 (2^31-1)。20亿
 						封装类：Integer
 						默认值:0
 						注：
@@ -42,20 +42,33 @@
 		　　		long：
 						大小:long用8个字节存储。范围为-9,223,372,036,854,775,808 (-2^63)到9,223,372,036, 854,775,807 (2^63-1)。
 						封装类：Long
-						默认值: 0
-						在变量初始化的时候，long类型的默认值为0L或0l，也可直接写为0。
+						默认值: 0 初始化默认值
+						默认写法：8L  long类型的默认写法为0L或0l
 					附：
 						/MyUtils\Java\数字.txt
 			2.浮点型：
+				https://blog.csdn.net/a327369238/article/details/52354811?spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-3-52354811-blog-104527239.pc_relevant_recovery_v2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-3-52354811-blog-104527239.pc_relevant_recovery_v2&utm_relevant_index=6
 				float、double 4字节 8字节 
+				
 				float 单精度: 
-					大小： 4字节 32位
+					大小： 4字节 32位。
+						浮点类型的单精度值具有 4 个字节，包括一个符号位、一个 8 位 二进制指数和一个 23 位尾数。
+						大小：
+							
+						精度：
+							
+							由于尾数的高顺序位始终为 1，因此它不是以数字形式存储的。此表示形式为 float 类型提供了一个大约在 -3.4E+38 ~ 3.4E+38 之间的范围。？
+							float和double的精度是由尾数的位数来决定的？。float：2^23 = 8388608，一共七位，这意味着最多能有7位有效数字，但绝对能保证的为6位，也即float的精度为6~7位有效数字。
+							float精确到七位小数，但绝对能保证的为6位。
 					封装类：Float
 					默认值: 0.0
+					默认写法：f或者F
 				double 双精度：
 					大小： 8字节 64位
+						符号位（S）：1bit	指数位（E）：11bit	尾数位（M）：52bit
 					封装类：Double
 					默认值: 0.0
+					默认写法：0.0 java默认的就是double
 				注：
 					http://www.cnblogs.com/chenjfblog/p/7737332.html
 					在java中浮点型默认是double的，java中小数(2.2)默认是double类型。
@@ -87,7 +100,10 @@
 						由此当计算机运行System.out.println(2.00-1.10)时会拿他们在计算机内存中的二进制表示计算，而1.10的二进制表示本身就不准确，所以会出现0.8999999999999999的结果。
 						附：
 							但为什么System.out.println(2.00f-1.10f);得出的结果是0.9呢。因为float精度没有double精度那么大，小数部分0.1二进制表示被舍去的比较多。
-					BigDecimal	
+				附：
+					当Double的值很大时，显示的结果会变成带E的科学计数法显示
+				注：BigDecimal	
+						https://blog.csdn.net/weixin_43888891/article/details/115315370?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-1-115315370-blog-82721234.pc_relevant_aa&spm=1001.2101.3001.4242.2&utm_relevant_index=4
 						1.程序中应尽量避免浮点数的比较 。2.float、double类型的运算往往都不准确
 						解决方案是使用BigDecimal提供的方法进行比较或运算。
 						但要注意在构造BigDecimal的时候使用float、double的字符串形式构建，BigDecimal(String val)；为什么不用BigDecimal(double val)API里写的比较清楚。
@@ -153,31 +169,38 @@
 		其余介绍：
 			https://github.com/yuyumyself/UtilsProject/blob/master/Utils/src/main/java/com/china/hcg/StringUtils.java
 	可变参数：
-		https://www.cnblogs.com/kkkky/p/7345946.html
-		Java1.5增加了新特性可变参数，
-		适用于参数个数不确定，类型确定的情况，java把可变参数当做数组处理。
-		语法：
-			...位于变量类型和变量名之间，前后有无空格都可以；
-			注：
-				1.只支持有一个可变参数。
-				2.可变参数必须位于参数最后一项。
-					因为参数个数不定，如果当其后边还有相同类型参数时，java无法区分传入的参数属于前一个可变参数还是后边的参数，所以只能让可变参数位于最后一项。
-				3.编译器会为可变参数隐式创建一个数组，所以在方法体中要以数组的形式访问可变参数。
+		介绍：
+			https://www.cnblogs.com/kkkky/p/7345946.html
+			Java1.5增加了新特性可变参数，
+			适用于参数个数不确定，类型确定的情况，java把可变参数当做数组处理。
+			语法：
+				...位于变量类型和变量名之间，前后有无空格都可以；
+				注：
+					1.只支持有一个可变参数。
+					2.可变参数必须位于参数最后一项。
+						因为参数个数不定，如果当其后边还有相同类型参数时，java无法区分传入的参数属于前一个可变参数还是后边的参数，所以只能让可变参数位于最后一项。
+					3.编译器会为可变参数隐式创建一个数组，所以在方法体中要以数组的形式访问可变参数。
 		例：
-		public class Varable {
-			public static void main(String[] args) {
-				System.out.println(add(2, 3));
-				System.out.println(add(2, 3, 5));
-			}
-		 
-			public static int add(int x, int... args) {
-				int sum = x;
-				for (int i = 0; i < args.length; i++) {
-					sum += args[i];
+			public class Varable {
+				public static void main(String[] args) {
+					System.out.println(add(2, 3));
+					System.out.println(add(2, 3, 5));
 				}
-				return sum;
+			 
+				public static int add(int x, int... args) {
+					int sum = x;
+					for (int i = 0; i < args.length; i++) {
+						sum += args[i];
+					}
+					return sum;
+				}
 			}
-		}
+		解析：
+			可变参数就是一种特殊语法，其实质就是数组：
+				void func(String...a); func("hello", "world");
+				实际上编译器会把它变成
+				void func(String...a); func(new String[]{"hello", "world"});
+				所以参数a的类型实际是String[]
 基础语法：
 	条件语句 if：
 		1.if(){}else if(){} else{}
