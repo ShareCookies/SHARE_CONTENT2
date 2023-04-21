@@ -1,0 +1,114 @@
+1.简介
+    rancher 简化了 k8s操作的软件,通过rancher可以在不用关心k8s底层通过图形化界面直接部署微服务.
+
+    harbor  类似于docker hub 的私有仓库,docker可以通过docker pull 拉取镜像.
+
+    jenkins  自动化部署工具,可以自定义脚本和执行时机.
+Jenkins+gitlab+Docker+Harbor+Rancher(k8s)
+    1. Jenkins结合git使用：
+        Jenkins基于Jenkinsfile文件实现流水线发布
+        * https://www.zhihu.com/tardis/bd/art/428350333?source_id=1001
+        https://blog.csdn.net/JFENG14/article/details/121851078
+        附：
+            Jenkinsfile
+                https://www.cnblogs.com/Chinori/p/17091080.html
+    2. Jenkins和docker结合使用：
+        https://blog.csdn.net/weixin_44183847/article/details/121285737
+        https://baijiahao.baidu.com/s?id=1667262896152735438&wfr=spider&for=pc&searchword=jenkins%E5%92%8Cdocker%E5%8C%BA%E5%88%AB
+        打包、构建镜像、推送到镜像仓库：
+            构建镜像：此处是进入到项目的docker文件夹，根据dockerfile文件，运行docker镜像的构建命令
+        构建成功结果查看：
+            1）、Jenkins日志能看到推送成功
+            2）、Harbor仓库能看到镜像
+        例：
+              dir ('docker') {
+                    echo spaceName
+                    echo '构建镜像'
+                    sh '/bin/cp -rf ${WORKSPACE}/target/app.jar ${WORKSPACE}/docker/app.jar'
+                    if(spaceName == 'sp-busi-dev'){
+                        sh "docker build -t test.com/sp-mate/${k8sServerName} . "
+                        sh "docker push test.com/sp-mate/${k8sServerName}";
+                    }else{
+                        sh "docker build -t test.com/sp-mate/${k8sServerName}:${dockerTag} . ";
+                        sh "docker push test.com/sp-mate/${k8sServerName}:${dockerTag}";
+                    }
+              }
+        附:
+            3、 Jenkins推送镜像至Harbor
+                2.1、登录Harbor，创建项目仓库
+                2.2、Jenkins配置推送-Jenkins推送镜像至Harbor
+                    在构建那里 ，ip就是访问Harbor的地址，仓库是自己创建的私有仓库，项目就是构建参数中的${pModule}，版本就是构建参数的${version}
+                2.4、再次构建成功
+                    1）、Jenkins日志能看到推送成功
+                    2）、Harbor仓库能看到镜像
+    3. Jenkins和k8s结合使用:
+        Jenkins调用k8s进行镜像部署
+
+        rancher？
+    附：
+        https://blog.csdn.net/qq_57756904/article/details/126316152
+docker：
+    https://www.runoob.com/docker/docker-tutorial.html
+    docker诞生历史：
+        https://blog.csdn.net/weixin_54202028/article/details/125989942
+    docker介绍：
+        Docker 提供了使用容器的完整工具链，使得容器的上手和使用变得非常简单。工具链中的一个关键，就是定义了新的软件打包格式-容器镜像。
+        镜像包含了软件运行所需要的包含基础 OS 在内的所有依赖，推送至运行时可直接启动。
+
+    Docker Dockerfile
+        https://www.runoob.com/docker/docker-dockerfile.html
+        什么是 Dockerfile
+            Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。
+        构建镜像
+            在 Dockerfile 文件的存放目录下，执行构建动作。
+            例:
+                以下示例，通过目录下的 Dockerfile 构建一个 nginx:v3（镜像名称:镜像标签）。
+                注：最后的 . 代表本次执行的上下文路径，下一节会介绍。
+                $ docker build -t nginx:v3 .
+Jenkins
+    Jenkins，一款自动化部署工具.
+
+    GitlabCI与JenkinsCI对比：
+        https://blog.csdn.net/wanger5354/article/details/122274052
+        天生与gitlab集成，方便集成、使用方便。
+        JenkinsCI功能更多更强、可定制化程度高。
+
+Harbor:镜像仓库
+    https://blog.csdn.net/Gf19991225/article/details/121982824
+    诞生历史：
+        从镜像构建环境到运行环境，镜像的快速分发成为硬需求。
+        同时，大量构建以及依赖的镜像的出现，也给镜像的维护管理带来挑战。
+        镜像仓库的出现成为必然。
+    介绍：
+        镜像构建之后可以推送至仓库储存和管理，运行时环境在有应用运行需求时，从仓库拉取特定的应用镜像来运行。
+        镜像仓库作为镜像的分发媒介，可以实现特定的管理和访问控制机制。仓库作为镜像传输流动的主要媒介，成为云原生应用平台运转的核心要件。
+        Docker 开源了其 registry 实现,不过 Distribution 项目仅仅实现了对镜像存储的支持，对企业级的一些管理诉求并无法提供支持。为了实现企业级镜像仓库的支持，Harbor 项目应运而生。
+Rancher
+    Rancher是一个开源的企业级容器管理平台。
+    Rancher由以下四个部分组成：
+        1.1、基础设施编排
+            Rancher的基础设施服务包括网络， 存储， 负载均衡， DNS和安全模块。
+        1.2、容器编排与调度
+            很多用户都会选择使用容器编排调度框架来运行容器化应用。Rancher包含了当前全部主流的编排调度引擎，例如​Docker Swarm​， Kubernetes， 和Mesos。
+            附：
+                调度和编排
+                    https://www.wenjiangs.com/doc/lwraviryqf
+                    容器管理和调度器是在分布式主机上实现容器化服务的一个关键步骤。
+                    介绍
+
+                        Docker提供了编译、上传、下载、启动和停止容器的所有必要功能。对于在一个单主机环境上最小数量容器的情况下管理这些过程是很合适的。
+                        但是，很多Docker的使用者正在应用这个平台跨多个主机管理大量的容器。集群的Docker宿主机面对特殊的管理困难需要一些不同的工具。
+                        在这篇指南中，我们将讨论Docker调度和编排工具。他们代表主要的容器管理接口，方便分布式部署的管理员使用。
+        1.3、应用商店
+            Rancher的用户可以在应用商店里一键部署由多个容器组成的应用。
+        1.4、企业级权限管理
+            Rancher支持灵活的插件式的用户认证。支持Active Directory，LDAP， Github等认证方式 。
+            Rancher支持在环境级别的基于角色的访问控制 (RBAC)，可以通过角色来配置某个用户或者用户组对开发环境或者生产环境的访问权限。
+
+
+Kubernetes:k8s
+    Kubernetes 官方文档：https://kubernetes.io/zh/
+    https://www.cnblogs.com/chiangchou/p/k8s-1.html
+
+k8s racher:
+    https://blog.csdn.net/cdy2143/article/details/109534036
